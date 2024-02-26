@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="report_customer_weekly_statement">
+			<t t-call="web.external_layout">
+				<t t-set="doc" t-value="doc.with_context({'lang':doc.lang})" />
+				<t t-set="company" t-value="res_company"/>
+
+				<div class="text-right" style="margin-right: 15em;">
+					<p>
+						<span t-esc="doc.name" /><br/>
+						<span t-esc="doc.street" /><br/>
+						<span t-esc="doc.street2" /><br/>
+						<span t-esc="doc.city" />
+						<span t-esc="doc.state_id.name" />
+						<span t-esc="doc.zip" /><br/>
+						<span t-esc="doc.country_id.name" />
+					</p>
+					<br/>
+				</div>
+				<div class="page">
+					<div class="container" style="margin:5px 0 0 1px;">
+						<div class="row">
+							<h2>
+								Weekly Customer Statement:
+								<span t-esc="doc.name" />
+							</h2>
+						</div>
+					</div>
+					<t t-set="i" t-value="0.0" />
+					<t t-set="j" t-value="0.0" />
+					<t t-set="k" t-value="0.0" />
+					<t t-foreach="doc.weekly_statement_line_ids" t-as="line">
+						<t t-set="i" t-value="i+ line.amount_total_signed" />
+						<t t-set="j" t-value="j+line.credit_amount" />
+						<t t-set="k" t-value="k+line.result" />
+					</t>
+
+					<table class="table table-condensed">
+						<thead>
+							<tr class="text-center">
+								<th>Date</th>
+								<th>Invoice Number</th>
+								<th>Origin</th>
+								<th>Invoices/Credit</th>
+								<th>Payments/Debit</th>
+								<th>Balance</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr t-foreach="doc.weekly_statement_line_ids.sorted(key=lambda r: r.name)" t-as="line">
+								<td>
+									<span t-esc="line.invoice_date" />
+								</td>
+								<td>
+									<span t-esc="line.name" />
+								</td>
+								<td>
+									<span t-esc="line.invoice_origin" />
+								</td>
+								<td class="text-right">
+									<span t-esc="line.amount_total_signed"
+										t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+								</td>
+								<td class="text-right">
+									<span t-esc="line.credit_amount"
+										t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+								</td>
+								<td class="text-right">
+									<span t-esc="line.result"
+										t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+								</td>
+							</tr>
+						</tbody>
+
+					</table>
+					<div class="row col-xs-5 pull-right" name="total">
+						<table class="table table-condensed">
+							<tr class="border-black">
+								<td>
+									<strong>Total Amount OverDue :</strong>
+								</td>
+								<td class="text-right">
+									<span t-field="doc.weekly_payment_amount_overdue_amt"
+										t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>Balance Due :</strong>
+								</td>
+								<td class="text-right">
+									<span t-field="doc.weekly_payment_amount_due_amt"
+										t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</t>
+		</template>
+
+		<template id="weekly_customer_statement">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="account_statement.report_customer_weekly_statement" t-lang="doc.lang" />
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+                <!--Sales Team Form View-->
+        <record id="rental_sales_team_form" model="ir.ui.view">
+            <field name="name">fleet.salesman.form</field>
+            <field name="model">fleet.salesman</field>
+            <field name="arch" type="xml">
+                <form string="Salesman" >
+                    <sheet>
+                        <div class="oe_title oe_left">
+                            <h1>Sales Man</h1>
+                        </div>
+                        <div class="oe_right oe_button_box">
+                            <button icon="fa-adn" class="oe_stat_button" name="return_action_for_open" context="{'xml_id':'action_vehicle_rent_analytic_view'}" type="object" help="show the rent detail for this vehicle">
+                               <field name="rent_count" widget="statinfo" string="Rent"/>
+                            </button>
+                            <button icon="fa-adn" class="oe_stat_button" name="action_view_invoice" context="{'xml_id':'action_invoice_tree1'}" type="object" help="show the rent detail for this vehicle">
+                               <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <field name="first_name" required="1"/>
+                            <field name="last_name" required="1"/>
+                            <field name="related_user_id" required="1"/>
+                            <field name="commission_percentage" required="1"/>
+                        </group>
+                        <group>
+                            <notebook>
+                                <page string="Customers">
+<!--                                     <field name="customer_ids" nolabel="1" widget="one2many_list" mode="tree,kanban" >
+                                        <tree string="Customers" editable="bottom">
+                                            <field name="partner_id"/>
+                                        </tree>
+                                    </field> -->
+                                    <field name="customer_ids" nolabel="1" widget="one2many_list" mode="tree,kanban" >
+                                        <tree string="Customers">
+                                            <field name="name"/>
+                                            <field name="phone"/>
+                                            <field name="mobile"/>
+                                            <field name="email"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page string="Accounting">
+                                    <group>
+                                        <field name="account_receivable_id" required="1"/>
+                                        <field name="account_payable_id" required="1"/>
+                                        <field name="expence_acc_id" required="1"/>
+                                    </group>
+                                </page>
+                                <page string="Commissions">
+                                    <field name="invoice_ids" nolabel="1" widget="one2many_list" mode="tree,kanban" >
+                                        <tree string="Commissions">
+                                            <field name="invoice_date"/>
+                                            <field name="name"/>
+                                            <!-- <field name="date_due"/>-->
+                                            <field name="commission_generated" invisible="1"/>
+                                            <field name="amount_total_signed" string="Total" sum="Total"/>
+                                            <field name="state" string="Invoice Status" />
+                                            <field name="commission_amount" string="Commission" sum="Commission"/>
+                                            <!-- <button name="return_action_to_generate_commission" type="object" string="Generate" class="oe_highlight" groups="account.group_account_invoice"/> -->
+                                            <button name="return_action_to_generate_commission" icon="fa fa-gear fa-lg"
+                                                attrs="{'invisible':[('commission_generated','=',True)]}"
+                                                groups="fleet_rent.group_vehicle_manager"
+                                                class="oe_highlight" string="Create Vendor Bill"
+                                                type="object" />
+
+                                            <button name="return_action_to_view_commission" icon="fa-arrow-circle-o-right fa-lg"
+                                                attrs="{'invisible':[('commission_generated','=',False)]}"
+                                                groups="fleet_rent.group_vehicle_manager"
+                                                class="oe_highlight" string="Open Vendor Bill"
+                                                type="object" />
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                            <!-- <field name="sequence_in_view"/> -->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Rent Type Tree View-->
+        <record id="rental_sales_team_tree" model="ir.ui.view">
+            <field name="name">fleet.salesman.tree</field>
+            <field name="model">fleet.salesman</field>
+            <field name="arch" type="xml">
+                <tree string="Rent Type">
+                    <field name="first_name"/>
+                    <field name="last_name" />
+                    <!-- <field name="sequence_in_view"/> -->
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Action for Sales Team -->
+<!--        <record id="rental_sales_team_act" model="ir.actions.act_window">-->
+<!--            <field name="name">Sales Team</field>-->
+<!--            <field name="res_model">fleet.salesman</field>-->
+<!--&lt;!&ndash;            <field name="view_type">form</field>&ndash;&gt;-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="view_id" ref="rental_sales_team_tree" />-->
+<!--        </record>-->
+        <record id="rental_sales_team_act" model="ir.actions.act_window">
+            <field name="name">Sales Team</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fleet.salesman</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Sales Man in your address book
+                </p><p>
+                    Odoo helps you easily track all activities related to a Sales Man.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menuitem for Sales Team -->
+        <menuitem name="Sales Team" id="rental_sales_team"
+            action="rental_sales_team_act" sequence="10" parent="fleet_rental.menu_car_parent"/>
+
+    </data>
+</odoo>

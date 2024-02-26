@@ -1,0 +1,12 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_salesman_admin,fleet.salesman.admin,model_fleet_salesman,,1,1,1,1
+access_fleet_salesman_tenant,fleet.salesman.tenant,model_fleet_salesman,fleet_rent.group_vehicle_user,1,0,0,0
+access_fleet_vehicle_salik_charges,access.fleet.vehicle.salik.charge.admin,model_fleet_vehicle_salik_charges,fleet_rent.group_vehicle_manager,1,1,1,1
+access_fleet_vehicle_fine_charges,access.fleet.vehicle.fine.charge.admin,model_fleet_vehicle_fine_charges,fleet_rent.group_vehicle_manager,1,1,1,1
+access_fleet_rental_vehicle_details,access.fleet.rental.vehicle.details.admin,model_fleet_rental_vehicle_details,fleet_rent.group_vehicle_manager,1,1,1,1
+access_vehicle_salik_charges,access.vehicle.salik.charge.admin,model_vehicle_salik_charge,fleet_rent.group_vehicle_manager,1,1,1,1
+access_vehicle_fine_charges,access.vehicle.fine.charge.admin,model_vehicle_fine_charge,fleet_rent.group_vehicle_manager,1,1,1,1
+access_vehicle_rental_bulk_upload,access.vehicle.rental.bulk.upload.admin,model_vehicle_rental_bulk_upload,fleet_rent.group_vehicle_manager,1,1,1,1
+access_vehicle_rental_fines,access.vehicle.rental.fines.admin,model_vehicle_rental_fines,fleet_rent.group_vehicle_manager,1,1,1,1
+access_res_partner_fleet_salesman,access.res.partner.fleet.salesman,base.model_res_partner,fleet_rent.fleet_salesman,1,1,1,0
+

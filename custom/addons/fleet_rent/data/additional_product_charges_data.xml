@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- UOM Week -->
+        <record id="product_uom_week" model="uom.uom">
+            <field name="name">Weeks</field>
+            <field name="category_id" ref="uom.uom_categ_wtime"/>
+            <field name="factor" eval="7.0"/>
+            <field name="uom_type">bigger</field>
+        </record>
+        <!-- UOM Month -->
+        <record id="product_uom_month" model="uom.uom">
+            <field name="name">Months</field>
+            <field name="category_id" ref="uom.uom_categ_wtime"/>
+            <field name="factor" eval="31.0"/>
+            <field name="uom_type">bigger</field>
+        </record>
+        <!-- Dents -->
+        <record id="additional_charge_dents" model="product.template">
+            <field name="name">Dents</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="accessories_ok">False</field>
+            <field name="type">service</field>
+            <field name="list_price">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Scratches -->
+        <record id="additional_charge_scratches" model="product.template">
+            <field name="name">Scratches</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="accessories_ok">False</field>
+            <field name="type">service</field>
+            <field name="list_price">30</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Extra Kilometers -->
+<!--        <record id="additional_charge_extra_kms" model="product.template">-->
+<!--            <field name="name">Extra KMS</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--            <field name="list_price">30</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_km"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_km"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+        <!-- Extra Days -->
+<!--        <record id="additional_charge_extra_days" model="product.template">-->
+<!--            <field name="name">Extra Days</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_day"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_day"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+        <!-- Additional Driver -->
+        <record id="additional_charge_extra_driver" model="product.template">
+            <field name="name">Additional Driver</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="accessories_ok">True</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_day"/>
+            <field name="uom_po_id" ref="uom.product_uom_day"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Car Seat -->
+        <record id="additional_charge_car_seat" model="product.template">
+            <field name="name">Car Seat</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="accessories_ok">True</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Navigation Systems -->
+        <record id="additional_charge_navigation_systems" model="product.template">
+            <field name="name">Navigation Systems</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="accessories_ok">True</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Fuel: Petrol -->
+        <record id="additional_charge_fuel_petrol" model="product.template">
+            <field name="name">Fuel: Petrol</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="accessories_ok">False</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_litre"/>
+            <field name="uom_po_id" ref="uom.product_uom_litre"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Fuel: Diesel -->
+        <record id="additional_charge_fuel_diesel" model="product.template">
+            <field name="name">Fuel: Diesel</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="accessories_ok">False</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_litre"/>
+            <field name="uom_po_id" ref="uom.product_uom_litre"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Toll Charges -->
+        <record id="additional_charge_toll_charges" model="product.template">
+            <field name="name">Toll Charges</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="accessories_ok">False</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+        <!-- Fines -->
+        <record id="additional_charge_fines" model="product.template">
+            <field name="name">Fines</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="rent_ok">True</field>
+            <field name="fleet_ok">False</field>
+            <field name="accessories_ok">False</field>
+            <field name="charges_ok">True</field>
+            <field name="type">service</field>
+<!--            <field name="standard_price">14</field>-->
+            <field name="list_price">300</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="property_account_income_id" ref="zt_rac_cri_4005" />
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+            <field name="property_account_expense_id" ref="zt_rac_cri_5005" />
+            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />
+        </record>
+    </data>
+</odoo>
+
+
+
+<!--<odoo>-->
+<!--    <data noupdate="1">-->
+<!--        &lt;!&ndash; UOM Week &ndash;&gt;-->
+<!--        <record id="product_uom_week" model="uom.uom">-->
+<!--            <field name="name">Weeks</field>-->
+<!--            <field name="category_id" ref="uom.uom_categ_wtime"/>-->
+<!--            <field name="factor" eval="7.0"/>-->
+<!--            <field name="uom_type">bigger</field>-->
+<!--        </record>-->
+<!--        &lt;!&ndash; UOM Month &ndash;&gt;-->
+<!--        <record id="product_uom_month" model="uom.uom">-->
+<!--            <field name="name">Months</field>-->
+<!--            <field name="category_id" ref="uom.uom_categ_wtime"/>-->
+<!--            <field name="factor" eval="31.0"/>-->
+<!--            <field name="uom_type">bigger</field>-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Dents &ndash;&gt;-->
+<!--        <record id="additional_charge_dents" model="product.template">-->
+<!--            <field name="name">Dents</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="type">service</field>-->
+<!--            <field name="list_price">30</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--&lt;!&ndash;            <field name="property_account_income_id" ref="uae_account_4005" />&ndash;&gt;-->
+<!--            <field name="property_account_income_id" ref="zt_rac_cri_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Scratches &ndash;&gt;-->
+<!--        <record id="additional_charge_scratches" model="product.template">-->
+<!--            <field name="name">Scratches</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="type">service</field>-->
+<!--            <field name="list_price">30</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Extra Kilometers &ndash;&gt;-->
+<!--&lt;!&ndash;        <record id="additional_charge_extra_kms" model="product.template">&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="name">Extra KMS</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="categ_id" ref="product.product_category_all"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="sale_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="purchase_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="rent_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="fleet_ok">False</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="accessories_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="type">service</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="list_price">30</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="uom_id" ref="uom.product_uom_km"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="uom_po_id" ref="uom.product_uom_km"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="property_account_income_id" ref="uae_account_4005" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />&ndash;&gt;-->
+<!--&lt;!&ndash;        </record>&ndash;&gt;-->
+<!--        &lt;!&ndash; Extra Days &ndash;&gt;-->
+<!--&lt;!&ndash;        <record id="additional_charge_extra_days" model="product.template">&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="name">Extra Days</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="categ_id" ref="product.product_category_all"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="sale_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="purchase_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="rent_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="fleet_ok">False</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="accessories_ok">True</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="type">service</field>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="list_price">300</field>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="uom_id" ref="uom.product_uom_day"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="uom_po_id" ref="uom.product_uom_day"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="property_account_income_id" ref="uae_account_4005" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />&ndash;&gt;-->
+<!--&lt;!&ndash;        </record>&ndash;&gt;-->
+<!--        &lt;!&ndash; Additional Driver &ndash;&gt;-->
+<!--        <record id="additional_charge_extra_driver" model="product.template">-->
+<!--            <field name="name">Additional Driver</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_day"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_day"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Car Seat &ndash;&gt;-->
+<!--        <record id="additional_charge_car_seat" model="product.template">-->
+<!--            <field name="name">Car Seat</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Navigation Systems &ndash;&gt;-->
+<!--        <record id="additional_charge_navigation_systems" model="product.template">-->
+<!--            <field name="name">Navigation Systems</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Fuel: Petrol &ndash;&gt;-->
+<!--        <record id="additional_charge_fuel_petrol" model="product.template">-->
+<!--            <field name="name">Fuel: Petrol</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_litre"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_litre"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Fuel: Diesel &ndash;&gt;-->
+<!--        <record id="additional_charge_fuel_diesel" model="product.template">-->
+<!--            <field name="name">Fuel: Diesel</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_litre"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_litre"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Toll Charges &ndash;&gt;-->
+<!--        <record id="additional_charge_toll_charges" model="product.template">-->
+<!--            <field name="name">Toll Charges</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Fines &ndash;&gt;-->
+<!--        <record id="additional_charge_fines" model="product.template">-->
+<!--            <field name="name">Fines</field>-->
+<!--            <field name="categ_id" ref="product.product_category_all"/>-->
+<!--            <field name="sale_ok">True</field>-->
+<!--            <field name="purchase_ok">True</field>-->
+<!--            <field name="rent_ok">True</field>-->
+<!--            <field name="fleet_ok">False</field>-->
+<!--            <field name="accessories_ok">False</field>-->
+<!--            <field name="charges_ok">True</field>-->
+<!--            <field name="type">service</field>-->
+<!--&lt;!&ndash;            <field name="standard_price">14</field>&ndash;&gt;-->
+<!--            <field name="list_price">300</field>-->
+<!--            <field name="uom_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="uom_po_id" ref="uom.product_uom_unit"/>-->
+<!--            <field name="property_account_income_id" ref="uae_account_4005" />-->
+<!--            <field name="property_account_expense_id" ref="l10n_ae.uae_account_3902" />-->
+<!--            <field name="asset_category_id" ref="fleet_vehicle_asset_type1" />-->
+<!--        </record>-->
+<!--    </data>-->
+<!--</odoo>-->

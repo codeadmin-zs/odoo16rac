@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+<!--  Vehicle Handover Form      -->
+        <record model="ir.ui.view" id="fleet_rental_contract_vehicle_handover_details_wizard">
+            <field name="name">fleet.rental.contract.vehicle.handover.details.wizard</field>
+            <field name="model">fleet.rental.vehicle.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Rental Vehicle Details"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1" />
+                        <field name="rental_contract_id" invisible="1" />
+                        <field name="state" invisible="1" />
+                    </group>
+                    <notebook>
+                        <page string="Vehicle Handover" name="vehicle_handover" >
+                            <separator string="Vehicle Handover" name="vehicle_handover_details"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="date" required="1"/>
+                                        <field name="odometer"  required="1"/>
+                                        <field name="fuel_level"  required="1"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <group string="Dents">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Part</th>
+                                                    <th>Existing Dents</th>
+                                                    <th>New Dents</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox" readonly="0" /></td>
+                                                    <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <group string="Scratches">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Part</th>
+                                                    <th>Existing Scratches</th>
+                                                    <th>New Scratches</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_handover" type="object" string="Confirm" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!--  Vehicle Return Form  -->
+        <record model="ir.ui.view" id="fleet_rental_contract_vehicle_return_details_wizard">
+            <field name="name">fleet.rental.contract.vehicle.return.details.wizard</field>
+            <field name="model">fleet.rental.vehicle.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Rental Vehicle Details"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1" />
+                        <field name="rental_contract_id" invisible="1" />
+                        <field name="state" invisible="1" />
+                        <field name="total_damages_cost" invisible="1" />
+                        <field name="additional_day_cost" invisible="1" />
+                        <field name="additional_mileage_cost" invisible="1" />
+                        <field name="additional_fuel_cost" invisible="1" />
+                        <field name="can_be_invoiced" invisible="1" />
+                    </group>
+                    <notebook>
+                        <page string="Vehicle Return" name="vehicle_return">
+                            <separator string="Vehicle Return" name="vehicle_return_details"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="reason"  required="1"/>
+                                        <field name="date" string="Return Date" required="1"/>
+                                        <field name="odometer" string="Return Odometer" required="1"/>
+                                        <field name="fuel_level" string="Fuel Level" required="1"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <notebook>
+                                <page string="Dents" name="dents">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Dents">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th >Cost</th>
+                                                            <th>Existing Dents</th>
+                                                            <th>New Dents</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox" readonly="0" /></td>
+                                                            <td class="text-left"><field name="hood_dent_cost" readonly="0" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}"/></td>
+                                                            <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_cost" readonly="0" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_cost" readonly="0" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_cost" readonly="0" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_cost" readonly="0" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_dent_cost" readonly="0" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                                <page string="Scratches" name="scratches">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Scratches">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th>Cost</th>
+                                                            <th>Existing Scratches</th>
+                                                            <th>New Scratches</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="hood_scratch_cost" readonly="0" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_cost" readonly="0" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_cost" readonly="0" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_cost" readonly="0" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_cost" readonly="0" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_scratch_cost" readonly="0" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                                <page string="Tolls" name="tolls">
+                                    <separator string="Tolls Charges" name="tolls"/>
+                                    <group name="toll_charges">
+                                        <field name="additional_toll_ids">
+                                            <tree editable="bottom" create="true" delete="true">
+                                                <field name="salik_product_id"/>
+                                                <field name="analytic_account_id" invisible="1" />
+                                                <field name="plate_no" />
+                                                <field name="location" />
+                                                <field name="description" />
+                                                <field name="time_date" />
+                                                <field name="unit_price"/>
+                                                <field name="vehicle_id" invisible="1" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                                <page string="Fines" name="fines">
+                                    <separator string="Fine Charges" name="fines"/>
+                                    <group name="fine_charges">
+                                        <field name="additional_fine_ids">
+                                            <tree editable="bottom" create="true" delete="true">
+                                                <field name="fine_product_id" />
+                                                <field name="analytic_account_id" invisible="1" />
+                                                <field name="plate_no" />
+                                                <field name="location" />
+                                                <field name="description" />
+                                                <field name="time_date" />
+                                                <field name="unit_price"/>
+                                                <field name="vehicle_id" invisible="1" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_return" type="object" string="Confirm" class="oe_highlight" />
+<!--                        <button name="create_invoice_and_return_vehicle" type="object" string="Create Invoice &amp; Return"-->
+<!--                                class="oe_highlight"  attrs="{'invisible': [('can_be_invoiced', '=', False)]}"/>-->
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!--  Vehicle Close Form  -->
+        <record model="ir.ui.view" id="fleet_rental_contract_vehicle_close_details_wizard">
+            <field name="name">fleet.rental.contract.vehicle.close.details.wizard</field>
+            <field name="model">fleet.rental.vehicle.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Rental Vehicle Details"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1" />
+                        <field name="rental_contract_id" invisible="1" />
+                        <field name="state" invisible="1" />
+                        <field name="total_other_charges_cost" invisible="1"/>
+                        <field name="can_be_invoiced" invisible="1" />
+                    </group>
+                    <notebook>
+                        <page string="Tolls" name="tolls">
+                            <separator string="Tolls Charges" name="tolls"/>
+                            <group name="toll_charges">
+                                <field name="additional_toll_ids">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="salik_product_id" />
+                                        <field name="analytic_account_id" invisible="1" />
+                                        <field name="plate_no" />
+                                        <field name="location" />
+                                        <field name="description" />
+                                        <field name="time_date" />
+                                        <field name="unit_price"/>
+                                        <field name="vehicle_id" invisible="1" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Fines" name="fines">
+                            <separator string="Fine Charges" name="fines"/>
+                            <group name="fine_charges">
+                                <field name="additional_fine_ids">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="fine_product_id" />
+                                        <field name="analytic_account_id" invisible="1" />
+                                        <field name="plate_no" />
+                                        <field name="location" />
+                                        <field name="description" />
+                                        <field name="time_date" />
+                                        <field name="unit_price"/>
+                                        <field name="vehicle_id" invisible="1" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_rent_close" type="object" string="Confirm Close" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!--  Vehicle Replacement Return Form  -->
+        <record model="ir.ui.view" id="fleet_rental_contract_vehicle_replacement_details_wizard">
+            <field name="name">fleet.rental.contract.vehicle.replacement.details.wizard</field>
+            <field name="model">fleet.rental.vehicle.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Rental Vehicle Details"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1" />
+                        <field name="rental_contract_id" invisible="1" />
+                        <field name="state" invisible="1" />
+                        <field name="total_damages_cost" invisible="1" />
+                        <field name="additional_day_cost" invisible="1" />
+                        <field name="additional_mileage_cost" invisible="1" />
+                        <field name="additional_fuel_cost" invisible="1" />
+                        <field name="can_be_invoiced" invisible="1" />
+                    </group>
+                    <notebook>
+                        <page string="Vehicle Return" name="vehicle_return">
+                            <separator string="Vehicle Return" name="vehicle_return_details"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="reason"  required="1"/>
+                                        <field name="date" string="Return Date" required="1"/>
+                                        <field name="odometer" string="Return Odometer" required="1"/>
+                                        <field name="fuel_level" string="Fuel Level" required="1"/>
+                                        <field name="new_vehicle_id" string="New Vehicle" required="1" />
+                                    </group>
+                                </div>
+                            </div>
+                            <notebook>
+                                <page string="Dents" name="dents">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Dents">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th >Cost</th>
+                                                            <th>Existing Dents</th>
+                                                            <th>New Dents</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox" readonly="0" /></td>
+                                                            <td class="text-left"><field name="hood_dent_cost" readonly="0" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}"/></td>
+                                                            <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_cost" readonly="0" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_cost" readonly="0" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_cost" readonly="0" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_cost" readonly="0" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_dent_cost" readonly="0" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                                <page string="Scratches" name="scratches">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Scratches">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th>Cost</th>
+                                                            <th>Existing Scratches</th>
+                                                            <th>New Scratches</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="hood_scratch_cost" readonly="0" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_cost" readonly="0" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_cost" readonly="0" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_cost" readonly="0" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_cost" readonly="0" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_scratch_cost" readonly="0" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                            <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                                <page string="Tolls" name="tolls">
+                                    <separator string="Tolls Charges" name="tolls"/>
+                                    <group name="toll_charges">
+                                        <field name="additional_toll_ids">
+                                            <tree editable="bottom" create="true" delete="true">
+                                                <field name="salik_product_id" />
+                                                <field name="analytic_account_id" invisible="1" />
+                                                <field name="plate_no" />
+                                                <field name="location" />
+                                                <field name="description" />
+                                                <field name="time_date" />
+                                                <field name="unit_price"/>
+                                                <field name="vehicle_id" invisible="1" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                                <page string="Fines" name="fines">
+                                    <separator string="Fine Charges" name="fines"/>
+                                    <group name="fine_charges">
+                                        <field name="additional_fine_ids">
+                                            <tree editable="bottom" create="true" delete="true">
+                                                <field name="fine_product_id" />
+                                                <field name="analytic_account_id" invisible="1" />
+                                                <field name="plate_no" />
+                                                <field name="location" />
+                                                <field name="description" />
+                                                <field name="time_date" />
+                                                <field name="unit_price"/>
+                                                <field name="vehicle_id" invisible="1" />
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_replacement_return" type="object" string="Confirm Replacement" class="oe_highlight" />
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!--   Replacement Handover-->
+        <record model="ir.ui.view" id="fleet_rental_contract_replacement_vehicle_handover_details_wizard">
+            <field name="name">fleet.rental.contract.replacement.vehicle.handover.details.wizard</field>
+            <field name="model">fleet.rental.vehicle.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Rental Vehicle Details"/>
+                    <group>
+                        <field name="rental_contract_id" invisible="1" />
+                        <field name="state" invisible="1" />
+                    </group>
+                    <notebook>
+                        <page string="Vehicle Handover" name="vehicle_handover" >
+                            <separator string="Replacement Handover" name="vehicle_replacement_details"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="vehicle_id" string="Replacement Vehicle" required="1" />
+                                        <field name="date" required="1"/>
+                                        <field name="odometer"  required="1"/>
+                                        <field name="fuel_level"  required="1"/>
+                                    </group>
+                                </div>
+                            </div>
+                            <notebook>
+                                <page string="Dents" name="dents" >
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Dents">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th>Existing Dents</th>
+                                                            <th>New Dents</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox" readonly="0" /></td>
+                                                            <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                                <page string="Scratches" name="scratches" >
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <group string="Scratches">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part</th>
+                                                            <th>Existing Scratches</th>
+                                                            <th>New Scratches</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox" readonly="0"/></td>
+                                                            <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>
+                                                            <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </group>
+                                        </div>
+                                    </div>
+                                </page>
+                            </notebook>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_replacement_handover" type="object" string="Confirm" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

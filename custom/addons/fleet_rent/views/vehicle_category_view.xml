@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="insurance_type_form" model='ir.ui.view'>
+        <field name="name">insurance.type.form</field>
+        <field name="model">insurance.type</field>
+        <field name="arch" type="xml">
+            <form string="Insurance Type">
+                <group>
+                    <field name="name" required="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="vehicle_type_action" model="ir.actions.act_window">
+        <field name="name">Vehicle Product Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fleet.category.vehicle.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Vehicle Product Type
+            </p>
+        </field>
+    </record>
+
+<!--    This action is not required to add vehicle models-->
+
+<!--    <record id="vehicle_class_action" model="ir.actions.act_window">-->
+<!--        <field name="name">Vehicle Product Class</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="res_model">fleet.category.vehicle.class</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Create a new Vehicle Product Class-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+    <record id="vehicle_transmission_action" model="ir.actions.act_window">
+        <field name="name">Vehicle Product Transmission</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fleet.category.vehicle.transmission</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Vehicle Product Transmission
+            </p>
+        </field>
+    </record>
+    <record id="vehicle_fuel_action" model="ir.actions.act_window">
+        <field name="name">Vehicle Product Fuel</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fleet.category.vehicle.fuel</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Vehicle Product fuel
+            </p>
+        </field>
+    </record>
+
+<!--Menuitem for Vehicle Type -->
+<!--    <menuitem name="Vehicle Product Type" action="vehicle_type_action" id="vehicle_type"-->
+<!--            parent="fleet.fleet_configuration" sequence="16" groups="fleet.fleet_group_manager"/>-->
+
+<!--    <menuitem name="Vehicle Product Class" action="vehicle_class_action" id="vehicle_class"-->
+<!--            parent="fleet.fleet_configuration" sequence="17" groups="fleet.fleet_group_manager"/>-->
+
+<!--    <menuitem name="Vehicle Product Transmission" action="vehicle_transmission_action" id="vehicle_transmi ssion"-->
+<!--            parent="fleet.fleet_configuration" sequence="18" groups="fleet.fleet_group_manager"/>-->
+
+    <menuitem name="Vehicle Product Fuel" action="vehicle_fuel_action" id="vehicle_fuel"
+          parent="fleet.fleet_configuration" sequence="19" groups="fleet.fleet_group_manager"/>
+
+    <record id="view_fleet_vehicle_model_extend" model="ir.ui.view">
+        <field name="name">fleet.vehicle.model.form.extend</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="category_vehicle_fuel_id" string="Fuel Type"/>
+                <field name="fuel_tank_capacity" string="Fuel Tank Capacity in L"/>
+                <field name="category_vehicle_class_id"/>
+                <field name="category_vehicle_transmission_id" string="Transmission"/>
+                <field name="seats"/>
+                <field name="doors"/>
+            </xpath>
+        </field>
+    </record>
+
+       <!--    Adding Menu and Action for Buffer Hours Here-->
+
+    <record id="buffer_hour_form" model="ir.ui.view">
+        <field name="name">buffer.hours.form</field>
+        <field name="model">buffer.hours</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="hours" />
+                    </group>
+
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="buffer_hour_tree" model="ir.ui.view">
+        <field name="name">buffer.hours.tree</field>
+        <field name="model">buffer.hours</field>
+        <field name="arch" type="xml">
+            <tree>
+                        <field name="hours" />
+            </tree>
+
+        </field>
+    </record>
+
+    <record id="buffer_hours_action" model="ir.actions.act_window">
+        <field name="name">Buffer Hours</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">buffer.hours</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Buffer Hours
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Buffer Hours" action="buffer_hours_action" id="buffer_hours"
+              parent="fleet.fleet_configuration" sequence="20" groups="fleet.fleet_group_manager"/>
+
+</odoo>

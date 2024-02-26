@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sr_view_order_form_inherit_rental_rank" model="ir.ui.view">
+        <field name="name">sr_view.order.form.inherit.rental_rank</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="rental_rank" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_vehicle_rent_quotation_view" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_rental_rank': 1, 'default_is_rental_order': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+            </p><p>
+                Once the quotation is confirmed by the customer, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="fleet_rental.menu_car_parent" sequence="1"
+               name="Rental Management" parent="fleet.menu_root" groups="fleet.fleet_group_manager,fleet_rent.fleet_salesman"/>
+    <menuitem id="rental_quotations" name="Quotations"
+                action="action_vehicle_rent_quotation_view"
+                parent="fleet_rental.menu_car_parent"
+                sequence="1"/>
+</odoo>

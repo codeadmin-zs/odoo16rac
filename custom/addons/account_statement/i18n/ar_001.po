@@ -1,0 +1,740 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_statement
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-28 08:21+0000\n"
+"PO-Revision-Date: 2021-07-28 08:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_statement
+#: model:mail.template,body_html:account_statement.email_template_supplier_statement
+msgid ""
+"\n"
+"\t\t\t\t<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"\n"
+"\t\t\t\t\t<p>Dear ${object.name},</p>\n"
+"\t\t\t\t\t<p>\n"
+"\t\t\t\t\tWe have attched your payment statement.\n"
+"\t\t\t\t\tPlease kindly check.\n"
+"\n"
+"\t\t\t\t\t</p>\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\tBest Regards,\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t   <br/>\n"
+"\t\t\t\t${user.name}\n"
+"\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t<br/>\n"
+"\n"
+"\n"
+"\t\t\t\t</div>\n"
+"\t\t\t\t\t\t\t\n"
+"\t\t\t"
+msgstr ""
+
+#. module: account_statement
+#: model:mail.template,body_html:account_statement.email_template_customer_statement
+msgid ""
+"\n"
+"\t\t\t\t<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"\n"
+"\t\t\t\t\t<p>Dear ${object.name},</p>\n"
+"\t\t\t\t\t<p>\n"
+"\t\t\t\t\tWe have attched your paymnet statement.\n"
+"\t\t\t\t\tPlease kindly check.\n"
+"\n"
+"\t\t\t\t\t</p>\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\tBest Regards,\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t   <br/>\n"
+"\t\t\t\t${user.name}\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t<br/><br/>\n"
+"\t\t\t\t</div>\n"
+"\t\t\t\t\t\t\t\t\t\t\n"
+"\t\t\t"
+msgstr ""
+
+#. module: account_statement
+#: model:mail.template,body_html:account_statement.email_template_customer_monthly_statement
+#: model:mail.template,body_html:account_statement.email_template_customer_weekly_statement
+msgid ""
+"\n"
+"\t\t\t\t<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"\n"
+"\t\t\t\t\t<p>Dear ${object.name},</p>\n"
+"\t\t\t\t\t<p>\n"
+"\t\t\t\t\tWe have attched your paymnet statement.\n"
+"\t\t\t\t\tPlease kindly check.\n"
+"\n"
+"\t\t\t\t\t</p>\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\tBest Regards,\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t   <br/>\n"
+"\t\t\t\t${user.name}\n"
+"\n"
+"\t\t\t\t<br/>\n"
+"\t\t\t\t<br/><br/>\n"
+"\t\t\t\t</div>\n"
+"\t\t\t\t\n"
+"\t\t\t"
+msgstr ""
+
+#. module: account_statement
+#: model:mail.template,subject:account_statement.email_template_customer_monthly_statement
+msgid "${user.company_id.name} Customer Monthly Statement"
+msgstr "${user.company_id.name} كشف حساب شهري للعميل"
+
+#. module: account_statement
+#: model:mail.template,subject:account_statement.email_template_customer_statement
+msgid "${user.company_id.name} Customer Statement"
+msgstr "${user.company_id.name} كشف العميل"
+
+#. module: account_statement
+#: model:mail.template,subject:account_statement.email_template_customer_weekly_statement
+msgid "${user.company_id.name} Customer weekly Statement"
+msgstr "${user.company_id.name} كشف حساب العميل الأسبوعي"
+
+#. module: account_statement
+#: model:mail.template,subject:account_statement.email_template_supplier_statement
+msgid "${user.company_id.name} Supplier Statement"
+msgstr "${user.company_id.name} بيان المورد"
+
+#. module: account_statement
+#: model:ir.actions.report,print_report_name:account_statement.report_customer_weekly_print
+msgid "(object.name + '_Customer_Statement.pdf')"
+msgstr ""
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__first_thirty_day
+#: model:ir.model.fields,field_description:account_statement.field_res_users__first_thirty_day
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "0-30"
+msgstr "0-30"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__thirty_sixty_days
+#: model:ir.model.fields,field_description:account_statement.field_res_users__thirty_sixty_days
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "30-60"
+msgstr "30-60"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__sixty_ninty_days
+#: model:ir.model.fields,field_description:account_statement.field_res_users__sixty_ninty_days
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "60-90"
+msgstr "60-90"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__ninty_plus_days
+#: model:ir.model.fields,field_description:account_statement.field_res_users__ninty_plus_days
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "90+"
+msgstr "90+"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "<b>Ending Balance</b>"
+msgstr "<b>الرصيد النهائي</b>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "<b>Initial Balance</b>"
+msgstr "<b>الرصيد الافتتاحي</b>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid ""
+"<br/>\n"
+"\t\t\t\t\t\t<br/>\n"
+"\t\t\t\t\t\t<span>Dear Sir/Madam,</span><br/>\n"
+"\t\t\t\t\t\t<br/>\n"
+"\t\t\t\t\t\t<span>Some payments on your account are still due. Please find details below.</span><br/>\n"
+"\t\t\t\t\t\t<br/>\n"
+"\t\t\t\t\t\t<span>Thank you.</span><br/>\n"
+"\t\t\t\t\t\t<span>Best Regards,</span><br/>"
+msgstr ""
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid ""
+"<span>Customer account statement</span><br/>\n"
+"\t\t\t\t\t\t<span>Date : </span>"
+msgstr ""
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "<strong>Balance :</strong>"
+msgstr "<strong>توازن :</strong>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "<strong>Balance Due :</strong>"
+msgstr "<strong>الرصيد المستحق :</strong>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "<strong>Sub-Total :</strong>"
+msgstr "<strong>المجموع الفرعي:</strong>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "<strong>Total Amount OverDue :</strong>"
+msgstr "<strong>المبلغ الإجمالي المتأخر:</strong>"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Account"
+msgstr "الحساب"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__res_company__period__all
+msgid "All"
+msgstr "الجميع"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__amount_residual
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__amount_residual
+msgid "Amount Due"
+msgstr "المبلغ المستحق"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__amount_residual_signed
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__amount_residual_signed
+msgid "Amount Due Signed"
+msgstr "توقيع المبلغ المستحق"
+
+#. module: account_statement
+#: model:ir.actions.server,name:account_statement.autometic_send_statement_cron_ir_actions_server
+#: model:ir.cron,cron_name:account_statement.autometic_send_statement_cron
+#: model:ir.cron,name:account_statement.autometic_send_statement_cron
+msgid "Automatic Send Customer Statement"
+msgstr "إرسال بيان العميل تلقائيًا"
+
+#. module: account_statement
+#: model:ir.actions.server,name:account_statement.autometic_weekly_statement_cron_ir_actions_server
+#: model:ir.cron,cron_name:account_statement.autometic_weekly_statement_cron
+#: model:ir.cron,name:account_statement.autometic_weekly_statement_cron
+msgid "Automatic Send Customer Weekly Statement"
+msgstr "إرسال كشف حساب أسبوعي للعميل تلقائيًا"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_account_move__result
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__result
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__result
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Balance"
+msgstr "توازن"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__monthly_payment_amount_due_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__payment_amount_due_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__monthly_payment_amount_due_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__payment_amount_due_amt
+msgid "Balance Due"
+msgstr "الرصيد المستحق"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__monthly_statement_line__state__cancel
+#: model:ir.model.fields.selection,name:account_statement.selection__weekly_statement_line__state__cancel
+msgid "Cancelled"
+msgstr "ألغيت"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Communication"
+msgstr "تواصل"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_res_company
+msgid "Companies"
+msgstr "شركات"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__company_id
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__company_id
+msgid "Company"
+msgstr "شركة"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_res_config_settings
+msgid "Config Settings"
+msgstr "إعدادات التكوين"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_res_partner
+msgid "Contact"
+msgstr "اتصال"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__create_uid
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__create_uid
+msgid "Created by"
+msgstr "انشأ من قبل"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__create_date
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__create_date
+msgid "Created on"
+msgstr "تم إنشاؤها على"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_account_move__credit_amount
+msgid "Credit/paid"
+msgstr "الائتمان / المدفوع"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__currency_id
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__currency_id
+msgid "Currency"
+msgstr "عملة"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__current_date
+#: model:ir.model.fields,field_description:account_statement.field_res_users__current_date
+msgid "Current Date"
+msgstr "التاريخ الحالي"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__partner_id
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__partner_id
+msgid "Customer"
+msgstr "عميل"
+
+#. module: account_statement
+#: model:ir.actions.report,name:account_statement.report_customer_monthly_print
+msgid "Customer Monthly Statement"
+msgstr "كشف حساب شهري للعميل"
+
+#. module: account_statement
+#: model:mail.template,report_name:account_statement.email_template_customer_monthly_statement
+msgid "Customer Monthly Statement Report"
+msgstr "تقرير كشف الحساب الشهري للعميل"
+
+#. module: account_statement
+#: code:addons/account_statement/models/res_partner.py:0
+#, python-format
+msgid "Customer Monthly Statement email sent to %s, "
+msgstr "تم إرسال رسالة البريد الإلكتروني الخاصة بكشف العميل الشهري إلى %s ،"
+
+#. module: account_statement
+#: model:ir.actions.report,name:account_statement.report_customer_overdue_print
+msgid "Customer Overdue Statement"
+msgstr "بيان العميل المتأخر"
+
+#. module: account_statement
+#: model:ir.actions.report,name:account_statement.report_customert_print
+msgid "Customer Statement"
+msgstr "كشف العميل"
+
+#. module: account_statement
+#: model:mail.template,report_name:account_statement.email_template_customer_statement
+msgid "Customer Statement Report"
+msgstr "تقرير كشف حساب العميل"
+
+#. module: account_statement
+#: code:addons/account_statement/models/res_partner.py:0
+#, python-format
+msgid "Customer Statement email sent to %s, "
+msgstr "تم إرسال رسالة البريد الإلكتروني الخاصة ببيان العميل إلى %s ،"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Customer Statements"
+msgstr "بيانات العميل"
+
+#. module: account_statement
+#: model:ir.actions.report,name:account_statement.report_customer_weekly_print
+msgid "Customer Weekly Statement"
+msgstr "كشف حساب العميل الأسبوعي"
+
+#. module: account_statement
+#: model:mail.template,report_name:account_statement.email_template_customer_weekly_statement
+msgid "Customer Weekly Statement Report"
+msgstr "تقرير كشف الحساب الأسبوعي للعميل"
+
+#. module: account_statement
+#: code:addons/account_statement/models/res_partner.py:0
+#, python-format
+msgid "Customer Weekly Statement email sent to %s, "
+msgstr "تم إرسال رسالة إلكترونية لكشف العميل الأسبوعي إلى %s ،"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__balance_invoice_ids
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__supplier_invoice_ids
+#: model:ir.model.fields,field_description:account_statement.field_res_users__balance_invoice_ids
+#: model:ir.model.fields,field_description:account_statement.field_res_users__supplier_invoice_ids
+msgid "Customer move lines"
+msgstr "خطوط نقل العملاء"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Date"
+msgstr "تاريخ"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__display_name
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__monthly_statement_line__state__draft
+#: model:ir.model.fields.selection,name:account_statement.selection__weekly_statement_line__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Due"
+msgstr "بسبب"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__invoice_date_due
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__invoice_date_due
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_mail_template
+msgid "Email Templates"
+msgstr "قوالب البريد الإلكتروني"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__end_date
+#: model:ir.model.fields,field_description:account_statement.field_res_users__end_date
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__id
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__id
+msgid "ID"
+msgstr "بطاقة تعريف"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__invoice_id
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__invoice_id
+msgid "Invoice"
+msgstr "فاتورة"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__invoice_date
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__invoice_date
+msgid "Invoice Date"
+msgstr "تاريخ الفاتورة"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Invoice Number"
+msgstr "رقم الفاتورة"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Invoice line"
+msgstr "سطر الفاتورة"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Invoices/Credit"
+msgstr "الفواتير / الائتمان"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "Invoices/Debit"
+msgstr "الفواتير / الخصم"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__amount_total
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__amount_total
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Invoices/Debits"
+msgstr "الفواتير / الديون"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_account_move
+msgid "Journal Entries"
+msgstr "إدخالات دفتر اليومية"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line____last_update
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line____last_update
+msgid "Last Modified on"
+msgstr "تاريخ آخر تعديل"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__write_uid
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__write_date
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__month_name
+#: model:ir.model.fields,field_description:account_statement.field_res_users__month_name
+msgid "Month"
+msgstr "شهر"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+msgid "Month:"
+msgstr "شهر:"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__res_company__period__monthly
+msgid "Monthly"
+msgstr "شهريا"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+msgid "Monthly Customer Statement:"
+msgstr "بيان العميل الشهري:"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_monthly_statement_line
+msgid "Monthly Statement Line"
+msgstr "خط كشف الحساب الشهري"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__monthly_statement_line_ids
+#: model:ir.model.fields,field_description:account_statement.field_res_users__monthly_statement_line_ids
+msgid "Monthly Statement Lines"
+msgstr "خطوط كشف الحساب الشهرية"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__name
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__name
+msgid "Name"
+msgstr "اسم"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__opt_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_users__opt_statement
+msgid "Opt Statement"
+msgstr "بيان اختيار"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Paid"
+msgstr "دفع"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+msgid "Payments/Credit"
+msgstr "المدفوعات / الائتمان"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__credit_amount
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__credit_amount
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Payments/Credits"
+msgstr "المدفوعات / الاعتمادات"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Payments/Debit"
+msgstr "المدفوعات / الخصم"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_company__period
+#: model:ir.model.fields,field_description:account_statement.field_res_config_settings__period
+msgid "Period"
+msgstr "فترة"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__monthly_statement_line__state__posted
+#: model:ir.model.fields.selection,name:account_statement.selection__weekly_statement_line__state__posted
+msgid "Posted"
+msgstr "تم النشر"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Print Customer Statement"
+msgstr "اطبع بيان العميل"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Print Supplier Statement"
+msgstr "اطبع بيان المورد"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Print overdue payments report independent of follow-up line"
+msgstr "طباعة تقرير المدفوعات المتأخرة بشكل مستقل عن خط المتابعة"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_monthly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_supplier_statement
+msgid "Ref"
+msgstr "المرجع"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Reference number"
+msgstr "رقم المرجع"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_company__send_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_config_settings__send_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Send Customer Statement"
+msgstr "إرسال بيان العميل"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Send Supplier Statement"
+msgstr "إرسال بيان المورد"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__start_date
+#: model:ir.model.fields,field_description:account_statement.field_res_users__start_date
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_config_settings__statement_days
+msgid "Statement Date"
+msgstr "تاريخ كشف الحساب"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_company__statement_days
+msgid "Statement Send Date"
+msgstr "تاريخ إرسال البيان"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__state
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__state
+msgid "Status"
+msgstr "حالة"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__payment_amount_due_amt_supplier
+#: model:ir.model.fields,field_description:account_statement.field_res_users__payment_amount_due_amt_supplier
+msgid "Supplier Balance Due"
+msgstr "رصيد المورد المستحق"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Supplier Invoice line"
+msgstr "سطر فاتورة المورد"
+
+#. module: account_statement
+#: model:ir.actions.report,name:account_statement.report_supplier_print
+msgid "Supplier Statement"
+msgstr "بيان المورد"
+
+#. module: account_statement
+#: model:mail.template,report_name:account_statement.email_template_supplier_statement
+msgid "Supplier Statement Report"
+msgstr "تقرير بيان المورد"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.view_partner_inherit_followup_form
+msgid "Supplier Statements"
+msgstr "بيانات المورد"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__total
+#: model:ir.model.fields,field_description:account_statement.field_res_users__total
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_overdue_statement
+msgid "Total"
+msgstr "مجموع"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__monthly_payment_amount_overdue_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__payment_amount_overdue_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__monthly_payment_amount_overdue_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__payment_amount_overdue_amt
+msgid "Total Overdue Amount"
+msgstr "إجمالي المبلغ المتأخر"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_monthly_statement_line__amount_total_signed
+#: model:ir.model.fields,field_description:account_statement.field_weekly_statement_line__amount_total_signed
+msgid "Total Signed"
+msgstr "مجموع الموقعين"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__payment_amount_overdue_amt_supplier
+#: model:ir.model.fields,field_description:account_statement.field_res_users__payment_amount_overdue_amt_supplier
+msgid "Total Supplier Overdue Amount"
+msgstr "إجمالي المبلغ المتأخر من المورد"
+
+#. module: account_statement
+#: model:ir.model.fields.selection,name:account_statement.selection__res_company__period__weekly
+msgid "Weekly"
+msgstr "أسبوعي"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__weekly_payment_amount_due_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__weekly_payment_amount_due_amt
+msgid "Weekly Balance Due"
+msgstr "الرصيد الأسبوعي المستحق"
+
+#. module: account_statement
+#: model_terms:ir.ui.view,arch_db:account_statement.report_customer_weekly_statement
+msgid "Weekly Customer Statement:"
+msgstr "بيان العميل الأسبوعي:"
+
+#. module: account_statement
+#: model:ir.model,name:account_statement.model_weekly_statement_line
+msgid "Weekly Statement Line"
+msgstr "بيان البيان الأسبوعي"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__weekly_statement_line_ids
+#: model:ir.model.fields,field_description:account_statement.field_res_users__weekly_statement_line_ids
+msgid "Weekly Statement Lines"
+msgstr "خطوط البيان الأسبوعية"
+
+#. module: account_statement
+#: model:ir.model.fields,field_description:account_statement.field_res_partner__weekly_payment_amount_overdue_amt
+#: model:ir.model.fields,field_description:account_statement.field_res_users__weekly_payment_amount_overdue_amt
+msgid "Weekly Total Overdue Amount"
+msgstr "إجمالي المبلغ المتأخر الأسبوعي"

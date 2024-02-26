@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+<!--Inheriting base.view_partner_form to add new fields in customer form-->
+        <record id="view_tenant_customer_form" model="ir.ui.view">
+            <field name="name">view.tenant.customer.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+<!--Adding fields Rental Customer, Passport, Driving licence, insurance, Is driver -->
+                 <xpath expr="//field[@name='website']" position="before">
+                    <field name="tenant" string="Rental Customer?" attrs= "{'invisible':[('on_rental_contract','=',0)]}" />
+                    <field name="national_id" string="National ID" attrs= "{'invisible':[('on_rental_contract','=',0)]}"/>
+                    <field name="is_driver" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)]}" />
+                    <field name="dl_number" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}" />
+                    <field name="date_of_issue_DL" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}" />
+                    <field name="date_of_expiry_DL" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}" />
+                    <field name="date_of_birth" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}" />
+                    <field name="country_of_issue_DL" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}" />
+                </xpath>
+<!--Adding fields to attach id card and driving licence and field for id-->
+                <xpath expr="//field[@name='vat']" position="after">
+                   <field name="passport_number" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)], 'required': [('is_company','=',False),('on_rental_contract','=',1)]}" />
+                    <field name="passport_issued_country" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)], 'required': [('is_company','=',False),('on_rental_contract','=',1)]}" />
+                    <field name="passport_expiry_date" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)], 'required': [('is_company','=',False),('on_rental_contract','=',1)]}" />
+                    <field name="passport_doc" filename="passport_doc_name" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)], 'required': [('is_company','=',False),('on_rental_contract','=',1)]}" />
+                    <field name="id_attachment" filename="id_attachment_name" attrs="{'invisible':['|',('is_company','=',True),('on_rental_contract','=',0)]}" />
+                    <field name="dl_attachment" filename="dl_attachment_name" attrs="{'invisible':['|',('is_company','=',True),('is_driver','=',False)], 'required': [('is_driver','=',True),('on_rental_contract','=',1)]}"/>
+                     <field name="insurance" required="1" attrs="{'invisible':['|',('is_company','=',False),('on_rental_contract','=',0)]}"/>
+                    <field name="on_rental_contract" invisible="1" />
+                </xpath>
+<!--required field setting for mobile-->
+                <field name="mobile" position="attributes">
+                    <attribute name="required">True</attribute>
+                </field>
+                <field name="email" position="attributes">
+                    <attribute name="required">True</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="action_customer_extend" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_customer': 1, 'search_default_is_driver': False, 'default_customer_rank': 1, 'default_on_rental_contract': 1}</field>
+            <field name="domain">[('parent_id', '=', False)]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new customer in your address book
+              </p><p>
+                Odoo helps you easily track all activities related to a customer.
+              </p>
+            </field>
+        </record>
+<!--Adding menu for Customer in Rental Management of fleet rental-->
+        <menuitem id="menu_customer_extend" parent="fleet_rental.menu_car_parent" name="Customer"
+                  action="action_customer_extend" sequence="5"/>
+    </data>
+</odoo>

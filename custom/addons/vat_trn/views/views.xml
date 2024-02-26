@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_users_form_view_details" model="ir.ui.view">
+            <field name="name">res.company.form.vat_configs.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="tax" string="TAX">
+                        <group>
+                            <field name="vat_enabled" invisible="1" />
+                            <field name="taxable_name_english" attrs="{'required': [('vat_enabled','!=', False)]}"/>
+                            <field name="company_name_arabic" attrs="{'required': [('vat_enabled','!=', False)]}"/>
+                            <field name="vat_tax" />
+                            <field name="tax_agency_name" />
+                            <field name="tan" />
+                            <field name="tax_agent_name" />
+                            <field name="taan" />
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_country_form_inherit" model="ir.ui.view">
+            <field name="name">base.view_country_form_inherit</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form" />
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                     <field name="vat_enabled" />
+                </field>
+            </field>
+        </record>
+        <record id="res_users_form_view" model="ir.ui.view">
+            <field name="name">res.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="attributes">
+                    <attribute name="string">VAT/TRN</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_move_form_for_vat" model="ir.ui.view">
+            <field name="name">account.move.form.view.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='journal_div']" position="after">
+                  <field name="vat" attrs="{'invisible': ['|', ('move_type','=','out_invoice'),('move_type','=','out_refund')]}"/>
+                  <field name="reverse_charges" attrs="{'invisible': ['|', ('move_type','=','out_invoice'),('move_type','=','out_refund')]}"/>
+    <!--               <field name="paid_customs_duty" />
+                  <field name="customs_duty" attrs="{'invisible':[('paid_customs_duty','==',False)]}" /> -->
+                </xpath>
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="vat" attrs="{'invisible': ['|', ('move_type','=','in_invoice'),('move_type','=','in_refund')]}"/>
+                    <field name="bank_account" domain="[('type','=','bank'),('company_id', '=', company_id)]"
+                           attrs="{'readonly': [('state','not in',('draft'))],
+                                   'invisible': ['|', ('move_type','=','in_invoice'),('move_type','=','in_refund')]}"/>
+                    <field name="permit_no" attrs="{'invisible': ['|', ('move_type','=','in_invoice'),('move_type','=','in_refund')]}"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="account_tax_form_view" model="ir.ui.view">
+            <field name="name">account.tax.form.view</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form" />
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="tax_code" />
+                </field>
+                <field name="country_code" position="after">
+                    <field name="tax_transfer_account" />
+                </field>
+            </field>
+        </record>
+<!--         <record id="account_bank_journal_form_view_inherited" model="ir.ui.view">-->
+<!--            <field name="name">account.bank.journal.form.view.inherit</field>-->
+<!--            <field name="model">account.journal</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_bank_journal_form" />-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="bank_id" position="before">-->
+<!--                    <field name="iban_number" />-->
+<!--                    <field name="branch_name" />-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+<!--        <record id="view_account_payment_invoice_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">account.payment.invoice.form.inherit</field>-->
+<!--            <field name="model">account.payment</field>-->
+<!--            <field name="inherit_id" ref="account.view_account_payment_invoice_form" />-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//group[1]/group[2]" position="after">-->
+<!--                    <group attrs="{'invisible': [('payment_difference', '=', 0.0)]}">-->
+<!--                        <label for="payment_actual"/>-->
+<!--                        <div>-->
+<!--                            <field name="payment_actual"/>-->
+<!--                        </div>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record id="account_vat_report_view" model="ir.ui.view">
+            <field name="name">VAT Return</field>
+            <field name="model">vat.returns</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="VAT Returns" version="7.0">
+                    <group colspan="4">
+                        <field name="company_id" />
+                    </group>
+                    <group col="4">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <separator string ="Report" colspan="4"/>
+                    <footer>
+                        <button name="check_report" string="Generate VAT Returns" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Close" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="account_csv_export_view_excise" model="ir.ui.view">
+            <field name="name">Excise FAF CSV Export</field>
+            <field name="model">csv.export_excise</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Excise FAF Report" version="7.0">
+                    <group colspan="4">
+                        <field name="company_id" />
+                    </group>
+                    <group col="4">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+<!--                    <separator string ="Report" colspan="4"/>-->
+<!--                    <group colspan="4">-->
+<!--                        <field name="data" filename="export_filename"/>-->
+<!--                    </group>-->
+                    <footer>
+                        <button name="action_manual_export_excise_entries" string="Generate FAF" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Close" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="account_csv_export_view" model="ir.ui.view">
+            <field name="name">FAF CSV Export</field>
+            <field name="model">csv.export</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="FAF Report" version="7.0">
+                    <group colspan="4">
+                        <field name="company_id" />
+                    </group>
+                    <group col="4">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+<!--                    <separator string ="Report" colspan="4"/>-->
+<!--                    <group colspan="4">-->
+<!--                        <field name="export_filename" invisible="1"/>-->
+<!--                        <field name="data" filename="export_filename"/>-->
+<!--                    </group>-->
+                    <footer>
+                        <button name="action_manual_export_journal_entries" string="Generate FAF" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Close" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+             </field>
+          </record>
+
+        <record id="action_account_vat_return" model="ir.actions.act_window">
+            <field name="name">VAT Returns</field>
+            <field name="res_model">vat.returns</field>
+            <field name="type">ir.actions.act_window</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account_vat_report_view"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+       </record>
+        <record id="action_account_csv_export" model="ir.actions.act_window">
+            <field name="name">FAF Report</field>
+            <field name="res_model">csv.export</field>
+            <field name="type">ir.actions.act_window</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account_csv_export_view"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+        <record id="action_account_csv_export_excise" model="ir.actions.act_window">
+            <field name="name">Excise FAF Report</field>
+            <field name="res_model">csv.export_excise</field>
+            <field name="type">ir.actions.act_window</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account_csv_export_view_excise"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

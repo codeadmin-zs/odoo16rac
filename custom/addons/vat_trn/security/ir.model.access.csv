@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+vat_returns_right_user,vat_returns_access_right,model_vat_returns,,1,1,1,0
+csv_export_right_user,csv_export_access_right,model_csv_export,,1,1,1,0
+csv_export_excise_right_user,csv_export_excise_access_right,model_csv_export_excise,,1,1,1,0

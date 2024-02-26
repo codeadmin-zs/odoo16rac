@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Service category editable tree view. -->
+        <record model='ir.ui.view' id='service_category_tree_view'>
+            <field name="name">service.category.tree</field>
+            <field name="model">service.category</field>
+            <field name="arch" type="xml">
+                <tree string="Service Category" editable="top">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Service category Action. -->
+        <record model='ir.actions.act_window' id='service_category_tree_act'>
+            <field name="name">Service Category</field>
+            <field name="res_model">service.category</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <!-- View and action for repiar type -->
+        <record model='ir.ui.view' id='fleet_work_order_repair_type_tree_view'>
+            <field name="name">fleet.work_order.repair.type.tree</field>
+            <field name="model">repair.type</field>
+            <field name="arch" type="xml">
+                <tree string="Repair Type" editable="top">
+                    <field name="name" required="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Repair Type Action. -->
+        <record model='ir.actions.act_window' id='fleet_work_order_repair_type_tree_act'>
+            <field name="name">Repair Type</field>
+            <field name="res_model">repair.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <!-- Pending repair type tree view.  -->
+<!--        <record model='ir.ui.view' id='pending_repair_type_tree_view'>-->
+<!--            <field name="name">pending.repair.type.tree_view</field>-->
+<!--            <field name="model">pending.repair.type</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree string="Pending Repair Type">-->
+<!--                    <field name="vehicle_rep_type_id" invisible="1"/>-->
+<!--                    <field name="name" required="1"/>-->
+<!--                    <field name="repair_type_id" />-->
+<!--                    <field name="categ_id" />-->
+<!--                    <field name="issue_date" />-->
+<!--                    <field name="state" />-->
+<!--                    <field name="user_id"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id='next_service_days_form' model='ir.ui.view'>-->
+<!--            <field name="name">next.service.days.form</field>-->
+<!--            <field name="model">next.service.days</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Next Service Days">-->
+<!--                    <group>-->
+<!--	                    <field name="name"/>-->
+<!--	                    <field name="vehicle_id" required="1"/>-->
+<!--	                    <field name="days" required="1"/>-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Tree view of next service days -->
+<!--        <record id="next_service_days_tree" model='ir.ui.view'>-->
+<!--            <field name="name">next.service.days.tree</field>-->
+<!--            <field name="model">next.service.days</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree string="Next Service Days" editable="top">-->
+<!--                    <field name="name"/>-->
+<!--                    <field name="vehicle_id" required="1"/>-->
+<!--                    <field name="days" required="1"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Search view of next service days -->
+<!--        <record id="next_service_days_search" model='ir.ui.view'>-->
+<!--            <field name="name">next.service.days.search</field>-->
+<!--            <field name="model">next.service.days</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search>-->
+<!--                    <filter name="groupby_vehicle_next_service_days"-->
+<!--                    string="Vehicle" domain="[]" context="{'group_by':'vehicle_id'}" />-->
+<!--                    <field name="vehicle_id" />-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Action for next service days -->
+<!--        <record id="next_service_days_act" model="ir.actions.act_window">-->
+<!--            <field name="name">Next Service Days</field>-->
+<!--            <field name="res_model">next.service.days</field>-->
+<!--&lt;!&ndash;            <field name="view_type">form</field>&ndash;&gt;-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+
+        <!-- Menuitem for next service days -->
+<!--        <menuitem action="next_service_days_act" id="next_service_days"-->
+<!--            parent="fleet.fleet_configuration" sequence="17"/>-->
+
+        <!-- Form view of next odometer increment -->
+<!--        <record model='ir.ui.view' id='next_increment_number_form_view'>-->
+<!--            <field name="name">next.increment.number.form</field>-->
+<!--            <field name="model">next.increment.number</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <group>-->
+<!--	                    <field name="name" />-->
+<!--	                    <field name="vehicle_id" required="1"/>-->
+<!--	                    <field name="number" required="1"/>-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Editable tree view of next odometer increment -->
+<!--        <record model='ir.ui.view' id='next_increment_number_tree_view'>-->
+<!--            <field name="name">next.increment.number.tree</field>-->
+<!--            <field name="model">next.increment.number</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree string="Odometer Increment" editable="top">-->
+<!--                    <field name="name" />-->
+<!--                    <field name="vehicle_id" required="1"/>-->
+<!--                    <field name="number" required="1"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Search view of next odometer increment -->
+<!--        <record model='ir.ui.view' id='next_increment_number_search_view'>-->
+<!--            <field name="name">next.increment.number.search</field>-->
+<!--            <field name="model">next.increment.number</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search>-->
+<!--                    <filter name="groupby_vehicle_next_increment" string="Vehicle"-->
+<!--                    domain="[]" context="{'group_by':'vehicle_id'}" />-->
+<!--                    <field name="vehicle_id" />-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!-- Action for Odometer increment -->
+<!--        <record model='ir.actions.act_window' id='next_increment_number_tree_act'>-->
+<!--            <field name="name">Odometer Increment</field>-->
+<!--            <field name="res_model">next.increment.number</field>-->
+<!--&lt;!&ndash;            <field name="view_type">form</field>&ndash;&gt;-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+
+        <!-- Menuitem for odometer increment -->
+<!--        <menuitem action="next_increment_number_tree_act"-->
+<!--            name="Odometer Increment" parent="fleet.fleet_configuration"-->
+<!--            id="odometer_increment_menu" sequence="4"-->
+<!--            groups="fleet.fleet_group_manager" />-->
+
+    </data>
+</odoo>

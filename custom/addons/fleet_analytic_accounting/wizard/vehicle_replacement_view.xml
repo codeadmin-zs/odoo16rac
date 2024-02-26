@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Closing Tenancy Wizard Form View  -->
+        <record model="ir.ui.view" id="view_vehicle_replacement_wizard">
+            <field name="name">rent.vehicle.replace.form</field>
+            <field name="model">rent.vehicle.replace</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                    	<field name="new_vehicle_id" required="1"/>
+	                    <field name="reason" />
+	                    <field name="current_vehicle_id" invisible="1"/>
+	                    <field name="date" invisible="1" />
+	                    <field name="date_start" invisible="1" />
+                    </group>
+                    <footer>
+		                <button name="replace_vehicle" type="object" string="Replace" class="oe_highlight"/>
+		                <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--  Action for Close Tenancy Wizard -->
+        <record model="ir.actions.act_window" id="action_vehicle_replacement_wizard">
+            <field name="name">Vehicle Replacement Wizard</field>
+            <field name="res_model">rent.vehicle.replace</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

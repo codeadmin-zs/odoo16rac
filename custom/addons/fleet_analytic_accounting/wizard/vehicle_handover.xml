@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Renew Tenancy Wizard Form View  -->
+        <record model="ir.ui.view" id="view_vehicle_handover_wizard">
+            <field name="name">vehicle.handover.form</field>
+            <field name="model">vehicle.handover</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Vehicle Details"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1"/>
+                        <field name="current_odometer"/>
+                        <field name="handover_date" />
+                    </group>
+                    <notebook>
+                        <page string="Defects" name="vehicle_defects">
+                            <separator string="Vehicle Defects" name="service_configurations"/>
+                            <div class="row">
+                                <div class="col-4">
+                                    <group string="Fuel Level">
+                                        <field name="fuel_level" />
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <group string="Dents">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Part</th>
+                                                    <th>Existing Dents</th>
+                                                    <th>New Dents</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox" readonly="0" /></td>
+                                                    <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" />
+                                                    </td>
+                                                    <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" />
+                                                    </td>
+                                                    <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <group string="Scratches">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Part</th>
+                                                    <th>Existing Scratches</th>
+                                                    <th>New Scratches</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" />
+                                                    </td>
+                                                    <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" />
+                                                    </td>
+                                                    <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox" readonly="0"/></td>
+                                                    <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>
+                                                    <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="confirm_handover" type="object" string="Confirm" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--  Action for Renew Tenancy Wizard -->
+        <record model="ir.actions.act_window" id="action_vehicle_handover_wizard">
+            <field name="name">Vehicle Handover Wizard</field>
+            <field name="res_model">vehicle.handover</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

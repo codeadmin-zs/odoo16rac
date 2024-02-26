@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_additional_product_charges" model="ir.actions.act_window">
+        <field name="name">Accessories</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'default_accessories_ok': True,'default_charges_ok': False, 'default_fleet_ok': False, 'default_type': 'service'}</field>
+        <field name="domain">[('accessories_ok','=', True)]</field>
+        <field name="view_id" ref="product.product_template_kanban_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Additional Charges
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_additional_charges_product" parent="fleet.fleet_configuration" name="Accessories"
+              action="action_additional_product_charges" sequence="6"/>
+
+    <record id="action_extra_charges" model="ir.actions.act_window">
+        <field name="name">Extra Charges</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'default_accessories_ok': False,'default_charges_ok': True, 'default_fleet_ok': False, 'default_type': 'service'}</field>
+        <field name="domain">[('charges_ok','=', True)]</field>
+        <field name="view_id" ref="product.product_template_kanban_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Extra Charges
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_extra_charges_" parent="fleet.fleet_configuration" name="Extra Charges"
+              action="action_extra_charges" sequence="7"/>
+</odoo>

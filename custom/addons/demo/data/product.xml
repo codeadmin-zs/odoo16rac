@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="color_attribute" model="product.attribute">
+            <field name="name">Color</field>
+            <field name="sequence">5</field>
+            <field name="display_type">radio</field>
+            <field name="create_variant">no_variant</field>
+        </record>
+        <record id="color_attribute_black" model="product.attribute.value">
+            <field name="name">Black</field>
+            <field name="sequence">1</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+        <record id="color_attribute_red" model="product.attribute.value">
+            <field name="name">Red</field>
+            <field name="sequence">2</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+        <record id="color_attribute_blue" model="product.attribute.value">
+            <field name="name">Blue</field>
+            <field name="sequence">3</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+        <record id="color_attribute_green" model="product.attribute.value">
+            <field name="name">Green</field>
+            <field name="sequence">4</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+        <record id="color_attribute_orange" model="product.attribute.value">
+            <field name="name">Orange</field>
+            <field name="sequence">5</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+        <record id="color_attribute_yellow" model="product.attribute.value">
+            <field name="name">Yellow</field>
+            <field name="sequence">6</field>
+            <field name="attribute_id" ref="color_attribute"/>
+        </record>
+    </data>
+</odoo>
