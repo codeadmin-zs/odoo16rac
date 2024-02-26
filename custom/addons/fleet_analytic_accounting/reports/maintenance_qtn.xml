@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="maintenance_qtn">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.team_id.lang)"/>
+                    <div class="page" >
+                        <div>
+                            <strong style="color:#007399;" t-if="o.team_id">Invoice address:</strong>
+                            <div t-field="o.team_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            <p t-if="o.team_id.vat"><t t-esc="o.team_id.country_id.vat_label or 'Tax ID'"/>:
+                                <span t-field="o.team_id.vat"/>
+                            </p>
+                        </div>
+                        <div>
+                            <h2>Maintenance Work Order #
+                                <span t-field="o.name"/>
+                            </h2>
+                        </div>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <th name="th_vehicle_details">
+                                    <strong>Vehicle Details:</strong>
+                                </th>
+                                <th style="color:black;" name="th_vehicle_id">
+                                    <strong t-field="o.vehicle_id"></strong>
+                                </th>
+                                <th name="th_etic">
+                                    <strong>Estimated Time In Completion:</strong>
+                                </th>
+                                <th style="color:black;" name="th_date_complete">
+                                    <strong t-field="o.date_complete"></strong>
+                                </th>
+                            </thead>
+                        </table>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th name="th_description">
+                                        <strong>Description</strong>
+                                    </th>
+                                    <th name="th_date_req" class="text-center">
+                                        <strong>Target Date.</strong>
+                                    </th>
+                                    <th name="th_quantity" class="text-center">
+                                        <strong>Qty</strong>
+                                    </th>
+                                    <th name="th_price_unit" class="text-center">
+                                        <strong>Unit Price</strong>
+                                    </th>
+                                    <th name="th_taxes" class="text-center">
+                                        <strong>Taxes</strong>
+                                    </th>
+                                    <th name="th_amount" class="text-center">
+                                        <strong>Amount</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="current_subtotal" t-value="0"/>
+                                <t t-foreach="o.repair_line_ids" t-as="line">
+                                    <t t-set="current_subtotal" t-value="current_subtotal + line.sub_total"/>
+                                    <tr>
+                                        <td class="text-left">
+                                            <span t-field="line.description"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.target_date"/>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.cost"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.tax_ids"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.sub_total"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div id="" class="row justify-content-end">
+                            <div class="col-4">
+                                <table class="table table-sm">
+                                    <tr class="border-black">
+                                        <td name="td_subtotal_label">
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="o.amount"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--Rental Contract Tree View -->
+        <record id="property_analytic_view_tree" model="ir.ui.view">
+            <field name="name">property.analytic.view.tree</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <tree string="Rental Vehicle Details">
+                    <field name="ten_date" readonly="1"/>
+                    <field name="name" string="Rental Name" invisible="1"/>
+                    <!--                    <field name="rental_number" string="Rental Number" />-->
+                    <field name="ref" string="Code" invisible="1"/>
+                    <field name="vehicle_id"/>
+                    <field name="tenant_id"/>
+                    <field name="date_start"/>
+                    <field name="date"/>
+                    <field name="rental_terms"/>
+                    <field name="rent"/>
+                    <field name="total_rent" sum="Total Rent"/>
+                    <field name="cancel_by_id"/>
+                    <field name="date_cancel"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Rental Contract Form View -->
+        <record id="property_analytic_view_form" model="ir.ui.view">
+            <field name="name">property.analytic.view.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <form string="Rental Vehicle Details">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,hand_over,open,return,close"
+                               statusbar_colors="{&quot;draft&quot;:&quot;red&quot;, &quot;open&quot;:&quot;blue&quot;, &quot;close&quot;:&quot;red&quot;}"
+                               select="1"/>
+                    </header>
+                    <div class="alert alert-info" role="alert" style="margin-bottom:0px;"
+                         attrs="{'invisible': [('has_outstanding_days','=',False)]}">
+                        This customer has exceeded the contract expiry date.You can create invoices for the additional
+                        usage.
+                    </div>
+                    <field name="lock_state" widget="statusbar"/>
+
+                    <field name="has_outstanding_days" invisible="1"/>
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                            <button name="button_start" string="Confirm Rent" type="object" icon="fa-play" colspan="2"
+                                    class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': ['|',('state','!=','draft'),('lock_state','=','locked')]}"/>
+                            <button name="button_hand_over_vehicle_details" string="Handover" type="object"
+                                    icon="fa-car" colspan="2" class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': [('state','not in',['hand_over'])]}"/>
+                            <button name="button_rent_schedules" string=" Schedule Invoices" type="object"
+                                    icon="fa-plus" colspan="2" class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': ['|', ('state','not in',['open','return','closed']),('scheduled_invoices_status','!=',False)]}"/>
+<!--                            <button name="button_receive" string="Pay Security" type="object" icon="fa-money"-->
+<!--                                    attrs="{'invisible':['|',('deposit_received','=',True),('lock_state','=','locked')]}"-->
+<!--                                    class="oe_inline oe_stat_button"/>-->
+                            <button name="button_return" string="Return Deposit" type="object" icon="fa-undo"
+                                    attrs="{'invisible':['|',('deposit_return','=',True),'|',('lock_state','=','locked'),('deposit_received','=',False)]}"
+                                    class="oe_inline oe_stat_button" context="{'return':1}"/>
+                            <button name="button_return_vehicle_details" string="Return" type="object" icon="fa-car"
+                                    colspan="2" class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': [('state','!=', 'open')]}"/>
+                            <button name="button_close_vehicle_details" string="Close" type="object"
+                                    attrs="{'invisible': ['|',('state','!=','return'),('lock_state','=','locked')]}"
+                                    icon="fa-times" colspan="2" class="oe_inline oe_stat_button"/>
+                            <button name="button_replacement_vehicle_details" string="Replace"
+                                    attrs="{'invisible': ['|',('state','not in',['open','hand_over']),('lock_state','=','locked')]}"
+                                    type="object" icon="fa-times" colspan="2" class="oe_inline oe_stat_button"/>
+                            <button name="button_lock" string="Lock Rental" type="object"
+                                    groups="sales_team.group_sale_manager" icon="fa-lock" colspan="2"
+                                    class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': [ ('lock_state','=','locked')]}"/>
+                            <button name="button_unlock" string="Unlock Rental" type="object"
+                                    groups="sales_team.group_sale_manager" icon="fa-unlock" colspan="2"
+                                    class="oe_inline oe_stat_button"
+                                    attrs="{'invisible': [ ('lock_state','=','open')]}"/>
+                            <field name="rent_entry_chck" invisible="1"/>
+                        </div>
+                        <div class="oe_title oe_left">
+                            <!--                            <label for="rental_number" string="Rental Number" invisible="1"/>-->
+                            <!--                            <h1>-->
+                            <!--                                <field name="rental_number"  readonly="1" placeholder="Rental Number"/>-->
+                            <!--                            </h1>-->
+                            <label for="name" string="Rental Name" invisible="1"/>
+                            <h2>
+                                <field name="name" readonly="1" placeholder="Rental Name"/>
+                            </h2>
+                            <!--                            <label string="Rental Vehicle #" class="o_form_label"/>-->
+                            <!--                            <h4>-->
+                            <!--                                <field name="ref" readonly="1" invisible="1"/>-->
+                            <!--                                <field name="vehicle_image" widget="image" invisible="1"/>-->
+                            <!--                            </h4>-->
+                        </div>
+                        <group colspan="2" attrs="{'readonly':[('state','=','close')]}">
+                            <group colspan="4" col="4">
+                                <separator string="Vehicle Information" colspan="4"/>
+                                <field name="vehicle_id_temp" required="1" readonly="1" placeholder="Vehicle Name"/>
+
+<!--                                <field name="vehicle_id" required="1" placeholder=" New Vehicle Name"-->
+<!--                                       default="env['fleet.vehicle'].search([('state_id.name','=','Available')], limit=1).name"-->
+<!--                                       domain="[('state_id.name','in',['Available'])]" readonly="1"/>-->
+<!--&lt;!&ndash;                                       attrs="{'readonly': ['|',('state','!=','draft'),('lock_state','=','locked')]}"&ndash;&gt;-->
+<!--                                <field name="vehicle_id" required="1"  placeholder="Vehicle Name"-->
+<!--                                       domain="[('state_id.name','in',['Replacement'])]" invisible="1"-->
+<!--                                       attrs="{'readonly': ['|',('state','!=','draft'),('lock_state','=','locked')]}"/>-->
+
+                                <!--                                <field name="tenant_id" string="Customer" options="{'no_quick_create': True}" context="{'default_tenant':True}" required="1" domain="[('customer','=',True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>-->
+
+                                <field name="manager_id" required="1" string="Sales Person"
+                                       attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>
+                                <field name="tenant_id" string="Customer" options="{'no_create': True}"
+                                       context="{'default_tenant':True}" required="1"
+                                       domain="[('customer_rank', '>', 0), ('parent_id', '=', False), ('tenant', '=', True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>
+<!--&lt;!&ndash;                                       readonly="1"-->
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="company_id" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}" options="{'no_open': True,'no_create': True}"/>
+
+                                <label for="current_odometer_temp"/>
+                                <div>
+                                    <field name="current_odometer_temp" readonly="1"/>
+<!--                           <field name="current_odometer" class="oe_inline" readonly="1" invisible="1"/>-->
+<!--                                    <field name="odometer_unit" class="oe_inline" readonly="1" required="1"/>-->
+                                </div>
+                                 <field name="currency_id"/>
+                                 <label for="closing_odometer_temp"
+                                       attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
+                                <div>
+                                  <field name="closing_odometer_temp" readonly="1"
+                                           attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
+<!--                                 <field name="odometer_unit" class="oe_inline" readonly="1" required="1"-->
+<!--                                           attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>-->
+                                 </div>
+                                <field name="rental_terms" readonly="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group colspan="4" col="4" attrs="{'readonly':[('state','=','close')]}">
+                                <separator string="Rental Vehicle Information" colspan="4"/>
+                                <field name="duration_unit" attrs="{'readonly': ['|',('state','!=','draft'),('rental_terms','=','long_term')]}"/>
+<!--                                attrs="{'readonly': ['|', ('state','!=','draft'), ('lock_state','=','locked'), ('from_sale_order','=','True'), ('state','!=','hand_over'), ('state','!=','open')]}"-->
+                                <field name="duration" attrs="{'readonly': ['|',('state','!=','draft'),('rental_terms','=','long_term')]}"/>
+<!--                                attrs="{'readonly': ['|','|',('state','!=','draft'), ('lock_state','=','locked'), ('from_sale_order','=','True')]}"-->
+                                <field name="invoice_policies" attrs="{'readonly': ['|','|',('state','!=','draft'), ('rental_terms','=','long_term'),('lock_state','=','locked'),]}"/>
+                                <field name="rent" attrs="{'readonly': ['|','|',('state','!=','draft'),('rental_terms','=','long_term'), ('lock_state','=','locked')]}"/>
+<!--                                attrs="{'readonly': ['|','|',('state','!=','draft'), ('lock_state','=','locked'), ('from_sale_order','=','True')]}"-->
+                                <field name="ten_date" required="1" readonly="1"/>
+                                <!--                                <field name="deposit" widget="monetary" string="Advance Payment"-->
+                                <!--                                       attrs="{'readonly':[('deposit_received','=',True)],'readonly': [ ('lock_state','=','locked')]}"/>-->
+                                <field name="deposit" widget="monetary" string="Advance Payment" readonly="1"/>
+                                <field name="amount_return" widget="monetary" readonly="1"/>
+                                <field name="deposit_received"/>
+                                <field name="deposit_return"/>
+                                <field name="deposit_receipt" readonly="1"
+                                       attrs="{'invisible':[('deposit_received', '=', False)]}"/>
+                                <field name="contact_id" attrs="{'readonly': [ ('lock_state','=','locked')]}"/>
+                            </group>
+                            <group colspan="4" col="4">
+                                <separator string="Contract Information" colspan="4"/>
+                                <!-- <field name="invoice_date" colspan="2" /> -->
+                                <field name="date_start" colspan="2" required="True"
+                                       attrs="{'readonly':['|',('state','!=','draft'),('lock_state','=','locked')]}"/>
+                                <field name="contract_attachment"/>
+                                <field name="cancel_by_id" readonly="1"/>
+                                <field name="date_cancel" readonly="1"/>
+                                <field name="vehicle_return_attachment"
+                                       attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
+                            </group>
+                        </group>
+                        <field name="product_tmpl_id" invisible="1"/>
+                        <field name="multi_prop" invisible="1"/>
+                        <field name="from_sale_order" invisible="1"/>
+                        <field name="vehicle_brand" invisible="1"/>
+                        <field name="is_property" invisible="1"/>
+                        <field name="invc_id" invisible="1"/>
+                        <field name="pricing_id" invisible="1"/>
+                        <field name="scheduled_invoices_status" invisible="1"/>
+                        <field name="main_cost" invisible="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="deposit_scheme_type" colspan="2" invisible="1"/>
+<!--                        <field name="acc_pay_dep_rec_id" invisible="1"/>-->
+<!--                        <field name="acc_pay_dep_ret_id" invisible="1"/>-->
+                        <field name="date" placeholder="End Date" colspan="2" readonly="True"
+                               attrs="{'readonly':[('state','!=','draft')]}" invisible="1"/>
+                        <field name="expected_return_date" invisible="1"/>
+                        <!--<field name="rent_type_id" required="True"/>-->
+                        <field name="total_rent" widget="monetary" invisible="1"/>
+                        <field name="additional_charges" invisible="1"/>
+                        <field name="cr_rent_btn" invisible="1"/>
+                        <notebook>
+                            <page string="Invoicing History" name="rent_schedule">
+                                <separator string="Invoice Schedule Details" colspan="4"/>
+                                <field name="rent_schedule_ids" nolabel="1" context="{'active_id': active_id}"
+                                       attrs="{'readonly': [('lock_state','=','locked')]}">
+                                    <tree string="Invoicing Schedule" editable="bottom" create="true" delete="true">
+                                        <field name="start_date"/>
+                                        <field name="move_id" invisible="1"/>
+                                        <field name="invc_id" widget="many2one_barcode"/>
+                                        <field name="amount" sum="Total Amount"/>
+                                        <field name="pen_amt"/>
+                                        <field name="duration" invisible="1"/>
+                                        <field name="cheque_detail" invisible="1"/>
+                                        <field name="paid" invisible="1"/>
+                                        <field name="move_check" invisible="1"/>
+                                        <field name="note"/>
+                                        <field name="inv" invisible="1"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <!--                                        <button name="create_invoice" icon="fa-pencil"-->
+                                        <!--                                                attrs="{'invisible':['|', ('inv','=',True), ('state','=','close')]}"-->
+                                        <!--                                                class="oe_highlight" string="Create Invoice" type="object"/>-->
+                                        <!--                                        <button name="open_invoice" icon="fa-arrow-circle-o-right fa-lg"-->
+                                        <!--                                                attrs="{'invisible':[('inv','=',False)]}"-->
+                                        <!--                                                class="oe_highlight" string="Open Invoice" type="object" context="{'openinvoice':1}"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Invoicing">
+                                <field name="account_move_line_ids" readonly="1">
+                                    <tree string="Journal Items" create="false">
+                                        <field name="date"/>
+                                        <field name="name"/>
+                                        <field name="ref" string="Reference" invisible="1"/>
+                                        <field name="description"/>
+                                        <field name="move_id" required="0" invisible="1"/>
+                                        <field name="journal_id" invisible="1"/>
+                                        <field name="quantity"/>
+                                        <field name="product_uom_id"/>
+                                        <!--                                        <field name="account_id" options="{&quot;no_open&quot;:True}" domain="[('company_id', '=', company_id)]"/>-->
+                                        <field name="price_unit" widget="monetary"/>
+                                        <field name="tax_ids" widget="many2many_tags"/>
+                                        <field name="price_subtotal"/>
+                                        <field name="currency_id" invisible="1" options="{'no_create': True}"/>
+                                        <!--                                        <button name="invoice_payment" id="invoice_payment" string="Payment" type="object"/>-->
+                                    </tree>
+                                </field>
+                                <!--                                <group class="oe_subtotal_footer oe_right">-->
+                                <!--                                    <field name="total_debit_amt" widget="monetary"/>-->
+                                <!--                                    <field name="total_credit_amt" widget="monetary"/>-->
+                                <!--                                    <field name="total_deb_cre_amt" widget="monetary" class="oe_subtotal_footer_separator"/>-->
+                                <!--                                </group>-->
+                            </page>
+                            <page string="Terms &amp; Conditions" name="contract_page">
+                                <separator string="Terms and Conditions" name="description"/>
+                                <field name="description" placeholder="Enter Terms and Conditions..."/>
+                            </page>
+                            <page string="Close Reason" name="contract_page">
+                                <separator string="Close Reason Note" colspan="4"/>
+                                <field name="duration_cover" readonly="0"
+                                       attrs="{'invisible':['|', ('state','=','draft'), ('state','=','open')]}"
+                                       nolabel="1" colspan="4"/>
+                            </page>
+                            <page name="accessories" string="Accessories">
+                                <separator colspan="4" string="Accessories"/>
+                                <field name="additional_rental_charges_ids"
+                                       attrs="{'readonly': [('lock_state','=','locked')]}">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="additional_charge_product_id"/>
+                                        <field name="description"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="unit_measure"/>
+<!--                                        <field name="lot_id"/>-->
+                                        <field name="unit_price"/>
+                                        <field name="taxes_id"/>
+                                        <field name="cost"/>
+                                        <field name="line_added_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="extra_charges" string="Extra Charges" invisible="1">
+                                <separator colspan="4" string="Extra Charges"/>
+                                <field name="extra_charges_ids" attrs="{'readonly': [('lock_state','=','locked')]}">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="additional_charge_product_id"/>
+                                        <field name="description"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="unit_measure"/>
+                                        <field name="unit_price"/>
+                                        <field name="cost"/>
+                                        <field name="line_added_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="additional_drivers" string="Driver">
+                                <separator colspan="4" string="Driver Details"/>
+                                <field name="additional_drivers_ids"
+                                       attrs="{'readonly': [('lock_state','=','locked')]}">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="additional_driver" domain="[('is_driver', '=',True)]"
+                                               context="{'default_on_rental_contract': 1}"
+                                               options='{"no_quick_create": True}'/>
+                                        <field name="driving_license_number"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="replaced_vehicle" string="Vehicle Log">
+                                <separator colspan="4" string="Vehicle Log"/>
+                                <field name="replace_vehicle_details"
+                                      readonly="1">
+                                    <tree editable="bottom" create="true" delete="true" >
+                                        <field name="re_vehicle"/>
+                                        <field name="start_date" widget="datetime"/>
+                                        <field name="end_date" widget="datetime"/>
+                                        <field name="current_odometer"/>
+                                        <field name="closing_odometer"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="customer_context_modifier" model="ir.ui.view">
+            <field name="name">customer.view.extend</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <!-- Add the context to the partner_id field using XPath -->
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+                        <attribute name="context">{'default_on_rental_contract': 1,'res_partner_search_mode':
+                            'customer', 'show_vat': True,'show_address': 1}
+                        </attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="invoice_policies_temp"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="vehicle_rent_kanban_view">
+            <field name="name">vehicle.rent.kanban.view</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <kanban class="o_event_kanban_view">
+                    <field name="color"/>
+                    <field name="name"/>
+                    <field name="vehicle_id"/>
+                    <field name="ten_date"/>
+                    <field name="date_start"/>
+                    <field name="date"/>
+                    <field name="tenant_id"/>
+                    <!--                    <field name="vehicle_image"/>-->
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!--                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click " style="margin-bottom: 8px;">-->
+                            <!--                                <div class="o_event_left">-->
+                            <!--                                    <div class="oe_event_date"><t t-esc="record.ten_date.raw_value.getDate()"/></div>-->
+                            <!--                                    <div class="oe_event_month_year">-->
+                            <!--                                        <t t-esc="moment(record.date_start.raw_value).format('MMM')"/>-->
+                            <!--                                        <t t-esc="record.ten_date.raw_value.getFullYear()"/>-->
+                            <!--                                    </div>-->
+                            <!--                                    <div class="oe_event_time"><t t-esc="moment(record.ten_date.raw_value).format('LT')"/>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="o_event_right">-->
+                            <!--&lt;!&ndash;                                    <div style="background: #7c7bad;width: 216px;border-color: darkblue;border-width: thin;color: white;margin-left: -16px;margin-right: -7px;padding: 3px;margin-top: -8px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;                                        <img t-att-src="kanban_image('account.analytic.account', 'vehicle_image', record.id.value)"&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;                                                          t-att-title="record.vehicle_image.value" width="30" height="30"&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;                                                          class="oe_kanban_avatar" style="border-radius:15px;margin-right:10px;margin-left:5px;"/>&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;                                        <b><field name="vehicle_id"/></b>&ndash;&gt;-->
+                            <!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+                            <!--                                    <ul style="margin-top: 4px;margin-left:-12px;">-->
+                            <!--                                        <li><b>Rent Name : <field name="name"/></b></li>-->
+                            <!--                                        <li><b>Tenant :  <field name="tenant_id"/></b></li>-->
+                            <!--                                        <li><b>Start Date : </b><field name="date_start"/></li>-->
+                            <!--                                        <li><b>End Date : </b><field name="date"/></li>-->
+                            <!--                                    </ul>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Rental Contract Search View -->
+        <record id="property_analytic_search_view" model="ir.ui.view">
+            <field name="name">property.analytic.search.view</field>
+            <field name="model">account.analytic.account</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <search string="Rental Contract">
+                    <filter string="Booked" name="draft" domain="[('state','=','draft')]"/>
+                    <filter string="Hand Over" name="hand_over" domain="[('state','=','hand_over')]"/>
+                    <filter string="In Progress" name="open" domain="[('state','=','open')]"/>
+                    <filter string="Return" name="return" domain="[('state','=','return')]"/>
+                    <filter string="Close" name="close" domain="[('state','=','close')]"/>
+                    <field name="name" string="Tenancy Name"/>
+                    <field name="ref" string="Code" invisible="1"/>
+                    <field name="tenant_id" string="Tenant"/>
+                    <field name="vehicle_id" string="Vehicle"/>
+                    <!--                    <field name="rent_type_id" string="Rent Type"/>-->
+                    <!--                    <field name="ten_date" string="Ten date"/>-->
+                    <!--                    <field name="state" string="State"/>-->
+                    <group expand="0" string="Group By">
+                        <filter string="Tenant" name="tenant" context="{'group_by':'tenant_id'}"/>
+                        <filter string="Vehicle" name="property" context="{'group_by':'vehicle_id'}"/>
+                        <!--                        <filter string="Rent Type" name="renttype" context="{'group_by':'rent_type_id'}" />-->
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+                        <filter string="Date" name="ten_date" context="{'group_by':'ten_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Rental Contract calendar View -->
+        <record id="view_analytic_calendar" model="ir.ui.view">
+            <field name="name">view.analytic.calendar</field>
+            <field name="model">account.analytic.account</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <calendar mode="month"
+                          date_start="date_start"
+                          date_stop="date"
+                          color="state">
+                    <!-- Fields used for the display text -->
+                    <!--<field name="name" /> -->
+                    <field name="vehicle_id"/>
+                    <field name="state"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!--Action For Rental Contract -->
+        <record model="ir.actions.act_window" id="action_vehicle_rent_analytic_view">
+            <field name="name">Rental Contract</field>
+            <field name="res_model">account.analytic.account</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form,graph,pivot</field>
+            <field name="context">{"search_default_state" : True,"create": 0}</field>
+            <field name="domain">[('is_property','=','True')]</field>
+            <field name="search_view_id" ref="property_analytic_search_view"/>
+        </record>
+
+        <!--Action For Rental Contract Form view -->
+        <record id="action_analytic_form_view" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="property_analytic_view_form"/>
+            <field name="act_window_id" ref="action_vehicle_rent_analytic_view"/>
+        </record>
+
+        <!--Action For Rental Contract Tree View -->
+        <record id="action_analytic_tree_view" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="property_analytic_view_tree"/>
+            <field name="act_window_id" ref="action_vehicle_rent_analytic_view"/>
+        </record>
+
+
+        <!--Action For Rental Contract Kanban View -->
+        <!--        <record id="action_analytic_kanban_view" model="ir.actions.act_window.view">-->
+        <!--            <field eval="1" name="sequence" />-->
+        <!--            <field name="view_mode">kanban</field>-->
+        <!--            <field name="view_id" ref="vehicle_rent_kanban_view" />-->
+        <!--            <field name="act_window_id" ref="action_vehicle_rent_analytic_view" />-->
+        <!--        </record>-->
+
+        <!--Action For Rental Contract calendar View -->
+        <record id="action_analytic_calendar_view" model="ir.actions.act_window.view">
+            <field eval="4" name="sequence"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_analytic_calendar"/>
+            <field name="act_window_id" ref="action_vehicle_rent_analytic_view"/>
+        </record>
+
+        <!--Action For Rental Contract graph View -->
+        <record id="action_analytic_graph_view" model="ir.actions.act_window.view">
+            <field eval="4" name="sequence"/>
+            <field name="view_mode">graph</field>
+            <field name="act_window_id" ref="action_vehicle_rent_analytic_view"/>
+        </record>
+
+        <!--Action For Rental Contract pivot View -->
+        <record id="action_analytic_pivot_view" model="ir.actions.act_window.view">
+            <field eval="4" name="sequence"/>
+            <field name="view_mode">pivot</field>
+            <field name="act_window_id" ref="action_vehicle_rent_analytic_view"/>
+        </record>
+        <record id='fleet.fleet_vehicle_log_contract_action' model='ir.actions.act_window'>
+            <field name="name">Lease IN Contract</field>
+            <field name="res_model">fleet.vehicle.log.contract</field>
+            <field name="view_mode">tree,kanban,form,graph,activity</field>
+            <field name="context">{'search_default_open': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new contract
+                </p>
+                <p>
+                    Manage all your contracts (leasing, insurances, etc.) with
+                    their related services, costs. Odoo will automatically warn
+                    you when some contracts have to be renewed.
+                </p>
+                <p>
+                    Each contract (e.g.: leasing) may include several services
+                    (reparation, insurances, periodic maintenance).
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="fleet_rental.menu_car_rental_contract" parent="fleet_rental.menu_car_parent"
+                  name="Rental Contract"
+                  action="action_vehicle_rent_analytic_view" sequence="1"/>
+        <menuitem action="fleet.fleet_vehicle_log_contract_action" parent="fleet.fleet_vehicles"
+                  id="fleet.fleet_vehicle_log_contract_menu"
+                  groups="make_invisible" sequence="2" name="Lease IN Contract"/>
+
+        <!--        <record model="ir.ui.view" id="view_account_analytic_account_list_extend_vehicle_id">-->
+        <!--            <field name="name">account.analytic.account.tree.inherit</field>-->
+        <!--            <field name="model">account.analytic.account</field>-->
+        <!--            <field name="type">tree</field>-->
+        <!--            <field name="inherit_id" ref="analytic.view_account_analytic_account_list"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="/tree/field[@name='name']" position="replace">-->
+        <!--                    <field name="vehicle_id" string="Name"/>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+
+        <record model="ir.ui.view" id="rental_product_trace">
+            <field name="name">rental.product.traceable</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[@name='traceability']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

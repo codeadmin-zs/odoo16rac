@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="fleet_vehicle_view_form_extend" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state_id']" position="replace">
+                <button name="button_submit_for_approval" string="Submit for Approval" type="object" class="btn-primary"
+                        attrs="{'invisible': [('ready_for_approval', '!=', True)]}"/>
+                <button name="button_approve_vehicle" string="Approve" type="object" class="btn-primary"
+                        attrs="{'invisible': [('submitted_registration', '!=', True)]}" groups="fleet_rent.fleet_manager"/>
+                <field name="state_id" widget="statusbar" clickable="True"/>
+            </xpath>
+            <!--     Lease In Contract hiding from Vehicle Form       -->
+<!--            <xpath expr="//sheet/div[@name='button_box']/button[3]" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//label[@for='license_plate']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//label[@for='license_plate']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='license_plate']" position="replace" >
+                <div class="oe_title">
+                    <group colspan="2" col="2">
+                        <label for="name_seq"/>
+                        <h5>
+                            <field name="name_seq" class="oe_inline"/>
+                        </h5>
+                        <label for="f_brand_id"/>
+                        <h5>
+                            <field name="f_brand_id" class="oe_inline"/>
+                        </h5>
+<!--                        <label for="model_no"/>-->
+<!--                        <h5>-->
+<!--                            <field name="model_no" class="oe_inline"/>-->
+<!--                        </h5>-->
+                        <label for="license_plate"/>
+                        <h5>
+                            <field name="license_plate" class="oe_inline" placeholder="e.g. PAE 326"/>
+                        </h5>
+                        <field name="current_user_admin" invisible="1" />
+                        <label for="name"/>
+                        <h5>
+                            <field name="name" class="oe_inline" attrs="{'readonly': [('current_user_admin','=',False)]}" />
+                        </h5>
+                    </group>
+                </div>
+            </xpath>
+<!--            <xpath expr="//group/group[1]" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//group[2]" position="replace">
+                <group colspan="2" col="2" string="General Properties">
+                    <group>
+                        <field name="driver_id" domain="[('is_driver', '=', True)]" invisible="1"/>
+                        <field name="submitted_registration" invisible="1"/>
+                        <field name="finished_registration" invisible="1"/>
+                        <field name="ready_for_approval" invisible="1"/>
+                        <field name="vehicle_prodcut_template_id" invisible="1"/>
+                        <field name="vehicle_cost_price" />
+                        <field name="vin_sn"/>
+                        <field name="vehicle_type_image" widget="image"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <label for="odometer"/>
+                        <div class="o_row">
+                            <field name="odometer" required="1"/>
+                            <field name="odometer_unit"/>
+                        </div>
+                        <field name="engine_no" attrs="{'required': [('state_id', '!=', 7)]}"/>
+                        <field name="released_date" />
+                        <field name="reg_id" />
+                        <field name="acquisition_date" invisible="1"/>
+                        <label for="warranty_period"/>
+                        <div class="o_row">
+                            <field name="warranty_period"/>
+                            <field name="warranty_period_km" placeholder='In KM'/>
+                        </div>
+                        <field name="service_interval" string="Service Due (In km)"/>
+                        <field name="income_acc_id" />
+                        <field name="expence_acc_id"/>
+                        <field name="state" invisible="1"/>
+                        <field name="active_contract" attrs="{'invisible': [('state','!=','rent')]}" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+<!--            <xpath expr="//group/group[3]" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//group/group[4]" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//group/group[5]" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [True]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//group/group[6]" position="replace">-->
+<!--                <notebook colspan="4">-->
+<!--                    <page string="Service Details">-->
+<!--                        <group colspan="2" col="6">-->
+<!--                            <group string="Last Service">-->
+<!--                                <field name="last_service_by_id" readonly="1"/>-->
+<!--                            </group>-->
+<!--                            <group string="Next Service Due">-->
+<!--&lt;!&ndash;                                <label for="due_odometer"/>&ndash;&gt;-->
+<!--                                <div>-->
+<!--                                    <field name="due_odometer"-->
+<!--                                        class="oe_inline" readonly="1"/>-->
+<!--                                    <field name="due_odometer_unit"-->
+<!--                                        class="oe_inline" readonly="1" />-->
+<!--                                </div>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--&lt;!&ndash;                        <separator string="Work Orders" colspan="4" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="work_order_ids" invisible="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="name" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="cost_subtype_id" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="date" string="Issue Date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="date_open" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="date_close" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="open_days" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                &lt;!&ndash; <field name="department_categ_id" /> &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="state" />&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--                        <separator string="Pending Repair Types" colspan="4" />-->
+<!--                        <field name="pending_repair_type_ids" >-->
+<!--                            <tree>-->
+<!--                                <field name="vehicle_rep_type_id" invisible="1"/>-->
+<!--                                <field name="name" />-->
+<!--                                <field name="repair_type_id" />-->
+<!--                                <field name="categ_id"/>-->
+<!--                                <field name="issue_date" />-->
+<!--                                <field name="state" />-->
+<!--                                <field name="user_id"/>-->
+<!--                            </tree>-->
+<!--                            <form>-->
+<!--                                <group colspan="4" col="4">-->
+<!--                                    <field name="vehicle_rep_type_id" invisible="1"-->
+<!--                                        options="{'no_open': True, 'create': false, 'create_edit': false}"/>-->
+<!--                                    <field name="name" />-->
+<!--                                    <field name="repair_type_id" readonly="1"-->
+<!--                                        options="{'no_open': True, 'create': false, 'create_edit': false}"/>-->
+<!--                                    <field name="categ_id" readonly="1" />-->
+<!--                                    <field name="issue_date" readonly="1" />-->
+<!--                                    <field name="state" readonly="1"/>-->
+<!--                                    <field name="user_id" readonly="1"-->
+<!--                                        options="{'no_open': True, 'create': false, 'create_edit': false}" />-->
+<!--                                </group>-->
+<!--                            </form>-->
+<!--                        </field>-->
+<!--                    </page>-->
+            <xpath expr="//notebook/page" position="before">
+                    <page string="Insurance Terms" name="insurance">
+                        <group>
+                            <group>
+                                <field name="insurance_company_id" domain="[('insurance','=',True)]" options="{'no_quick_create': True}" context="{'default_is_company':True,'default_insurance':True,'default_on_rental_contract':1,'default_tenant':False}"/>
+                                <field name="insurance_type_id" />
+<!--                                <field name="start_date_insurance" />-->
+<!--                                <field name="end_date_insurance" />-->
+                            </group>
+<!--                            <group col="2">-->
+<!--                                <field name="policy_number" />-->
+<!--                                <field name="payment" />-->
+<!--&lt;!&ndash;                                <field name="payment_deduction" />&ndash;&gt;-->
+<!--                            </group>-->
+
+                            <group col="2">
+                                <field name="policy_number" attrs="{'readonly':[('state','in',('write-off'))]}"/>
+                                <field name="payment_in_percent"/>
+                                <field name="payment" attrs="{'readonly':[('state','in',('write-off'))]}"/>
+
+                            </group>
+                        </group>
+                    </page>
+            </xpath>
+
+            <xpath expr="//group/group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+<!--&lt;!&ndash;                    <page string="Attachments">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <field name="fleet_attach_ids" nolabel="1" attrs="{'readonly':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="fleet_attach_ids" nolabel="1" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <page string="History">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <group colspan="4" col="6">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_color_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_engine_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_vin_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_tire_size_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_tire_srno_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_tire_issue_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_battery_size_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_battery_srno_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="is_battery_issue_set" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </group>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <group colspan="5" col="5">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}"  icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button"  />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        </group>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        <group colspan="5" col="5">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        </group>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Engine History" colspan="4"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="engine_history_ids" nolabel="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_engine_no"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_engine_no"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Vin History" colspan="4" invisible="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="vin_history_ids" nolabel="1" invisible="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_vin_no"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_vin_no"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Color History" colspan="4"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="color_history_ids" nolabel="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_color_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="current_color_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Tire History" colspan="4"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="tire_history_ids" nolabel="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_tire_size"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_tire_size"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_tire_sn"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_tire_sn"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_tire_issue_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_tire_issue_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Battery History" colspan="4"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="battery_history_ids" nolabel="1">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_battery_size"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_battery_size"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_battery_sn"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_battery_sn"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="previous_battery_issue_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="new_battery_issue_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <page string="Service Configurations" name="service_configurations">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Service Configurations" name="service_configurations"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="odo_meter_increment_ids" context="{'default_vehicle_id': active_id}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <tree editable="bottom" create="true" delete="true" string="Odometer" class="service_tree">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <field name="name" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                    <field name="vehicle_id"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <field name="number" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <field name="next_service_date_ids" context="{'default_vehicle_id': active_id}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <tree editable="bottom" create="true" delete="true" string="Service Configurations">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <field name="name" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                    <field name="vehicle_id" domain="[('id','=', active_id)]"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <field name="days" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                </tree>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </field>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <page string="Notes">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Note" colspan="4" />&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field nolabel="1" name="description"&ndash;&gt;-->
+<!--&lt;!&ndash;                             placeholder="Put an internal note..." />&ndash;&gt;-->
+<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <page string="Defects" name="vehicle_defects">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <separator string="Vehicle Defects" name="service_configurations"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="col-4">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <group string="Fuel Level">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="fuel_level" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="fuel_type" invisible="1" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </group>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="col-9">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <group string="Dents">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <table class="table table-bordered">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Part</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Co st</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Existing Dents</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>New Dents</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_dent_cost" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_dent_count" readonly="1" attrs="{'invisible': [('hood_dent', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_dent_count_new" attrs="{'invisible': [('hood_dent', '=', False)], 'required': [('hood_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_dent_cost" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_dent_count" readonly="1" attrs="{'invisible': [('front_r_door_dent', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_dent_count_new" attrs="{'invisible': [('front_r_door_dent', '=', False)], 'required': [('front_r_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_dent_cost" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_dent_count" readonly="1" attrs="{'invisible': [('front_l_door_dent', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_dent_count_new" attrs="{'invisible': [('front_l_door_dent', '=', False)], 'required': [('front_l_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_dent_cost" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_dent_count" readonly="1" attrs="{'invisible': [('back_r_door_dent', '=', False)]}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    </td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_dent_count_new" attrs="{'invisible': [('back_r_door_dent', '=', False)], 'required': [('back_r_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_dent_cost" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_dent_count" readonly="1" attrs="{'invisible': [('back_l_door_dent', '=', False)]}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    </td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_dent_count_new" attrs="{'invisible': [('back_l_door_dent', '=', False)], 'required': [('back_l_door_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_dent" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_dent_cost" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_dent_count" readonly="1" attrs="{'invisible': [('boot_dent', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_dent_count_new" attrs="{'invisible': [('boot_dent', '=', False)], 'required': [('boot_dent', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </table>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </group>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="col-9">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <group string="Scratches">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <table class="table table-bordered">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Part</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Cost</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>Existing Scratches</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <th>New Scratches</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Hood: </strong> <field name="hood_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_scratch_cost" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_scratch_count" readonly="1" attrs="{'invisible': [('hood_scratch', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="hood_scratch_count_new" attrs="{'invisible': [('hood_scratch', '=', False)], 'required': [('hood_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Front Door(R): </strong> <field name="front_r_door_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_scratch_cost" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_scratch_count" readonly="1" attrs="{'invisible': [('front_r_door_scratch', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_r_door_scratch_count_new" attrs="{'invisible': [('front_r_door_scratch', '=', False)], 'required': [('front_r_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Front Door(L): </strong> <field name="front_l_door_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_scratch_cost" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_scratch_count" readonly="1" attrs="{'invisible': [('front_l_door_scratch', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="front_l_door_scratch_count_new" attrs="{'invisible': [('front_l_door_scratch', '=', False)], 'required': [('front_l_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Back Door(R): </strong> <field name="back_r_door_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_scratch_cost" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_scratch_count" readonly="1" attrs="{'invisible': [('back_r_door_scratch', '=', False)]}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    </td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_r_door_scratch_count_new" attrs="{'invisible': [('back_r_door_scratch', '=', False)], 'required': [('back_r_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Back Door(L): </strong> <field name="back_l_door_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_scratch_cost" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_scratch_count" readonly="1" attrs="{'invisible': [('back_l_door_scratch', '=', False)]}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    </td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="back_l_door_scratch_count_new" attrs="{'invisible': [('back_l_door_scratch', '=', False)], 'required': [('back_l_door_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <td class="text-left"><strong> Boot: </strong> <field name="boot_scratch" widget="checkbox"/></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_scratch_cost" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_scratch_count" readonly="1" attrs="{'invisible': [('boot_scratch', '=', False)]}" /></td>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                                    <td class="text-left"><field name="boot_scratch_count_new" attrs="{'invisible': [('boot_scratch', '=', False)], 'required': [('boot_scratch', '=', True)]}" /></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </table>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </group>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
+<!--&lt;!&ndash;                </notebook>&ndash;&gt;-->
+<!--&lt;!&ndash;            </xpath>&ndash;&gt;-->
+        </field>
+    </record>
+
+    <record id="view_vehicle_calendar" model="ir.ui.view">
+        <field name="name">view.vehicle.calendar</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <calendar mode="month"
+                      date_start="acquisition_date"
+                      date_stop ="write_date"
+                      color="state_id">
+              <field name="state_id" />
+            </calendar>
+        </field>
+    </record>
+
+<!--    <record id="fleet_vehicle_view_form_extend_fleet_id" model="ir.ui.view">-->
+<!--        <field name="name">fleet.vehicle.form</field>-->
+<!--        <field name="model">fleet.vehicle</field>-->
+<!--        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>-->
+<!--        <field name="groups_id" eval="[(6,0,[ref('base.user_admin')])]"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="name" position="attributes">-->
+<!--                <attribute name="readonly">True</attribute>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id='fleet.fleet_vehicle_action' model='ir.actions.act_window'>
+        <field name="name">Vehicles</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name ="view_mode">kanban,tree,form,graph,calendar</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Ready to manage your fleet more efficiently
+            </p><p>
+                Let's create your first vehicle.
+            </p>
+        </field>
+    </record>
+    <menuitem action="fleet.fleet_vehicle_action" parent="fleet_rental.menu_car_parent" id="fleet.fleet_vehicle_menu" groups="fleet.fleet_group_user" sequence="1"/>
+</odoo>
+
+
+
+
+
+

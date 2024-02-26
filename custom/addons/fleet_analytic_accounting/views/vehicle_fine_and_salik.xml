@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fines_and_tolls_search" model="ir.ui.view">
+            <field name="name">vehicle.rental.fines.search</field>
+            <field name="model">vehicle.rental.fines</field>
+            <field name="arch" type="xml">
+                <search string="Vehicle">
+                    <field name="vehicle_id"  string="Account Type"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_fines_and_tolls_tree" model="ir.ui.view">
+            <field name="name">vehicle.rental.fines.tree</field>
+            <field name="model">vehicle.rental.fines</field>
+            <field name="arch" type="xml">
+                <tree string="Account Type">
+                    <field name="vehicle_id"/>
+                    <field name="analytic_account_id" />
+                    <field name="location"/>
+                    <field name="time_date"/>
+                    <field name="description"/>
+                    <field name="fine_or_toll"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_fines_and_tolls_form" model="ir.ui.view">
+            <field name="name">vehicle.rental.fines.form</field>
+            <field name="model">vehicle.rental.fines</field>
+            <field name="arch" type="xml">
+                <form string="Account Type">
+                    <group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="fine_or_toll"/>
+                        </group>
+                        <group>
+                            <field name="time_date"/>
+                            <field name="location"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="analytic_account_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_fines_and_tolls" model="ir.actions.act_window">
+            <field name="name">Vehicle Fines and Tolls</field>
+            <field name="res_model">vehicle.rental.fines</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fines_and_tolls_search"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Define a new account type
+              </p><p>
+                An account type is used to determine how an account is used in
+                each journal. The deferral method of an account type determines
+                the process for the annual closing. Reports such as the Balance
+                Sheet and the Profit and Loss report use the category
+                (profit/loss or balance sheet).
+              </p>
+            </field>
+        </record>
+
+    <menuitem id="menu_fine_and_tolls"
+                      name="Fines and Tolls"
+                      sequence="100"
+                      action="action_fines_and_tolls"
+                      groups="fleet.fleet_group_manager"
+                      parent="fleet.fleet_configuration"/>
+</odoo>

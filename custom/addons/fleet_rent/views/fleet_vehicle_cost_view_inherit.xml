@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="fleet_vehicle_log_services_view_form_inherit" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.inherit</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='user_id']" position="after">-->
+                <field name="vehicle_id" domain="['|', ('vehicle_id.state_id','=',5) ('vehicle_id.state_id','=',6)]"/>
+<!--            </xpath>-->
+        </field>
+    </record>
+
+
+    </odoo>

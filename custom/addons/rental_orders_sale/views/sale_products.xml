@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Created new Form View for wizard-->
+    <record id="sr_form_view_select_multi_product_wizard" model="ir.ui.view">
+        <field name="name">sr.form.view.select.multi.product.wizard</field>
+        <field name="model">sr.multi.product</field>
+        <field name="arch" type="xml">
+            <form string="Select Multiple product">
+                <group>
+                    <field name="product_id" invisible="1" widget="many2many_tags" />
+                    <field name="vehicle_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+                </group>
+                <footer>
+                    <button class="btn-primary" name="add_rental_contract" type="object" string="Apply"/>
+                    Or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Created new action for wizard-->
+    <record id="action_select_multi_product_wizard" model="ir.actions.act_window">
+        <field name="name">Select Vehicles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sr.multi.product</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Inherit Sale Form View to Modify it -->
+    <record id="sr_view_order_form_inherit_add_multi_product_selection_button" model="ir.ui.view">
+        <field name="name">sr_view.order.form.inherit.add.multi.product.selection.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="replace">
+	            <header>
+                    <field name="is_rental_order" invisible="1"/>
+                    <field name="rental_rank" invisible="1" />
+                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" class="btn-primary" attrs="{'invisible': ['|',('invoice_status', '!=', 'to invoice'), ('is_rental_order', '=', True)]}"/>
+                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" context="{'default_advance_payment_method': 'percentage'}" attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}"/>
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="draft" class="btn-primary"/>
+<!--                    <button name="print_quotation" string="Print" type="object" states="draft" class="btn-primary"/>-->
+                    <button name="action_confirm" states="sent" string="Confirm Order" class="btn-primary o_sale_confirm" type="object" />
+                    <button name="action_confirm" states="draft" string="Confirm Order" class="o_sale_confirm" type="object" />
+<!--                    <button name="print_quotation" string="Print" type="object" states="sent,sale"/>-->
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="sent,sale"/>
+                    <button name="action_cancel" states="draft,sent,sale" type="object" string="Cancel"/>
+                    <button name="return_action_to_generate_rental" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}" string="Add Product"/>
+                    <field name="rental_count_flag" invisible="1"/>
+                    <button name="button_create_rental_contract" type="object" class="btn-primary"
+                            attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'sale'), ('is_rental_order', '=', False), ('rental_count_flag', '=', True), ('rental_term', '!=', 'long_term')]}" string="Create Rental Contract"/>
+                    <button name="action_draft" states="cancel" type="object" string="Set to Quotation"/>
+                    <button name="action_done" type="object" string="Lock" states="sale" invisible="1"
+                        help="If the sale is locked, you can not modify it anymore. However, you will still be able to invoice or deliver."/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('customer_rank', '>', 0), ('parent_id', '=', False), ('is_driver', '=', False)]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="rental_term"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="replace">
+                <field name="partner_id" widget="res_partner_many2one"
+                       context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True,'default_on_rental_contract':1}"
+                       options='{"no_quick_create": True}'/>
+            </xpath>
+             <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                <attribute name="required">True</attribute>
+            </xpath>
+<!--            <xpath expr="//group[@name='sale_header']" position="after">-->
+<!--                <group name="rental_details" attrs="{'invisible': [('rental_rank', '=', 0)]}">-->
+<!--                    <group name="rental_details_dates">-->
+<!--                        <field name="start_date" />-->
+<!--                        <field name="end_date" />-->
+<!--                    </group>-->
+<!--                    <group name="rental_duration_details">-->
+<!--                        <field name="duration_unit" />-->
+<!--                        <field name="duration" />-->
+<!--                        <field name="rental_term" />-->
+<!--                    </group>-->
+<!--                </group>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//button[@name='preview_sale_order']" position="before">-->
+<!--                <button icon="fa-adn" class="oe_stat_button" name="return_action_for_open"-->
+<!--                        context="{'xml_id':'action_vehicle_rent_analytic_view'}" type="object"-->
+<!--                        help="show the rent detail for this vehicle" attrs="{'invisible': [('is_rental_order', '=', False)]}">-->
+<!--                    <field name="rent_count" widget="statinfo" string="Rent"/>-->
+<!--                </button>-->
+<!--      		</xpath>-->
+            <xpath expr="//notebook/page//field[@name='order_line']//tree" position="attributes">
+                <attribute name="decoration-success">lot_state=='lot_added'</attribute>
+                <attribute name="decoration-danger">lot_state=='lot_not_added'</attribute>
+            </xpath>
+<!--            <xpath expr="//notebook/page//field[@name='order_line']//tree//control/create[@name='add_product_control']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [('rental_rank', '=', 0)]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//notebook/page//field[@name='order_line']//tree//control/create[@name='add_section_control']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [('rental_rank', '=', 0)]}</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//notebook/page//field[@name='order_line']//tree//control/create[@name='add_note_control']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [('rental_rank', '=', 0)]}</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='product_id']" position="replace">
+                <field name="product_id"
+                    domain="[('product_tmpl_id.sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id),
+                    ('product_tmpl_id.fleet_ok', '=', True), ('product_tmpl_id.charges_ok', '=', False)]"
+                    context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+                    attrs="{
+                        'readonly': [('product_updatable', '=', False)],
+                        'required': [('display_type', '=', False)],
+                    }"
+                    force_save="1"
+                    widget="many2one_barcode"
+                   />
+            </xpath>
+            <xpath expr="//notebook/page//field[@name='order_line']//form//group//group[2]" position="replace">
+	            <group>
+	                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+	                <label for="customer_lead"/>
+	                <div>
+	                    <field name="customer_lead" class="oe_inline"/> days
+	                </div>
+	                <!-- <label for="analytic_tag_ids" groups="analytic.group_analytic_accounting"/> -->
+	                <div>
+	                    <!-- <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_accounting"/> -->
+	                    <label for="return_action_to_generate_rental"/>
+	                    <div>
+                            <button class="btn btn-link fa fa-gear" name="return_action_to_generate_rental" type="object" string="Rental" />
+	                    </div>
+	                </div>
+	                <div>
+	                    <label for="duration" />
+	                    <div>
+	                        <field name="duration"/>
+	                    </div>
+	                </div>
+	            </group>
+            </xpath>
+            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='product_uom']" position="replace">
+                <field name="product_uom" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}" context="{'company_id': parent.company_id}" options="{&quot;no_open&quot;: True}"/>
+<!--                <field name="product_uom" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}" context="{'company_id': parent.company_id}" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>-->
+                <!-- <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/> -->
+                <field name="rental_wizard_id" invisible="1"/>
+                <button class="btn btn-link fa fa-gear" name="return_action_to_generate_rental" type="object"
+                        attrs="{'invisible':[('state','not in',['draft','sent'])]}" string="Rental">
+                </button>
+                <field name="duration" attrs="{'invisible': [('rental_wizard_id', '=', False)]}"/>
+                <field name="duration_unit" attrs="{'invisible': [('rental_wizard_id', '=', False)]}"/>
+                <field name="lot_state" invisible="True"/>
+            </xpath>
+            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='price_unit']" position="replace">
+                <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)],
+                                                 'invisible': [('rental_wizard_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='price_subtotal']" position="replace">
+                <field name="price_subtotal" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)],
+                                                 'invisible': [('rental_wizard_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//page[@name='optional_products']/field[@name='sale_order_option_ids']/tree/field[@name='product_id']" position="replace">
+                <field name="product_id" domain="[('product_tmpl_id.sale_ok', '=', True), ('product_tmpl_id.accessories_ok', '=', True)]"/>
+            </xpath>
+            <xpath expr="//tree/control" position="replace"></xpath>
+            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='price_subtotal']" position="after">
+                <button name="delete_order_line" type="object" icon="fa-trash-o" attrs="{'invisible': [('state', 'not in', ('draft', 'sent'))]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

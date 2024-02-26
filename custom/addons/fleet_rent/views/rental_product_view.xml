@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pre_registration_location_form" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.pre.registration</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <filter name="pre_registration"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_rental_product_form" model="ir.ui.view">
+        <field name="name">view.rental.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']/span[2]" position="after">
+                <div>
+                    <field name="rent_ok"/>
+                    <label for="rent_ok"/>
+                </div>
+                <div>
+                    <field name="fleet_ok"/>
+                    <label for="fleet_ok"/>
+                </div>
+                <div>
+                    <field name="service_ok"/>
+                    <label for="service_ok"/>
+                </div>
+                <div>
+                    <field name="accessories_ok"/>
+                    <label for="accessories_ok"/>
+                </div>
+                <div>
+                    <field name="charges_ok"/>
+                    <label for="charges_ok"/>
+                </div>
+            </xpath>
+<!--            <xpath expr="//label[@for='can_be_expensed']" position="attributes">-->
+<!--                <attribute name="invisible">True</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//field[@name='can_be_expensed']" position="attributes">-->
+<!--                <attribute name="invisible">True</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//notebook/page[@name='inventory']" position="after">
+                <page string="Rental" attrs="{'invisible': [('rent_ok','!=',True)]}">
+                    <group colspan="1">
+                        <group string="Rental Pricing" name="pricing">
+                            <field name="rental_pricing_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="product_template_id" string="Product Name" edit="false"/>
+                                    <field name="duration" invisible="1"/>
+                                    <field name="unit"/>
+                                    <field name="price" edit="True"/>
+                                    <field name="tax_ids" edit="True" widget="many2many_tags"/>
+                                    <field name="pricelist_id" groups="product.group_product_pricelist"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Extra Charges" name="extra">
+<!--                            <field name="extra_daily" widget="monetary"  attrs="{'required': [('fleet_ok','!=',False)]}"/>-->
+<!--                            <field name="extra_mileage" widget="monetary"  attrs="{'required': [('fleet_ok','!=',False)]}"/>-->
+                            <field name="allowd_daily_mileage"  attrs="{'required': [('fleet_ok','!=',False)]}"/>
+                            <field name="allowd_monthly_mileage"  attrs="{'required': [('fleet_ok','!=',False)]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="reference_product" attrs="{'invisible': [('accessories_ok','=',False), ('charges_ok','=',False)]}"/>
+<!--                            <field name="model_id_temp" invisible="1"/>-->
+<!--                            <field name="brand_id_temp" invisible="1"/>-->
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='attribute_id']" position="attributes">
+                <attribute name="options">{"no_create": True, "no_create_edit": True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='value_ids']" position="attributes">
+                <attribute name="options">{"no_create": True, "no_create_edit": True}</attribute>
+<!--                <attribute name="domain">['&amp;', ('vehicle_model_id.status', '=', 'not_used'), ('attribute_id.name', '=', 'Vehicle Model')]</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='property_account_income_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='property_account_expense_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='asset_category_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_product_extend" model="ir.actions.act_window">
+        <field name="name">Rental Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context" eval="{'search_default_consumable': 1,
+                                    'default_asset_category_id': ref('fleet_rent.fleet_vehicle_asset_type1'),
+                                    'default_property_account_expense_id': ref('fleet_rent.zt_rac_cri_5005'),
+                                    'default_property_account_income_id': ref('fleet_rent.zt_rac_cri_4005')}" />
+        <field name="domain">[('fleet_ok','=', True)]</field>
+<!--        <field name="context"-->
+<!--               eval="{'default_account_report_id':ref('base_accounting_kit.account_financial_report_cash_flow0')}"/>-->
+        <field name="view_id" ref="product.product_template_kanban_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Create a new sellable product
+            </p>
+        </field>
+    </record>
+<!--Adding menu for Customer in Rental Management of fleet rental-->
+    <menuitem id="menu_product_extend" parent="fleet.fleet_configuration" name="Rental Products"
+              action="action_product_extend" sequence="5"/>
+</odoo>

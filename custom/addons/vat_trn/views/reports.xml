@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vat_return_report">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="row mt32">
+                        <div>
+                            <h2>Taxable Person Details</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <strong>Company:</strong>
+                            <p t-esc="res_company.name"/>
+                        </div>
+                        <div class="col-3">
+                            <t t-if="res_company.currency_id.name == 'AED'">
+                                <strong>TRN:</strong>
+                            </t>
+                            <t t-if="res_company.currency_id.name != 'AED'">
+                                <strong>VAT ID:</strong>
+                            </t>
+                            <p t-esc="res_company.vat_tax"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Taxable Person Name (English):</strong>
+                            <p t-esc="res_company.taxable_name_english"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Taxable Person Name (Arabic) :</strong>
+                            <p t-esc="res_company.company_name_arabic"/>
+                        </div>
+                    </div>
+                    <div class="row mt32">
+                        <div class="col-3">
+                            <strong>Taxable Person Address :</strong>
+                            <p>
+                                <t t-esc="res_company.street"/>,
+                                <t t-esc="res_company.street2"/>,
+                                <t t-esc="res_company.city"/>,
+                                <t t-esc="res_company.state_id.name"/>,
+                                <span t-esc="res_company.country_id.name" />
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            <strong>Tax Agency Name:</strong>
+                            <p t-esc="res_company.tax_agency_name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>TAN :</strong>
+                            <p t-esc="res_company.tan"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Tax Agent Name :</strong>
+                            <p t-esc="res_company.tax_agent_name"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>TAAN :</strong>
+                            <p t-esc="res_company.taan"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h2>VAT Return Period</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <strong>VAT Return Period :</strong>
+                            <p t-esc="return_period"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Tax Year :</strong>
+                            <p t-esc="tax_year"/>
+                        </div>
+                        <div class="col-3">
+                            <strong>VAT Return Period Reference Number :</strong>
+                            <p t-esc="return_period_ref"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h2>VAT on Sales and all other Outputs</h2>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Amount(AED)</th>
+                                    <th>VAT Amount(AED)</th>
+                                    <th>Adjustment(AED)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="invoice_tbody">
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1a</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Abu Dhabi</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="abudhabi_amount" t-value="value.get('abudhabi_amount','0.00')"/>
+                                        <t t-set="abudhabi_amount_refund" t-value="value.get('abudhabi_amount_refund','0.00')"/>
+                                        <span t-esc="float(abudhabi_amount)-float(abudhabi_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="abudhabi_vat_amount" t-value="value.get('abudhabi_vat_amount','0.00')"/>
+                                        <t t-set="abudhabi_vat_amount_refund" t-value="value.get('abudhabi_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(abudhabi_vat_amount)-float(abudhabi_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('abudhabi_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1b</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Dubai</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="dubai_amount" t-value="value.get('dubai_amount','0.00')"/>
+                                        <t t-set="dubai_amount_refund" t-value="value.get('dubai_amount_refund','0.00')"/>
+                                        <span t-esc="float(dubai_amount)-float(dubai_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="dubai_vat_amount" t-value="value.get('dubai_vat_amount','0.00')"/>
+                                        <t t-set="dubai_vat_amount_refund" t-value="value.get('dubai_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(dubai_vat_amount)-float(dubai_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('dubai_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1c</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Sharjah</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="sharjah_amount" t-value="value.get('sharjah_amount','0.00')"/>
+                                        <t t-set="sharjah_amount_refund" t-value="value.get('sharjah_amount_refund','0.00')"/>
+                                        <span t-esc="float(sharjah_amount)-float(sharjah_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="sharjah_vat_amount" t-value="value.get('sharjah_vat_amount','0.00')"/>
+                                        <t t-set="sharjah_vat_amount_refund" t-value="value.get('sharjah_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(sharjah_vat_amount)-float(sharjah_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('sharjah_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1d</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Ajman</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="ajman_amount" t-value="value.get('ajman_amount','0.00')"/>
+                                        <t t-set="ajman_amount_refund" t-value="value.get('ajman_amount_refund','0.00')"/>
+                                        <span t-esc="float(ajman_amount)-float(ajman_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="ajman_vat_amount" t-value="value.get('ajman_vat_amount','0.00')"/>
+                                        <t t-set="ajman_vat_amount_refund" t-value="value.get('ajman_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(ajman_vat_amount)-float(ajman_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('ajman_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1e</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Umm Al Quwain</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="uaq_amount" t-value="value.get('uaq_amount','0.00')"/>
+                                        <t t-set="uaq_amount_refund" t-value="value.get('uaq_amount_refund','0.00')"/>
+                                        <span t-esc="float(uaq_amount)-float(uaq_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="uaq_vat_amount" t-value="value.get('uaq_vat_amount','0.00')"/>
+                                        <t t-set="uaq_vat_amount_refund" t-value="value.get('uaq_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(uaq_vat_amount)-float(uaq_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('uaq_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1f</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Ras Al Khaimah</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="rak_amount" t-value="value.get('rak_amount','0.00')"/>
+                                        <t t-set="rak_amount_refund" t-value="value.get('rak_amount_refund','0.00')"/>
+                                        <span t-esc="float(rak_amount)-float(rak_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="rak_vat_amount" t-value="value.get('rak_vat_amount','0.00')"/>
+                                        <t t-set="rak_vat_amount_refund" t-value="value.get('rak_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(rak_vat_amount)-float(rak_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('rak_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>1g</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated supplies in Fujairah</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="fujairah_amount" t-value="value.get('fujairah_amount','0.00')"/>
+                                        <t t-set="fujairah_amount_refund" t-value="value.get('fujairah_amount_refund','0.00')"/>
+                                        <span t-esc="float(fujairah_amount)-float(fujairah_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-set="fujairah_vat_amount" t-value="value.get('fujairah_fujairah_vat_amountamount','0.00')"/>
+                                        <t t-set="fujairah_vat_amount_refund" t-value="value.get('fujairah_vat_amount_refund','0.00')"/>
+                                        <span t-esc="float(fujairah_vat_amount)-float(fujairah_vat_amount_refund)" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="tax_credits.get('fujairah_vat_amount_credit','0.00')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>2</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>2 Tax Refunds provided to Tourists under the Tax Refunds for Tourists Scheme</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>N/A</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="reverse_val.get('invoice_reverse_charge_value','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>N/A</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>3</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Supplies subject to the reverse charge provisions</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="reverse_val.get('vendor_reverse_charge_amount','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="reverse_val.get('vendor_reverse_charge_value','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>4</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Zero rated supplies</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="value.get('zrsupplyaed','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>5</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Supplies of goods and services to registered customers in other GCC implementing states</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="value.get('gcc_supply','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>6</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Exempt supplies </span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="value.get('exempt_supply','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>7</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Import VAT accounted through UAE customs</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="customs_val.get('paid_customs_duty_amount','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="customs_val.get('paid_customs_duty_value','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>8</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Amendments or corrections to Output figures</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>9</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Totals</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="total_supplies_amount" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="total_supplies_vat_amount" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="total_vat_credit" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <h2>VAT on Expenses and all other Inputs</h2>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Amount(AED)</th>
+                                    <th>VAT Amount(AED)</th>
+                                    <th>Adjustment(AED)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="invoice_tbody">
+                                <tr>
+                                    <td class="text-left">
+                                        <span>10</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Standard rated expenses</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="expense_val.get('purchase_amount','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="expense_val.get('purchase_vat_amount','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>11</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Supplies subject to the reverse charge provisions</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="reverse_val.get('vendor_reverse_charge_amount','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="reverse_val.get('vendor_reverse_charge_value','0.00')" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>12</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Amendments or corrections to Input figures</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span>NA</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>13</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Totals</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="total_expense_amount" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="total_expense_vat_amount" />
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="purchase_vat_credit_amount" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <h2>Net VAT due</h2>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <tbody class="invoice_tbody">
+                                <tr>
+                                    <td class="text-left">
+                                        <span>14</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Total value of due tax for the period</span>
+                                    </td>
+                                     <t t-set="a1" t-value="total_supplies_vat_amount"/>
+                                     <t t-set="a2" t-value="total_vat_credit"/>
+                                     <t t-set="a5" t-value="a1-a2"/>
+                                    <td class="text-right">
+                                        <span t-esc="a5" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>15</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Total value of recoverable tax for the period</span>
+                                    </td>
+                                    <t t-set="a3" t-value="total_expense_vat_amount"/>
+                                    <t t-set="a4" t-value="purchase_vat_credit_amount"/>
+                                    <t t-set="a6" t-value="a3-a4"/>
+                                    <td class="text-right">
+                                        <span t-esc="a6" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>16</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>Net VAT due(or reclaimed) for the period</span>
+                                    </td>
+                                    <t t-set="a7" t-value="a5-a6"/>
+                                    <td class="text-right">
+                                        <span t-esc="a7" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>17</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>If a VAT refund is due, do you wish to request that the refund is paid to you?</span>
+                                    </td>
+                                    <t t-set="a7" t-value="a5-a6"/>
+                                    <td class="text-right">
+                                        <span>Y/N</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><h2>Goods transferred to GCC implementing states</h2></th>
+                                    <th>Amount(AED)</th>
+                                    <th>VAT Amount(AED)</th>
+                                    <th>Adjustment(AED)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="invoice_tbody">
+                                <tr>
+                                    <td class="text-left">
+                                        <span>Imported goods transferred to the Kingdom of Bahrain</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>Imported goods transferred to the State of Kuwait</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>Imported goods transferred to the Sultanate of Oman</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>Imported goods transferred to the State of Qatar</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">
+                                        <span>Imported goods transferred to the Kingdom of Saudi Arabia</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                    <td class="text-left">
+                                        <span>0.00</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

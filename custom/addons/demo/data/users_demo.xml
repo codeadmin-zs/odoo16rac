@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="partner_fleet_assistant" model="res.partner">
+            <field name="name">Fleet Assistant</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','OR')]"/>
+            <field name="zip"></field>
+            <field name="country_id" ref="base.us"/>
+            <field name="tz"></field>
+            <field name="email"></field>
+            <field name="phone"></field>
+        </record>
+
+        <record id="partner_fleet_manager" model="res.partner">
+            <field name="name">Fleet Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','OR')]"/>
+            <field name="zip"></field>
+            <field name="country_id" ref="base.us"/>
+            <field name="tz"></field>
+            <field name="email"></field>
+            <field name="phone"></field>
+        </record>
+
+        <record id="partner_fleet_salesman" model="res.partner">
+            <field name="name">Fleet Salesman</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','OR')]"/>
+            <field name="zip"></field>
+            <field name="country_id" ref="base.us"/>
+            <field name="tz"></field>
+            <field name="email"></field>
+            <field name="phone"></field>
+        </record>
+
+        <record id="partner_fleet_sales_manager" model="res.partner">
+            <field name="name">Fleet Sales Manager</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','OR')]"/>
+            <field name="zip"></field>
+            <field name="country_id" ref="base.us"/>
+            <field name="tz"></field>
+            <field name="email"></field>
+            <field name="phone"></field>
+        </record>
+
+        <record id="partner_fleet_accountant" model="res.partner">
+            <field name="name">Fleet Accountant</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','OR')]"/>
+            <field name="zip"></field>
+            <field name="country_id" ref="base.us"/>
+            <field name="tz"></field>
+            <field name="email"></field>
+            <field name="phone"></field>
+        </record>
+
+        <record id="user_fleet_assistant" model="res.users">
+            <field name="partner_id" ref="partner_fleet_assistant"/>
+            <field name="login">fleet_assistant</field>
+            <field name="password">123</field>
+            <field name="signature" type="xml"><span>-- <br/>Fleet Assistant</span></field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('fleet_rent.fleet_assistant')])]"/>
+        </record>
+
+        <record id="user_fleet_manger" model="res.users">
+            <field name="partner_id" ref="partner_fleet_manager"/>
+            <field name="login">fleet_manager</field>
+            <field name="password">123</field>
+            <field name="signature" type="xml"><span>-- <br/>Fleet Manager</span></field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('fleet_rent.fleet_manager')])]"/>
+        </record>
+
+        <record id="user_fleet_salesman" model="res.users">
+            <field name="partner_id" ref="partner_fleet_salesman"/>
+            <field name="login">fleet_salesman</field>
+            <field name="password">123</field>
+            <field name="signature" type="xml"><span>-- <br/>Fleet Salesman</span></field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('fleet_rent.fleet_salesman')])]"/>
+        </record>
+
+        <record id="user_fleet_sales_manager" model="res.users">
+            <field name="partner_id" ref="partner_fleet_sales_manager"/>
+            <field name="login">sales_manager</field>
+            <field name="password">123</field>
+            <field name="signature" type="xml"><span>-- <br/>Fleet Sales Manager</span></field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(6,0,[ref('fleet_rent.fleet_sales_manager')])]"/>
+        </record>
+
+        <record id="user_fleet_accountant" model="res.users">
+            <field name="partner_id" ref="partner_fleet_accountant"/>
+            <field name="login">fleet_accountant</field>
+            <field name="password">123</field>
+            <field name="signature" type="xml"><span>-- <br/>Fleet Accountant</span></field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="groups_id" eval="[(4, ref('fleet_rent.fleet_accountant'))]"/>
+        </record>
+    </data>
+</odoo>

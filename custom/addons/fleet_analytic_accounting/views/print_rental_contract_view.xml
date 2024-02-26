@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="external_layout_standard_contract">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="docs.company_id.sudo()"/>
+                company
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <div class="row" height="50px">
+                <div class="col-6 companycontract" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["name","address","mobile","phone","email"], "no_marker": true}'
+                    />
+                </div>
+                <div class="col-6" name="company_name">
+<!--                        <div class="col-7" style="margin-top:22px;font-size: 20px; font-weight: bold;font-family: Arial Narrow;" t-field="company.name" name="moto"/>-->
+                    <div class="col-12">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" width="200" height="100" alt="Logo" align="right"/>
+                    </div>
+                </div>
+            </div>
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+    <template id="print_rental_contract_document">
+        <t t-call="fleet_analytic_accounting.external_layout_standard_contract">
+            <t t-set="o" t-value="docs.with_context(lang=lang)"/>
+            <br/>
+            <div class="row contractdiv" height="0px">
+                <div class="col-6 card mainheading" name="Vehicle_rental_agreement">
+                    <div >VEHICLE RENTAL AGREEMENT</div>
+                </div>
+                <div class="col-6" style="text-align:right;"><span class="mainheading">
+                    Agreement No: </span><span t-esc="docs.name" class="agreementno"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table border="1" class="table table-bordered" name="clients name">
+                        <tbody>
+                            <tr border="1">
+                                <td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">Company's/Renter's Name: </span>
+                                    <t t-if="docs.tenant_id.company_type == 'company'"><span t-esc="docs.tenant_id.name" class="valuescontract"/></t>
+                                </td>
+                            </tr>
+                            <tr border="1">
+                                <td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">User's Name: </span>
+                                    <t t-if="docs.tenant_id.company_type == 'person'"><span t-esc="docs.tenant_id.name"   class="valuescontract"/></t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-6 ">
+                    <div>
+                        <table  border="1" class="table table-bordered" name="Rental Client Detail">
+                            <tbody>
+<!--                                <tr border="1" >-->
+<!--                                    <td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">Company's/Renter's Name: </span>-->
+<!--                                        <t t-if="docs.tenant_id.company_type == 'company'"><span t-esc="docs.tenant_id.name" class="valuescontract"/></t>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+                                <tr border="1">
+                                    <td  style="padding:1px;padding-left:5px;">
+                                        <div class="row" >
+                                            <div class="col-12"><span class="labelscontract">
+                                                Driving License No:</span><span t-esc="docs.tenant_id.dl_number"  class="valuescontract"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6"><span class="labelscontract">
+                                                Issued At:</span><span t-esc="docs.tenant_id.date_of_issue_DL"  class="valuescontract" />
+                                            </div>
+                                            <div class="col-6"><span class="labelscontract">
+                                                Issued On:</span><span t-esc="docs.tenant_id.passport_issued_country.name"  class="valuescontract"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Nationality:      </span><span t-esc="docs.tenant_id.passport_issued_country.name"  class="valuescontract"/></td></tr>
+                                <tr border="1">
+                                    <td style="padding:1px;padding-left:5px;">
+                                        <div class="row">
+                                            <div class="col-12"><span class="labelscontract">
+                                                Passport/I.D. Card No.:</span><span t-esc="docs.tenant_id.passport_number"  class="valuescontract"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6"><span class="labelscontract">
+                                                Issued At:</span><span t-esc="docs.tenant_id.passport_issued_country.name"  class="valuescontract"/>
+                                            </div>
+                                            <div class="col-6"><span class="labelscontract">
+                                                Valid Up to:</span><span t-esc="docs.tenant_id.passport_expiry_date"  class="valuescontract"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Date of birth: </span><span t-esc="docs.tenant_id.date_of_birth"  class="valuescontract"/></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Permanent Address:</span>
+                                    <span t-esc="docs.tenant_id.street"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.street2"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.city"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.state_id.name"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.zip"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.country_id.name"  class="valuescontract"/>
+                                </td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Booking Made By: </span><span t-esc="docs.manager_id.name"  class="valuescontract"/></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Address: </span>
+                                    <span t-esc="docs.tenant_id.street"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.street2"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.city"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.state_id.name"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.zip"  class="valuescontract"/>
+                                    <span t-esc="docs.tenant_id.country_id.name"  class="valuescontract"/>
+                                </td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Tel.Residence: </span><span t-esc="docs.tenant_id.mobile"  class="valuescontract"/></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="normalheading">ADDITIONAL DRIVER: </span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Name: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Nationality: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Date of Birth: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1">
+                                    <td style="padding:1px;padding-left:5px;">
+                                        <div class="row">
+                                            <div class="col-12"><span class="labelscontract">
+                                                Driving License No:</span><span class="valuescontract"></span>
+    <!--                                            <span t-esc="docs.tenant_id.dl_number" />-->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6"><span class="labelscontract">
+                                                Issued At:</span><span class="valuescontract"></span>
+    <!--                                            <span t-esc="docs.tenant_id.date_of_issue_DL" />-->
+                                            </div>
+                                            <div class="col-6"><span class="labelscontract">
+                                                Issued On:</span><span class="valuescontract"></span>
+    <!--                                            <span t-esc="docs.tenant_id.passport_issued_country.name" />-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">PP/ID/L Card No: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Telephone: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Address: </span><span class="valuescontract"></span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <img class="card-img-top" src="/fleet_analytic_accounting/static/src/img/rental_contract1.png" width="1500" height="280"/>
+                    <br/>
+                    <br/>
+                    <div>
+                        <table border="1" class="table table-bordered" name="Remarks">
+                            <tbody>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Remarks: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Agreement Opened By: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Agreement Closed By: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Additional Information: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Delivery By: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Time Delivered: </span><span class="valuescontract"></span></td></tr>
+                                <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Branch Incharge/Manager: </span><span class="valuescontract"></span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-6 ">
+                    <table  border="1" class="table table-bordered" name="Rental Client Detail">
+                        <tbody>
+<!--                            <tr border="1">-->
+<!--                                <td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">User's Name: </span>-->
+<!--                                    <t t-if="docs.tenant_id.company_type == 'person'"><span t-esc="docs.tenant_id.name"   class="valuescontract"/></t>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Checked Out Loc:       </span></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Agreed Return Date &amp; Time:</span><span t-esc="docs.date"   class="valuescontract"/></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Checked In Loc:</span><span class="valuescontract"></span></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Agreed Return Loc:</span><span class="valuescontract"></span></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="normalheading">VEHICLE DETAILS</span></td></tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;">
+                                    <div class="row">
+                                    <div class="col-6"><span class="labelscontract">
+                                        Make:     </span><span t-esc="docs.vehicle_id.f_brand_id.name"   class="valuescontract"/>
+                                    </div>
+                                    <div class="col-6"><span class="labelscontract">
+                                        Reg.No:     </span><span t-esc="docs.vehicle_id.license_plate"   class="valuescontract"/>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;">
+                                    <div class="row">
+                                    <div class="col-6"><span class="labelscontract">
+                                        Model:     </span><span t-esc="docs.vehicle_id.model_id.name"   class="valuescontract"/>
+                                    </div>
+                                    <div class="col-6"><span class="labelscontract">
+                                        Date Out:     </span><span t-esc="docs.date_start"   class="valuescontract"/>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;">
+                                    <div class="row">
+                                    <div class="col-6"><span class="labelscontract">
+                                        Rate:     </span><span t-esc="docs.rent"   class="valuescontract"/>
+                                    </div>
+                                    <div class="col-6"><span class="labelscontract">
+                                        Date In:     </span><span t-if="docs.state == 'return'" t-esc="docs.date"   class="valuescontract"/>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;">
+                                    <div class="row">
+                                    <div class="col-6"><span class="labelscontract">
+                                        Kms Out:     </span><span t-esc="docs.current_odometer"   class="valuescontract"/>
+                                    </div>
+                                    <div class="col-6"><span class="labelscontract">
+                                        Kms In:     </span><span t-if="docs.state == 'return'" t-esc="docs.closing_odometer"   class="valuescontract"/>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Excess KMs:</span><span class="valuescontract"></span></td></tr>
+                        </tbody>
+                    </table>
+                <div/>
+                <div>
+                    <table border="1" class="table table-bordered" name="Fuel details">
+                        <tbody>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Fuel Out</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">E</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">1/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">2/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">3/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">4/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">5/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">6/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">7/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">F</span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Fuel In</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">E</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">1/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">2/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">3/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">4/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">5/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">6/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">7/8</span></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="valuescontract">F</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table border="1" class="table table-bordered" name="Fuel details">
+                        <tbody>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Type of hire: </span>
+                                <span class="valuescontract">
+                                    <t t-if="docs.rental_terms == 'short_term'" >Short Term</t>
+                                    <t t-if="docs.rental_terms == 'long_term'">Long Term</t>
+                                    <t t-if="docs.rental_terms == 'spot'">Spot Rental</t>
+                                    <t t-if="docs.rental_terms == 'online'">Online Booking</t>
+                                </span>
+                            </td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Date: </span><span class="valuescontract"></span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table border="1" class="table table-bordered" name="Fuel details">
+                        <tbody>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"></td>
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="normalheading">Amount R.O</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>-->
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Rental Charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Excess KM charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Delivery/collection Charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Chauffeur Charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Fuel Charges</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">CDW Charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">PAI charge</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Vehicle Amount/Accident charges</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Other charges</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="normalheading">TOTAL</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Deposit</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Refunds</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Total Amount Due</span></td>
+<!--                                <td style="padding:1px;padding-left:5px;" border="1"></td>-->
+                                <td style="padding:1px;padding-left:5px;"><span class="valuescontract"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table border="1" class="table table-bordered" name="Remarks">
+                        <tbody>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Payment By: </span><span class="valuescontract"></span></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><span class="labelscontract">Cash Memo No.: </span><span class="valuescontract"></span></td></tr>
+                            <tr border="1">
+                                <td style="padding:1px;padding-left:5px;">
+                                    <div class="row">
+                                        <div class="col-6"><span class="labelscontract">Cr.Card No.:</span><span class="valuescontract"></span></div>
+                                        <div class="col-6"><span class="labelscontract">Valid Through:</span><span class="valuescontract"></span></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr border="1"><td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">Expiry Date: </span><span class="valuescontract"></span></td></tr>
+                            <tr border="1"><td border="1" style="padding:1px;padding-left:5px;"><span class="labelscontract">Documents Deposited PP/ID/L.P.O: </span><span class="valuescontract"></span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table border="1" class="table table-bordered" name="Remarks">
+                        <tbody>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><p class="valuescontract">I agree to bear all the responsibilities in case the vehicle is not returned on the agreed date</p></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;" border="1"><p class="valuescontract">I/We have read and agree to the terms and conditions on
+                                both the side of this agreement and lso agree to return the vehicle on due date or
+                                inform the lesson for extension period and pay the dues. All information given herein are true and correct. </p></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Renter's Signature:      </span></td></tr>
+                            <tr border="1"><td style="padding:1px;padding-left:5px;"><span class="labelscontract">Additional Driver's Signature:      </span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+<!--            <div class="fill">-->
+<!--                -->
+<!--            </div>-->
+
+        </t>
+        <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
+                         adding d-inline class fixes the problem-->
+                    <li t-if="docs.company_id.phone" class="list-inline-item d-inline"><span class="o_force_ltr" t-field="docs.company_id.phone"/></li>
+                    <li t-if="docs.company_id.email" class="list-inline-item d-inline"><span t-field="docs.company_id.email"/></li>
+                    <li t-if="docs.company_id.website" class="list-inline-item d-inline"><span t-field="docs.company_id.website"/></li>
+                    <li t-if="docs.company_id.vat" class="list-inline-item d-inline"><t t-esc="docs.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="docs.company_id.vat"/></li>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="docs.company_id.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+            <t t-raw="0"/>
+    </template>
+
+    <template id="report_rental_contract">
+        <t t-call="web.html_container">
+            <t t-set="lang" t-value="docs.partner_id.lang or docs.company_id.partner_id.lang"/>
+            <t t-call="fleet_analytic_accounting.print_rental_contract_document" t-lang="lang"/>
+        </t>
+    </template>
+</odoo>

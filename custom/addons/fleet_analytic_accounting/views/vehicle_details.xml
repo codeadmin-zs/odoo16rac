@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_vehicle_Inherit" model="ir.ui.view">
+        <field name="name">vehicle.add.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="required">0</attribute>
+                <attribute name="attrs">{'invisible':[('accessories_ok', '=', False), ('service_ok', '=', False)]}</attribute>
+<!--                <attribute name="invisible">1</attribute>-->
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="before">
+                <page name="vehicle_details" string="Vehicle Details" groups="product.group_product_variant"
+                      attrs="{'invisible':[('fleet_ok','=',False)]}">
+                    <form string="vehicle">
+                        <sheet>
+                            <div class="oe_title">
+                                <label for="model_name" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="model_name" placeholder="e.g. Model S" attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                </h1>
+                                <label for="brand_id_temp" class="oe_edit_only"/>
+                                <h2>
+                                    <field name="brand_id_temp" placeholder="e.g. Tesla " attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                </h2>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="vehicle_type" attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                    <field name="category_vehicle_fuel_id" string="Fuel Type" attrs="{'required':[('fleet_ok', '=', True)]}" />
+                                    <field name="fuel_tank_capacity" string="Fuel Tank Capacity in L" attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                    <field name="category_vehicle_class_id" attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                    <field name="category_vehicle_transmission_id" string="Transmission" attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                    <field name="seats"/>
+                                    <field name="doors"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="sale_order_delivery_button_hide" model="ir.ui.view">
+            <field name="name">sale.order.delivery.button</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_delivery']" position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+     </record>
+
+         <record id="fleet_vehicle_model_id_hide" model="ir.ui.view">
+            <field name="name">fleet.vehicle.model.id</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='model_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='vin_sn']" position="attributes">
+                     <attribute name="attrs">{'readonly': [('state_id', '!=' ,7)]}</attribute>-->
+                </xpath>
+
+                <xpath expr="//field[@name='vehicle_type_str']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state_id', '!=' ,7)]}</attribute>
+                </xpath>
+
+                      <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+<!--                    <attribute name="attrs">{'readonly': [('state_id', '!=' ,7)]}</attribute>-->
+                </xpath>
+                 <xpath expr="//field[@name='f_brand_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+<!--                    <attribute name="attrs">{'readonly': [('state_id', '!=' ,7)]}</attribute>-->
+                </xpath>
+                <xpath expr="//field[@name='license_plate']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state_id', '!=' ,7),('state_id', '!=', 3)],'required':[('state_id','=',7),('state_id', '!=', 3)]}</attribute>
+                </xpath>
+            </field>
+     </record>
+
+     <record id="fleet_maintenance_form_modifications" model="ir.ui.view">
+            <field name="name">fleet.vehicle.maintenace.modification</field>
+            <field name="model">fleet.vehicle.log.services</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fmp_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='f_brand_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='vechical_type_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='service_type_id']" position="attributes">
+                    <attribute name="required">0</attribute>
+                     <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='amount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+     </record>
+
+</odoo>

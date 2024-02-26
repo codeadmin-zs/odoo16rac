@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_vehicle_model_form" model="ir.ui.view">
+        <field name="name">vehicle.category.form</field>
+        <field name="model">vehicle.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_vehicle_model_tree">
+        <field name="name">vehicle.category.form</field>
+        <field name="model">vehicle.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="vehicle_model_menu_action">
+        <field name="name">Vehicle Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vehicle.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="vehicle_menu_id" name="Vehicle Category" parent="fleet.fleet_configuration"
+              action="vehicle_model_menu_action"/>
+
+       <record id="fleet_rental.menu_car_checklist" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+
+</odoo>

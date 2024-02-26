@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="view_order_form_inherited" model="ir.ui.view">
+            <field name="name">sale.order.form.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page/field[@name='order_line']" position="after">
+                    <link rel="stylesheet" type="text/css"
+                          href="/fleet_analytic_accounting/static/src/css/hide_add_line.css"/>
+                </xpath>
+                <!--                <xpath expr="//page/field[@name='order_line']" position="attributes">-->
+                <!--                    <attribute name="attrs">{'class': 'o_form_view'}</attribute>-->
+                <!--                    <attribute name="widget">one2many</attribute>-->
+                <!--                    <attribute name="mode">tree,kanban</attribute>-->
+                <!--                    <attribute name="attrs">{'readonly': True}</attribute>-->
+                <!--                </xpath>-->
+                <xpath expr="//page/field[@name='order_line']" position="attributes">
+                    <attribute name="widget">one2many</attribute>
+                    <attribute name="mode">tree,kanban</attribute>
+                    <attribute name="deletable">top</attribute>
+                    <attribute name="attrs">{'class': 'o_form_view', 'readonly': True}</attribute>
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

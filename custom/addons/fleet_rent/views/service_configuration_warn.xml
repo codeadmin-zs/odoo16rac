@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="service_configuration_warning_form">
+            <field name="name">service.configuration.warning.form</field>
+            <field name="model">fleet.vehicle.log.services</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Next service days is not configured. Please set next service day and odometer!" />
+                    <footer>
+                        <button name="add_service_days" type="object" string="Add Service Days" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+<!--        <record model="ir.ui.view" id="service_configuration_date_adding">-->
+<!--            <field name="name">service.configuration.form</field>-->
+<!--            <field name="model">fleet.vehicle</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <separator string="Service Configurations and Odometer"/>-->
+<!--                    <group>-->
+<!--                        <field name="name" invisible="1"/>-->
+<!--                    </group>-->
+<!--                    <notebook>-->
+<!--                        <page string="Odometer" name="odometer">-->
+<!--                            <separator string="Odometer" name="odometer"/>-->
+<!--                            <group name="odometer_reading">-->
+<!--                                <field name="odo_meter_increment_ids">-->
+<!--                                    <tree editable="bottom" create="true" delete="true" string="Odometer">-->
+<!--                                        <field name="name" />-->
+<!--                                        <field name="vehicle_id" domain="[('id','=', active_id)]"/>-->
+<!--                                        <field name="number" />-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </group>-->
+<!--                        </page>-->
+<!--                        <page string="Service" name="service">-->
+<!--                            <separator string="Service Configurations" name="services_configurations"/>-->
+<!--                            <group name="services_configurations">-->
+<!--                                <field name="next_service_date_ids">-->
+<!--                                    <tree editable="bottom" create="true" delete="true" string="Service Configurations">-->
+<!--                                        <field name="name" />-->
+<!--                                        <field name="vehicle_id" domain="[('id','=', active_id)]"/>-->
+<!--                                        <field name="days" />-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </group>-->
+<!--                        </page>-->
+<!--                    </notebook>-->
+<!--                    <footer>-->
+<!--                        <button name="add_service_days" type="object" string="Add Service Date and Odometer"-->
+<!--                                class="oe_highlight"/>-->
+<!--                        <button string="Cancel" class="oe_link" special="cancel"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+
+        <record model="res.country.state" id="state_1">
+            <field name="name">Muscat</field>
+            <field name="code">OM-MA</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_2">
+            <field name="name">Dhofar</field>
+            <field name="code">OM-ZU</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_3">
+            <field name="name">Al Batinah North</field>
+            <field name="code">OM-BS</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_4">
+            <field name="name">Al Batinah South</field>
+            <field name="code">OM-BJ</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_5">
+            <field name="name">Al Buraimi</field>
+            <field name="code">OM-BU</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_6">
+            <field name="name">Al Dakhiliyah</field>
+            <field name="code">OM-DA</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_7">
+            <field name="name">Al Wusta</field>
+            <field name="code">OM-WU</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_8">
+            <field name="name">A'Sharqiyah North</field>
+            <field name="code">OM-SS</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_9">
+            <field name="name">A'Sharqiyah South</field>
+            <field name="code">OM-SJ</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_10">
+            <field name="name">A'Dhahirah</field>
+            <field name="code">OM-ZA</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+        <record model="res.country.state" id="state_11">
+            <field name="name">Musandam</field>
+            <field name="code">OM-MU</field>
+            <field name="country_id" ref="base.om"/>
+        </record>
+
+    </data>
+</odoo>

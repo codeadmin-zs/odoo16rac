@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record model="ir.module.category" id="special_right_rent">-->
+<!--        <field name="name">Fleet Rent Access Right</field>-->
+<!--        <field name="sequence">60</field>-->
+<!--    </record>-->
+
+<!--    <record id="group_vehicle_manager" model="res.groups">-->
+<!--        <field name="name">Vehicle Rent Manager</field>-->
+<!--        <field name="category_id" ref="special_right_rent"/>-->
+<!--    </record>-->
+
+<!--    <record id="group_vehicle_user" model="res.groups">-->
+<!--        <field name="name">Vehicle Tenant</field>-->
+<!--        <field name="category_id" ref="special_right_rent"/>-->
+<!--    </record>-->
+
+    <record model="ir.module.category" id="menu_hide">
+        <field name="name">Menu hide</field>
+        <field name="sequence">61</field>
+    </record>
+
+    <record id="make_invisible" model="res.groups">
+        <field name="name">Menu Hiding</field>
+        <field name="category_id" ref="menu_hide"/>
+    </record>
+    <record model="ir.ui.menu" id="fleet.fleet_vehicle_log_contract_menu">
+        <field name="groups_id" eval="[(5,)]"/>
+    </record>
+</odoo>

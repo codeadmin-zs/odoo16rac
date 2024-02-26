@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_asset_asset_form_extend" model="ir.ui.view">
+        <field name="name">account.asset.asset.form</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="base_accounting_kit.view_account_asset_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="replace">
+            <form string="Asset">
+                <header>
+                    <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
+                    <button type="object" name="compute_depreciation_board" string="Compute Depreciation" states="draft"/>
+                    <button name="set_to_close" states="open" string="Sell or Dispose" type="object" class="oe_highlight"/>
+                    <button name="set_to_draft" string="Set to Draft" type="object" attrs="{'invisible': ['|', ('entry_count', '!=', 0), ('state', '!=', 'open')]}"/>
+                    <button name="374" states="open" string="Modify Depreciation" type="action"/>
+                    <button type="object" name="generate_loan_accounting_entries" string="Generate Loan Entries" attrs="{'invisible': ['|', ('loan_count', '!=', 0), ('emi', '=', 0.00)]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="open_entries" type="object" icon="fa-pencil">
+                            <field string="Items" name="entry_count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="open_loan_entries" type="object" icon="fa-pencil">
+                            <field string="Loans" name="loan_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Laptop iBook"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_fleet"/>
+                            <field name="fleet_vehicle_id" attrs="{'invisible':[('is_fleet','!=',True)]}"/>
+                            <field name="category_id" domain="[('type', '=', 'purchase')]" context="{'default_type': 'purchase'}" help="Category of asset"/>
+                            <field name="code"/>
+                            <field name="date" help="Date of asset"/>
+                            <field name="analytic_account_id" />
+                            <field name="type" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="value" widget="monetary" options="{'currency_field': 'currency_id'}" help="Gross value of asset"/>
+                            <field name="salvage_value" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': [('type','=','sale')]}"/>
+                            <field name="value_residual" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+<!--                            <field name="partner_id" string="Vendor" domain="[('supplier', '=', True)]"/>-->
+                            <field name="partner_id" string="Vendor" />
+                            <field name="invoice_id" string="Invoice" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Depreciation Board">
+                            <field name="depreciation_line_ids" mode="tree" options="{'reload_whole_on_button': true}">
+                                <tree string="Depreciation Lines" decoration-info="(move_check == False)" create="false">
+                                    <field name="depreciation_date"/>
+                                    <field name="depreciated_value" readonly="1"/>
+                                    <field name="amount" widget="monetary" string="Depreciation"/>
+                                    <field name="remaining_value" readonly="1" widget="monetary" string="Residual"/>
+                                    <field name="move_check" invisible="1"/>
+                                    <field name="move_posted_check" invisible="1"/>
+                                    <field name="parent_state" invisible="1"/>
+                                    <button name="create_move" type="object" icon="fa-circle"/>
+                                </tree>
+                                <form string="Depreciation Lines">
+                                    <group>
+                                        <group>
+                                            <field name="parent_state" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="sequence"/>
+                                            <field name="move_id"/>
+                                            <field name="move_check"/>
+                                            <field name="parent_state" invisible="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="amount" widget="monetary"/>
+                                            <field name="depreciation_date"/>
+                                            <field name="depreciated_value"/>
+                                            <field name="remaining_value"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Depreciation Information">
+                            <group>
+                                <field name="method" widget="radio" attrs="{'invisible': [('type','=','sale')]}"/>
+                                <field name="method_progress_factor" attrs="{'invisible':[('method','=','linear')], 'required':[('method','=','degressive')]}"/>
+                                <field name="method_time" string="Time Method Based On" widget="radio" attrs="{'invisible': [('type','!=','purchase')]}"/>
+                                <field name="prorata" attrs="{'invisible': [('method_time','=','end')]}"/>
+                            </group>
+                            <group>
+                                <field name="method_number" attrs="{'invisible':[('method_time','=','end')], 'required':[('method_time','=','number')]}"/>
+                                <field name="method_period"/>
+                                <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':[('method_time','=','number')]}"/>
+                            </group>
+                        </page>
+                        <page name="loans" string="Loans">
+                            <group col="2">
+                              <group>
+                                <field name="bank_journal_id" domain="[('type', 'in', ['cash','bank'])]"/>
+                                <field name="asset_cost" />
+                                <field name="loan_tenure" />
+                                <field name="first_insatllement_date" />
+<!--                                 <field name="debit_account_id" />
+                                <field name="credit_account_id" />   -->
+                                <field name="loan_liability_account_id" />
+                                <field name="bank_expenses_account_id" />
+                                  <field name="vendor_ref" />
+                                  <field name="vendor_date" />
+                              </group>
+                              <group>
+                                  <field name="interest_percentage"/>
+                                  <field name="down_payment"/>
+                                  <field name="emi"/>
+                                  <field name="loan_amount"/>
+                                <!-- <field name="bank_charges" /> -->
+                              </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+          </xpath>
+<!--            <xpath expr="//field[@name='category_id']" position="before">-->
+<!--                <field name="is_fleet"/>-->
+<!--                <field name="fleet_vehicle_id" attrs="{'invisible':[('is_fleet','=',False)]}"/>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//field[@name='date']" position="after">-->
+<!--                <field name="analytic_account_id"/>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//page[2]" position="after">-->
+<!--                <page string="Loans">-->
+<!--                    <group col="2">-->
+<!--                        <group>-->
+<!--                            <field name="bank_journal_id" domain="[('type', 'in', ['cash','bank'])]"/>-->
+<!--                            <field name="asset_cost" />-->
+<!--                            <field name="loan_tenure" />-->
+<!--                            <field name="first_installment_date" />-->
+<!--                            <field name="loan_liability_account_id" />-->
+<!--                            <field name="bank_expenses_account_id" />-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="interest_percentage" />-->
+<!--                            <field name="down_payment_amount" />-->
+<!--                            <field name="emi" />-->
+<!--&lt;!&ndash;                            <field name="loan_amount" />&ndash;&gt;-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                </page>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+</odoo>

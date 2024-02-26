@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_sr_multi_product,access.sr.multi.product,model_sr_multi_product,,1,1,1,1
+access_rental_wizard,access.rental.wizard,model_rental_wizard,,1,1,1,1
+access_rental_wizard_additional_charges,access.rental.wizard.additional.charges,model_rental_wizard_additional_charges,,1,1,1,1
