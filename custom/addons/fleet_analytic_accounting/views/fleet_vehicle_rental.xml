@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
         <field name="arch" type="xml">
             <!--     Lease In Contract hiding from Vehicle Form       -->
-            <xpath expr="//sheet/div[@name='button_box']/button[1]" position="after">
+            <xpath expr="//sheet/div/button[@name='return_action_to_open']" position="replace">
 <!--                <button name="return_action_to_create_contract"-->
 <!--                    type="object"-->
 <!--                    class="oe_stat_button"-->
@@ -20,7 +20,7 @@
                 <button name="return_action_to_create_contract"
                         string="New Contract"
                         attrs="{'invisible': [('state_id', '!=', 6)]}"
-                        type="object"  icon="fa-book" colspan="2" class="oe_inline oe_stat_button"/>
+                        type="object"  icon="fa-book" /> <!-- colspan="3" class="oe_inline oe_stat_button" (removed from type )-->
                 <button name="return_action_to_list_contracts"
                     type="object"
                     class="oe_stat_button"
