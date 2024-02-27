@@ -69,15 +69,16 @@
                     <field name="vehicle_id"/>
                 </xpath>
 
-<!--                <xpath expr="//group/group[2]" position="attributes">-->
-<!--                    <attribute name="string">Odometer Details</attribute>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//group/group[2]/field[@name='vehicle_id']" position="replace">-->
-<!--                    <field name="vehicle_id" invisible="1"/>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//group/group[2]/field[@name='purchaser_id']" position="replace">-->
-<!--                    <field name="purchaser_id" invisible="1"/>-->
-<!--                </xpath>-->
+                <xpath expr="//group/group[2]" position="attributes">
+                    <attribute name="string">Odometer Details</attribute>
+                </xpath>
+                <xpath expr="//group/group[2]/field[@name='vehicle_id']" position="replace">
+                    <field name="vehicle_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//group/group[2]/field[@name='purchaser_id']" position="replace">
+                    <field name="purchaser_id" invisible="1"/>
+                </xpath>
+
 	            <xpath expr="//field[@name='odometer']" position="attributes">
 	                <attribute name="attrs">{'readonly':[('state','in',('draft','done'))]}</attribute>
 	            </xpath>
@@ -145,118 +146,118 @@
                             domain="[('is_company','=',True)]" />
                     </group>
                 </xpath>
-<!--                <xpath expr="//sheet/group[2]" position="replace">-->
-<!--                    <notebook>-->
-<!--                        <page string="Repairs" >-->
-<!--                            <separator string="Repairs" colspan="4"/>-->
-<!--                            <field name="repair_line_ids" attrs="{'readonly':[('state','in',('done'))]}" context="{'default_issue_date':date}">-->
-<!--                                <tree editable="bottom" create="true" delete="true" string="Repair">-->
-<!--                                    <field name="repair_type_id" required="1" options='{"no_quick_create": True}'/>-->
-<!--                                    <field name="description"/>-->
-<!--                                    <field name="quantity" required="1"/>-->
-<!--                                    <field name="cost" required="1"/>-->
-<!--                                     <field name="tax_ids" widget="many2many_tags"-->
-<!--                                               optional="show"/>-->
-<!--                                    <field name="sub_total"/>-->
-<!--                                    <field name="target_date" required="1"/>-->
-<!--                                    <field name="complete"/>-->
-<!--                                    <field name="categ_id" invisible="1"-->
-<!--                                     options="{'no_open': True, 'create': false, 'create_edit': false}" />-->
-<!--                                    <field name="issue_date" invisible="1"/>-->
-<!--                                    <field name="date_complete" invisible="1"/>-->
-<!--                                </tree>-->
-<!--                            </field>-->
-<!--                        </page>-->
-<!--	                 <page string="Parts Used" invisible="1" >-->
-<!--                        <button name="%(action_add_work_order)d" string="Add"-->
-<!--	                        type="action" class="oe_stat_button"-->
-<!--	                        context="{'date_open':date_open,'team_id':team_id,'state':state,'already_closed':already_closed}"-->
-<!--	                        attrs="{'invisible':['|',('state','!=','confirm'),('team_id','=',False)]}"/>-->
+                <xpath expr="//sheet/separator" position="replace">
+                    <notebook>
+                        <page string="Repairs" >
+                            <separator string="Repairs" colspan="4"/>
+                            <field name="repair_line_ids" attrs="{'readonly':[('state','in',('done'))]}" context="{'default_issue_date':date}">
+                                <tree editable="bottom" create="true" delete="true" string="Repair">
+                                    <field name="repair_type_id" required="1" options='{"no_quick_create": True}'/>
+                                    <field name="description"/>
+                                    <field name="quantity" required="1"/>
+                                    <field name="cost" required="1"/>
+                                     <field name="tax_ids" widget="many2many_tags"
+                                               optional="show"/>
+                                    <field name="sub_total"/>
+                                    <field name="target_date" required="1"/>
+                                    <field name="complete"/>
+                                    <field name="categ_id" invisible="1"
+                                     options="{'no_open': True, 'create': false, 'create_edit': false}" />
+                                    <field name="issue_date" invisible="1"/>
+                                    <field name="date_complete" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+	                 <page string="Parts Used" invisible="1" >
+                        <button name="%(action_add_work_order)d" string="Add"
+	                        type="action" class="oe_stat_button"
+	                        context="{'date_open':date_open,'team_id':team_id,'state':state,'already_closed':already_closed}"
+	                        attrs="{'invisible':['|',('state','!=','confirm'),('team_id','=',False)]}"/>
 
-<!--	                    <button name="%(action_edit_work_order)d" string="Edit"-->
-<!--	                        type="action" class="oe_stat_button"-->
-<!--	                        context="{'date_open':date_open,'team_id':team_id,'state':state,'already_closed':already_closed}"-->
-<!--	                        attrs="{'invisible':['|',('state','!=','confirm'),('team_id','=',False)]}"/>-->
-<!--                          <newline/>-->
-<!--                          <group>-->
-<!--                              <field name="total_parts_line"/>-->
-<!--                          </group>-->
-<!--                          <newline/>-->
-<!--                          <group colspan="4">-->
-<!--	                         <field name="parts_ids" readonly='1' nolabel="1"-->
-<!--	                             context="{'date_open':date_open}" create='false' delete='false'>-->
-<!--	                             <tree string="Maintenance" editable="top">-->
-<!--	                                 <field name='product_id' string="Part No"-->
-<!--	                                     attrs="{'readonly':[('is_deliver','=',True)]}"-->
-<!--	                                     options="{'no_open': True, 'create': false, 'create_edit': false}"/>-->
-<!--	                                 <field name="name" attrs="{'readonly':[('is_deliver','=',True)]}"/>-->
-<!--	                                 <field name="vehicle_make_id" attrs="{'readonly':[('is_deliver','=',True)]}"/>-->
-<!--	                                 <field name="qty_hand" />-->
-<!--	                                 <field name="encoded_qty" />-->
-<!--	                                 <field name='qty' attrs="{'readonly':[('is_deliver','=',True)]}"/>-->
-<!--	                                 <field name='product_uom' attrs="{'readonly':[('is_deliver','=',True)]}"/>-->
-<!--	                                 <field name='price_unit' attrs="{'readonly':[('is_deliver','=',True)]}"/>-->
-<!--	                                 <field name='total' />-->
-<!--	                                 <field name="date_issued"/>-->
-<!--	                                 <field name="old_part_return" />-->
-<!--	                                 <field name="issued_by" readonly="1"-->
-<!--	                                     options="{'no_open': True, 'create': false, 'create_edit': false}" />-->
-<!--	                                 <field name="is_deliver" invisible="1"/>-->
-<!--	                             </tree>-->
-<!--	                         </field>-->
-<!--	                     </group>-->
-<!--	                     <group class="oe_subtotal_footer oe_right" col="2">-->
-<!--	                         <div class="oe_subtotal_footer_separator oe_inline">-->
-<!--	                             <label for="sub_total"/>-->
-<!--	                         </div>-->
-<!--	                         <field name="sub_total" nolabel="1" class="oe_subtotal_footer_separator"-->
-<!--	                             widget="monetary"/>-->
-<!--	                     </group>-->
-<!--	                 </page>-->
-<!--	                 <page string="Attachments">-->
-<!--	                     <field name="wrk_attach_ids"-->
-<!--	                         attrs="{'readonly':[('state','in',('draft','done'))]}" >-->
-<!--	                         <tree>-->
-<!--	                             <field name='name' />-->
-<!--	                             <field name='datas' />-->
-<!--	                         </tree>-->
-<!--	                         <form>-->
-<!--	                             <field name='name' />-->
-<!--	                             <group>-->
-<!--	                                 <field name='datas' />-->
-<!--	                             </group>-->
-<!--	                         </form>-->
-<!--	                     </field>-->
-<!--	                 </page>-->
-<!--	                 <page string="History" invisible="1">-->
-<!--	                     <separator string="Outgoing parts for Maintenance " colspan="4" />-->
-<!--	                     <field name="out_going_ids" >-->
-<!--	                        <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done')"-->
-<!--	                            string="Delivery Orders">-->
-<!--	                             <field name="name"/>-->
-<!--	                             <field name="origin"/>-->
-<!--	                             <field name="date"/>-->
-<!--	                             <field name="state"/>-->
-<!--	                         </tree>-->
-<!--	                     </field>-->
-<!--	                     <separator string="Incoming Old Parts in Scrapped Location" colspan="4" />-->
-<!--	                     <field name="old_parts_incoming_ship_ids">-->
-<!--	                          <tree colors="blue:state == 'draft';grey:state == 'done';red:state not in ('cancel', 'done') and date &lt; current_date"-->
-<!--	                              string="Picking list">-->
-<!--	                             <field name="name"/>-->
-<!--	                             <field name="origin"/>-->
-<!--	                             <field name="date"/>-->
-<!--	                             <field name="state"/>-->
-<!--	                         </tree>-->
-<!--	                     </field>-->
-<!--	                 </page>-->
-<!--	                 <page string="Notes">-->
-<!--	                     <field name="note" attrs="{'readonly':[('state','in',('draft','done'))]}"-->
-<!--	                         nolabel="1" placeholder="Put an internal note..." />-->
-<!--	                     <field name="already_closed" invisible="1"/>-->
-<!--	                 </page>-->
-<!--                 </notebook>-->
-<!--                </xpath>-->
+	                    <button name="%(action_edit_work_order)d" string="Edit"
+	                        type="action" class="oe_stat_button"
+	                        context="{'date_open':date_open,'team_id':team_id,'state':state,'already_closed':already_closed}"
+	                        attrs="{'invisible':['|',('state','!=','confirm'),('team_id','=',False)]}"/>
+                          <newline/>
+                          <group>
+                              <field name="total_parts_line"/>
+                          </group>
+                          <newline/>
+                          <group colspan="4">
+	                         <field name="parts_ids" readonly='1' nolabel="1"
+	                             context="{'date_open':date_open}" create='false' delete='false'>
+	                             <tree string="Maintenance" editable="top">
+	                                 <field name='product_id' string="Part No"
+	                                     attrs="{'readonly':[('is_deliver','=',True)]}"
+	                                     options="{'no_open': True, 'create': false, 'create_edit': false}"/>
+	                                 <field name="name" attrs="{'readonly':[('is_deliver','=',True)]}"/>
+	                                 <field name="vehicle_make_id" attrs="{'readonly':[('is_deliver','=',True)]}"/>
+	                                 <field name="qty_hand" />
+	                                 <field name="encoded_qty" />
+	                                 <field name='qty' attrs="{'readonly':[('is_deliver','=',True)]}"/>
+	                                 <field name='product_uom' attrs="{'readonly':[('is_deliver','=',True)]}"/>
+	                                 <field name='price_unit' attrs="{'readonly':[('is_deliver','=',True)]}"/>
+	                                 <field name='total' />
+	                                 <field name="date_issued"/>
+	                                 <field name="old_part_return" />
+	                                 <field name="issued_by" readonly="1"
+	                                     options="{'no_open': True, 'create': false, 'create_edit': false}" />
+	                                 <field name="is_deliver" invisible="1"/>
+	                             </tree>
+	                         </field>
+	                     </group>
+	                     <group class="oe_subtotal_footer oe_right" col="2">
+	                         <div class="oe_subtotal_footer_separator oe_inline">
+	                             <label for="sub_total"/>
+	                         </div>
+	                         <field name="sub_total" nolabel="1" class="oe_subtotal_footer_separator"
+	                             widget="monetary"/>
+	                     </group>
+	                 </page>
+	                 <page string="Attachments">
+	                     <field name="wrk_attach_ids"
+	                         attrs="{'readonly':[('state','in',('draft','done'))]}" >
+	                         <tree>
+	                             <field name='name' />
+	                             <field name='datas' />
+	                         </tree>
+	                         <form>
+	                             <field name='name' />
+	                             <group>
+	                                 <field name='datas' />
+	                             </group>
+	                         </form>
+	                     </field>
+	                 </page>
+	                 <page string="History" invisible="1">
+	                     <separator string="Outgoing parts for Maintenance " colspan="4" />
+	                     <field name="out_going_ids" >
+	                        <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done')"
+	                            string="Delivery Orders">
+	                             <field name="name"/>
+	                             <field name="origin"/>
+	                             <field name="date"/>
+	                             <field name="state"/>
+	                         </tree>
+	                     </field>
+	                     <separator string="Incoming Old Parts in Scrapped Location" colspan="4" />
+	                     <field name="old_parts_incoming_ship_ids">
+	                          <tree colors="blue:state == 'draft';grey:state == 'done';red:state not in ('cancel', 'done') and date &lt; current_date"
+	                              string="Picking list">
+	                             <field name="name"/>
+	                             <field name="origin"/>
+	                             <field name="date"/>
+	                             <field name="state"/>
+	                         </tree>
+	                     </field>
+	                 </page>
+	                 <page string="Notes">
+	                     <field name="note" attrs="{'readonly':[('state','in',('draft','done'))]}"
+	                         nolabel="1" placeholder="Put an internal note..." />
+	                     <field name="already_closed" invisible="1"/>
+	                 </page>
+                 </notebook>
+                </xpath>
 
 <!--                <xpath expr="//sheet/group[3]" position="attributes">-->
 <!--                    <attribute name="invisible">1</attribute>-->
