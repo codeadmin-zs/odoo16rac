@@ -1,0 +1,181 @@
+# -*- coding: utf-8 -*-
+# Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
+
+{
+    'name': 'Customer/supplier statement of account reports in Odoo ',
+    'category': 'Accounting',
+    'version': '14.0.0.5',
+    'summary': 'Apps for print customer statement report print vendor statement payment reminder customer payment followup send customer statement print account statement reports print overdue statement reports send overdue statement print supplier statement reports',
+    'description': """
+                BrowseInfo developed a new odoo/OpenERP module apps
+        This module use for Print Customer Statement Print Supplier Statement Send Customer Statement by email.
+        Also shows the payment followup tab which show overdue balance and total amount overdue.
+        Print Customer overdue payment Send overdue payment by email Calculate overdue balance based on Payment Terms also send payment reminder.
+        Shows partner balance customer balance partner leadger account follow-up Payment Warning Payment Reminder.
+        Print Customer Statement Print Supplier Statement Send Customer Statement by email Send supplier statement by email
+        Account Statement Partner statement Balance Sheet ledger Report Print Account Statement Accounting Reports Statement Reports 
+        Customer report Balance Statement Customer Balance Report Customer ledger report ledger balance.
+        Credit Statement Debit Statement Customer Overdue statement Accounting Statement Creditor Reports Debtor Reports Account follow-up 
+        Account followup report payment followup report payment follow-up Print Ledger report according to customer and supplier.
+        Reporting function to generate statement of all transactions by partner vendor customer AR/AP for period/ All credits all debits.
+        Account receivable report by period Account receivable report by customer With all transaction Credit Debit - REFER excel file Required Report AP-AR Statement for a period.
+        Account Payable report by period Account Payable report by vendor WIth all transaction Credit Debit REFER excel file Required Report AP-AR Statement for a period.
+        Customer statement by date So that we can see all open items in the system on that exact date REFER excel file 'Required Report' Statement of Account.
+        Vendor statement by date So that we can see all open items in the system on that exact date REFER excel file 'Required Report'
+        Customer statement by date So that we can see total amount for all open items in the system on that exact date only detailing GL accounts for these open items. REFER excel file required Report.
+        invoice outstanding report invoice report invoice remaining amount report, invoice overdue report invoice outstanding excel report
+        Vendor statement by date So that we can see total amount for all open items in the system on that exact date only detailing GL accounts for these open items. REFER excel file 'Required Report'
+Openoo / OpenERP
+
+openerp module for Print Customer Statement Print Supplier Statement.
+        Send Customer Statement by email Send supplier statement by email 
+        Account Statements Partner statement Balance Sheet ledger Report Print Account Statement Accounting Reports
+        Statement Reports Customer report Balance Statement Customer Balance Report  Customer ledger report ledger balance.
+        Odoo Customer Statement Odoo Supplier Statement Odoo Account Customer Supplier Statement
+        Odoo Account Customer Statement Odoo Account Supplier Statement Customer overdue statement financial reporting 
+        financial reports Accounting Statements financial Accounting Statements Supplier Statements reports 
+        Customer financial Statement reports financial Statements reports in Odoo
+        customer statement of account Supplier statement of account partner statement of account customer statement of account report 
+        partner statement of account reports supplier statement of account reports
+        Customer Accounting Statement reports Supplier Accounting Statement reports
+        customer amount overdue customer payment overdue report customer total overdue customer balance partner balance reports 
+        partner ledger supplier payment supplier remaining balance supplier balance statement of customer statement of partner
+        statement of customer customer account statement supplier account statement customer bank statement customer followp send followup
+        賴匕賴 丕賱賵丨丿丞 鬲爻鬲禺丿賲 賱胤亘丕毓丞 亘賷丕賳 丕賱毓賲賱丕亍 貙 胤亘丕毓丞 亘賷丕賳 丕賱賲賵乇丿. 兀乇爻賱 亘賷丕賳 丕賱毓賲賷賱 亘丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷.
+        賷毓乇囟 兀賷囟賸丕 毓賱丕賲丞 丕賱鬲亘賵賷亘 "賲鬲丕亘毓丞 丕賱丿賮毓" 丕賱鬲賷 鬲毓乇囟 丕賱乇氐賷丿 丕賱賲鬲兀禺乇 賵丕賱賲亘賱睾 丕賱廿噩賲丕賱賷 丕賱賲鬲兀禺乇.
+        胤亘丕毓丞 丿賮毓 丕賱毓賲賱丕亍 丕賱賲鬲兀禺乇丞 貙 廿乇爻丕賱 丕賱丿賮毓 丕賱賲鬲兀禺乇 毓賳 胤乇賷賯 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷.丨爻丕亘 乇氐賷丿 丕賱賲鬲兀禺乇丞 毓賱賶 兀爻丕爻 卮乇賵胤 丕賱丿賮毓 兀賷囟丕 廿乇爻丕賱 鬲匕賰賷乇 丕賱丿賮毓.賲卮丕賴丿丞 乇氐賷丿 丕賱卮乇賷賰 貙 乇氐賷丿 丕賱毓賲賱丕亍 貙 卮乇賷賰 丕賱賯賷丕丿丞 貙 丨爻丕亘 丕賱賲鬲丕亘毓丞. 鬲丨匕賷乇 丕賱丿賮毓 貙 鬲匕賰賷乇 丕賱丿賮毓.
+        胤亘丕毓丞 亘賷丕賳 丕賱毓賲賱丕亍 貙 胤亘丕毓丞 亘賷丕賳 丕賱賲賵乇丿. 廿乇爻丕賱 亘賷丕賳 丕賱毓賲賱丕亍 毓賳 胤乇賷賯 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷. 廿乇爻丕賱 亘賷丕賳 丕賱賲賵乇丿 毓賳 胤乇賷賯 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷. 亘賷丕賳 丕賱丨爻丕亘 貙 亘賷丕賳 丕賱卮乇賷賰 貙 丕賱賲賷夭丕賳賷丞 丕賱毓賲賵賲賷丞 貙 鬲賯乇賷乇 丿賮鬲乇 丕賱兀爻鬲丕匕 貙 亘賷丕賳 丨爻丕亘 丕賱胤亘丕毓丞 貙 鬲賯丕乇賷乇 丕賱賲丨丕爻亘丞 貙 鬲賯丕乇賷乇 賰卮賮 丕賱丨爻丕亘 貙 鬲賯乇賷乇 丕賱毓賲賷賱 貙 亘賷丕賳 丕賱乇氐賷丿 貙 鬲賯乇賷乇 乇氐賷丿 丕賱毓賲賷賱 貙 鬲賯乇賷乇 丿賮鬲乇 丕賱兀爻鬲丕匕 丕賱夭亘賵賳 貙 乇氐賷丿 丿賮鬲乇 丕賱兀爻鬲丕匕. 亘賷丕賳 丕賱丕卅鬲賲丕賳 貙 亘賷丕賳 丕賱禺氐賲 .丕賱毓賲賷賱 丕賱賲鬲兀禺乇丞 丕賱亘賷丕賳. 亘賷丕賳 丕賱賲丨丕爻亘丞 貙 鬲賯丕乇賷乇 丕賱丿丕卅賳 貙 鬲賯乇賷乇 丕賱賲丿賷賳. 丨爻丕亘 丕賱丨丕賱丞 - wup 貙 鬲賯乇賷乇 賲鬲丕亘毓丞 丕賱丨爻丕亘 貙 鬲賯乇賷乇 賲鬲丕亘毓丞 丕賱丿賮毓 貙 賲鬲丕亘毓丞 丕賱丿賮毓.
+        鬲賯乇賷乇 丿賮鬲乇 丕賱兀爻鬲丕匕 胤亘賯丕賸 賱賱毓賲賷賱 賵丕賱賲賵乇丿.
+        賵馗賷賮丞 丕賱鬲賯丕乇賷乇 賱鬲賵賱賷丿 亘賷丕賳 賱噩賲賷毓 丕賱賲毓丕賲賱丕鬲 賲賳 賯亘賱 丕賱卮乇賷賰 (丕賱亘丕卅毓 / 丕賱毓賲賷賱) (AR / AP) 貙 賱賱賮鬲乇丞 / 噩賲賷毓 丕賱丕毓鬲賲丕丿丕鬲 噩賲賷毓 丕賱丿賷賵賳.
+        鬲賯乇賷乇 丕賱丨爻丕亘丕鬲 丕賱賲爻鬲丨賯丞 丕賱賯亘囟 丨爻亘 丕賱賮鬲乇丞 貙 鬲賯乇賷乇 丕賱賲爻鬲丨賯 丕賱賯亘囟 賲賳 賯亘賱 丕賱毓賲賷賱. 賲毓 噩賲賷毓 丕賱賲毓丕賲賱丕鬲 丕賱丕卅鬲賲丕賳 貙 丕賱禺氐賲 - 賲賱賮 丕賰爻賱 REFER "鬲賯乇賷乇 賲胤賱賵亘" 亘賷丕賳 AP-AR 賱賮鬲乇丞.
+        鬲賯乇賷乇 丨爻丕亘 賲爻鬲丨賯 丕賱丿賮毓 丨爻亘 丕賱賮鬲乇丞 貙 鬲賯乇賷乇 "丨爻丕亘 丕賱賲丿賮賵毓丕鬲" 賲賳 賯亘賱 丕賱亘丕卅毓. 賲賳 禺賱丕賱 噩賲賷毓 賲毓丕賲賱丕鬲 丕賱丕卅鬲賲丕賳 貙 賵賲賱賮 debit REFER excel 'Required Report' AP-AR Statement for a period.
+        亘賷丕賳 丕賱毓賲賷賱 丨爻亘 丕賱鬲丕乇賷禺. 丨鬲賶 賳鬲賲賰賳 賲賳 乇丐賷丞 噩賲賷毓 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞 賮賷 丕賱賳馗丕賲 賮賷 匕賱賰 丕賱鬲丕乇賷禺 丕賱賲丨丿丿 貙 賷賲賰賳賰 REFER excel file "Required Report" Account of Account.
+        亘賷丕賳 丕賱亘丕卅毓 丨爻亘 丕賱鬲丕乇賷禺. 丨鬲賶 賳鬲賲賰賳 賲賳 乇丐賷丞 噩賲賷毓 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞 賮賷 丕賱賳馗丕賲 賮賷 匕賱賰 丕賱鬲丕乇賷禺 丕賱賲丨丿丿 REFER excel file "Required Report"
+        亘賷丕賳 丕賱毓賲賷賱 丨爻亘 丕賱鬲丕乇賷禺. 丨鬲賶 賷賲賰賳賳丕 兀賳 賳乇賶 丕賱賲亘賱睾 丕賱廿噩賲丕賱賷 賱噩賲賷毓 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞 賮賷 丕賱賳馗丕賲 賮賷 匕賱賰 丕賱鬲丕乇賷禺 丕賱賲丨丿丿 賮賯胤 亘丕賱鬲賮氐賷賱 丨爻丕亘丕鬲 GL 賱賴匕賴 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞. REFER 賲賱賮 丕賰爻賱 丕賱賲胤賱賵亘丞 丕賱鬲賯乇賷乇.
+        賮丕鬲賵乇丞 鬲賯乇賷乇 賲毓賱賯 貙 鬲賯乇賷乇 丕賱賮丕鬲賵乇丞 貙 賮丕鬲賵乇丞 丕賱賲亘賱睾 丕賱賲鬲亘賯賷 貙 賮丕鬲賵乇丞 鬲賯乇賷乇 賲鬲兀禺乇丞 貙 賮丕鬲賵乇丞 鬲賯乇賷乇 丕賱鬲賮賵賯 丕賱賲毓賱賯丞
+        亘賷丕賳 丕賱亘丕卅毓 丨爻亘 丕賱鬲丕乇賷禺. 丨鬲賶 賷賲賰賳賳丕 兀賳 賳乇賶 丕賱賲亘賱睾 丕賱廿噩賲丕賱賷 賱噩賲賷毓 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞 賮賷 丕賱賳馗丕賲 賮賷 匕賱賰 丕賱鬲丕乇賷禺 丕賱賲丨丿丿 賮賯胤 亘丕賱鬲賮氐賷賱 丨爻丕亘丕鬲 GL 賱賴匕賴 丕賱毓賳丕氐乇 丕賱賲賮鬲賵丨丞. REFER excel file "Required Report"
+wadaeat BrowseInfo tatbiqat alwahdat aljadidat Openoo / OpenERP
+        hidhih alwahdat tustakhdam litabaeat bayan aleumala' , tabaeat bayan almurid. 'ursil bayan aleamyl bialbarid al'iiliktruni.
+        yierad aydana ealamat altabwib "mtabieat aldufea" alty taearad alrasid almuta'akhir walmablagh al'iijmaliu almuta'akhir.
+        tabaeat dafe aleumala' almuta'akhirat , 'iirsal aldafe almuta'akhir ean tariq albarid al'iiliktruni.hisab rasid almuta'akhirat ealaa 'asas shurut aldafe 'aydaan 'iirsal tadhkir aldafe.mushahadat rasid alsharik , rasid aleumla' , sharik alqiadat , hisab almutabaeati. tahdhir aldafe , tadhkir aldafe.
+        tibaeat bayan aleumala' , tibaeat bayan almurida. 'iirsal bayan aleumala' ean tariq albarid al'iiliktruni. 'iirsal bayan almurid ean tariq albarid al'iiliktruni. bayan alhisab , bayan alsharik , almizaniat aleumumiat , taqrir duftir al'ustadh , bayan hisab altibaeat , taqarir almuhasabat , taqarir kashf alhisab , taqrir aleamyl , bayan alrasid , taqrir rasid aleamyl , taqrir duftar al'ustadh alzubun , rasid daftar al'ustadh. bayan alaitiman , bayan alkhasm .aleamil almuta'akhirat albayan. bayan almuhasabat , taqarir aldaayin , taqrir almadin. hisab alhalat - wup , taqrir mutabaeat alhisab , taqrir mutabaeat aldafe , mutabaeat aldafe.
+        tiqrir dufatar al'ustadh tbqaan lileamil walmurid.
+        wazifat altaqarir litawlid bayan lajamie almueamalat min qibal alsharik (albayie / alemyl) (AR / AP) , lilfatrat / jmye alaietimadat jmye aldywn.
+        tiqryr alhisabat almustahaqat alqabd hsb alfatrat , taqrir almustahaqi alqabd min qibal aleamil. mae jmye almueamalat alaitiman , alkhasm - milafa aksil REFER "tqarir matluba" bayan AP-AR lifatrat.
+        taqrir hisab mustahiq aldafe hsb alfatrat , taqrir "hsaab almadfueat" min qibal albayie. min khilal jmye mueamalat alaituman , wamalf debit REFER excel 'Required Report' AP-AR Statement for a period.
+        bian aleamyl hsb altaarikh. hataa nutumakan min ruyat jmye aleanasir almaftuhat fi alnizam fi dhalik alttarikh almuhadad , yumkinuk REFER excel file "Required Report" Account of Account.
+        bian albayie hsb altaarikh. hataa natamakan min ruyat jmye aleanasir almaftuhat fi alnizam fi dhalik alttarikh almuhadad REFER excel file "Required Report"
+        bian aleamyl hsb altaarikh. hataa ymknna 'an naraa almablagh al'iijmalia lajamie aleanasir almaftuhat fi alnizam fi dhalik alttarikh almuhadad faqat bialtafsil hisabat GL lihadhih aleanasir almaftuhati. REFER milafi aiksil almatlubat altaqrir.
+        fatwrat taqrir muealaq , taqrir alfatwrt , faturat almablagh almutabaqii , faturat taqrir muta'akhirat , faturt taqrir altafawuq almuealaqa
+        bian albayie hsb altaarikh. hataa ymknna 'an naraa almablagh al'iijmalia lajamie aleanasir almaftuhat fi alnizam fi dhalik alttarikh almuhadad faqat bialtafsil hisabat GL lihadhih aleanasir almaftuhati. REFER excel file "Required Report"
+        BrowseInfo desarroll贸 un nuevo m贸dulo odoo / OpenERP
+        Este m贸dulo se utiliza para Imprimir la declaraci贸n del cliente, Imprimir la declaraci贸n del proveedor. Enviar la declaraci贸n del cliente por correo electr贸nico.
+        Tambi茅n muestra la pesta帽a de seguimiento de pagos que muestra el saldo vencido y la cantidad total vencida.
+        Imprima el pago vencido del cliente, env铆e el pago vencido por correo electr贸nico. Calcule el saldo vencido basado en las condiciones de pago y env铆e un recordatorio de pago. Muestra el saldo del socio, el saldo del cliente, el interlocutor, el seguimiento de la cuenta. Aviso de pago, recordatorio de pago.
+        Imprima la declaraci贸n del cliente, imprima la declaraci贸n del proveedor. Env铆e la declaraci贸n del cliente por correo electr贸nico. Enviar declaraci贸n de proveedor por correo electr贸nico. Declaraci贸n de cuenta, declaraci贸n de socio, balance, informe de contabilidad, estado de cuenta de impresi贸n, informes de contabilidad, informes de cuenta, informe del cliente, estado de cuenta, informe de saldo del cliente, informe de contabilidad del cliente, saldo del libro mayor. Declaraci贸n de cr茅dito, declaraci贸n de d茅bito . Declaraci贸n vencida del cliente. Estado de cuenta, informes de acreedor, informes de deudor. Cuenta a continuaci贸n, informe de seguimiento de cuenta, informe de seguimiento de pagos, seguimiento de pagos.
+        Imprimir informe de libro seg煤n el cliente y el proveedor.
+        Funci贸n de informe para generar la declaraci贸n de todas las transacciones por socio (proveedor / cliente) (AR / AP), para el per铆odo / Todos los cr茅ditos todos los d茅bitos.
+        Informe de cuentas por cobrar por per铆odo, informe de cuentas por cobrar por cliente. Con todas las transacciones de cr茅dito, d茅bito - REFER archivo Excel 'Informe requerido' AP-AR Declaraci贸n de un per铆odo.
+        Informe de cuentas por pagar por per铆odo, informe de cuentas por pagar por proveedor. Con todo el cr茅dito de la transacci贸n, d茅bito REMITIR el archivo Excel archivo 'Reporte requerido' Declaraci贸n AP-AR por un per铆odo.
+        Declaraci贸n del cliente por fecha. Para que podamos ver todos los elementos abiertos en el sistema en esa fecha exacta REFERAR el archivo de Excel 'Reporte requerido'.
+        Declaraci贸n del vendedor por fecha. Para que podamos ver todos los elementos abiertos en el sistema en esa fecha exacta REMITIR el archivo de Excel 'Reporte obligatorio'
+        Declaraci贸n del cliente por fecha. Para que podamos ver el importe total de todos los elementos abiertos en el sistema en esa fecha exacta, solo se detallan las cuentas GL para estos elementos abiertos. REFER archivo de Excel requerido Informe.
+        informe pendiente de factura, informe de factura, informe de cantidad restante de factura, informe vencido de factura, informe de Excel sobresaliente de factura
+        Declaraci贸n del vendedor por fecha. Para que podamos ver el importe total de todos los elementos abiertos en el sistema en esa fecha exacta, solo se detallan las cuentas GL para estos elementos abiertos. REFERIR el archivo de Excel 'Reporte obligatorio'
+BrowseInfo desenvolveu um novo app de m贸dulo odoo / OpenERP
+        Este m贸dulo 茅 usado para Imprimir a Declara莽茫o do Cliente, Imprimir a Declara莽茫o do Fornecedor. Enviar a Declara莽茫o do Cliente por email.
+        Tamb茅m mostra a guia de acompanhamento de pagamento que mostra o saldo vencido e o valor total vencido.
+        Imprimir Pagamento atrasado do cliente, Enviar pagamento atrasado por e-mail.Calcule o saldo vencido com base nos Termos de pagamento e tamb茅m envie um lembrete de pagamento.Somente saldo do parceiro, saldo do cliente, l铆der do parceiro, acompanhamento da conta.O aviso de pagamento, Lembrete de pagamento.
+        Imprimir Declara莽茫o do Cliente, Imprimir Declara莽茫o do Fornecedor. Enviar a Declara莽茫o do Cliente por email. Enviar declara莽茫o de fornecedor por e-mail. Declara莽茫o de conta, declara莽茫o de parceiro, balan莽o, relat贸rio de contabilidade, impress茫o conta declara莽茫o, relat贸rios cont谩beis, relat贸rios de declara莽茫o, relat贸rio de cliente, declara莽茫o de saldo, relat贸rio de saldo do cliente, relat贸rio cont谩bil, saldo cont谩bil.Especifica莽茫o de cr茅dito, declara莽茫o de d茅bito Declara莽茫o do cliente em atraso. Declara莽茫o cont谩bil, relat贸rios do credor, relat贸rios do devedor. Conta follow-up, relat贸rio de acompanhamento da conta, relat贸rio de acompanhamento do pagamento, acompanhamento do pagamento.
+        Imprimir relat贸rio do raz茫o de acordo com o cliente e o fornecedor.
+        Fun莽茫o de gera莽茫o de relat贸rios para gerar a demonstra莽茫o de todas as transa莽玫es por parceiro (fornecedor / cliente) (AR / AP), por per铆odo / Todos os cr茅ditos, todos os d茅bitos.
+        Relat贸rio de contas a receber por per铆odo, Relat贸rio de contas a receber pelo cliente. Com todas as transa莽玫es Cr茅dito, D茅bito - REFER excel file 'Relat贸rio Obrigat贸rio' Declara莽茫o AP-AR por um per铆odo.
+        Relat贸rio de contas a pagar por per铆odo, relat贸rio de contas a pagar pelo fornecedor. Com toda a transa莽茫o Cr茅dito, d茅bito REFER excel arquivo 'relat贸rio exigido' declara莽茫o AP-AR por um per铆odo.
+        Declara莽茫o do cliente por data. Para que possamos ver todos os itens em aberto no sistema na mesma data REFER excel arquivo 'Requerido Relat贸rio' Declara莽茫o de Conta.
+        Declara莽茫o do fornecedor por data. Para que possamos ver todos os itens em aberto no sistema na mesma data REFER excel file 'Required Report'
+        Declara莽茫o do cliente por data. Assim, podemos ver o montante total de todas as partidas em aberto no sistema nessa data exata, apenas detalhando as contas cont谩beis para esses itens em aberto. REFER excel file required Relat贸rio.
+        relat贸rio de fatura pendente, relat贸rio de fatura, relat贸rio de valor restante da fatura, relat贸rio de faturamento vencido, relat贸rio de exce莽玫es de faturamento excelente
+        Declara莽茫o do fornecedor por data. Assim, podemos ver o montante total de todas as partidas em aberto no sistema nessa data exata, apenas detalhando as contas cont谩beis para esses itens em aberto. REFERIR arquivo excel 'Relat贸rio Requerido'
+BrowseInfo a d茅velopp茅 un nouveau module odoo / OpenERP
+        Ce module est utilis茅 pour Imprimer la d茅claration du client, Imprimer la d茅claration du fournisseur. Envoyer la d茅claration du client par courrier 茅lectronique.
+        Affiche 茅galement l'onglet Suivi des paiements qui indique le solde en souffrance et le montant total en retard.
+        Imprimer le paiement en retard du client, envoyer le paiement en retard par e-mail.Calculer solde en souffrance bas茅 sur les termes de paiement envoyer 茅galement rappel de paiement.Affiche solde du partenaire, solde client, partenaire partenaire, suivi du compte.Avertissement de paiement, rappel de paiement.
+        Imprimer la d茅claration du client, imprimer la d茅claration du fournisseur .Envoyer la d茅claration du client par courriel. Envoyer la d茅claration du fournisseur par e-mail. Relev茅 de compte, relev茅 de partenaire, bilan, relev茅 de compte, relev茅 de compte, rapports de comptabilit茅, relev茅s de compte, rapport client, relev茅 de solde, relev茅 de solde client, relev茅 de grand livre. .Compte client en retard. Relev茅 de compte, rapports de cr茅ancier, rapports de d茅biteur. Compte suivi, rapport de suivi de compte, rapport de suivi de paiement, suivi de paiement.
+        Impression du rapport Ledger en fonction du client et du fournisseur.
+        Fonction de reporting pour g茅n茅rer une d茅claration de toutes les transactions par partenaire (fournisseur / client) (AR / AP), pour p茅riode / Tous les cr茅dits tous les d茅bits.
+        Rapport de compte 脿 recevoir par p茅riode, Rapport de compte 脿 recevoir par client. Avec toutes les transactions Credit, Debit - REFER excel file 'Rapport requis' AP-AR Statement pour une p茅riode.
+        Rapport sur les comptes payables par p茅riode, rapport sur les comptes fournisseurs par fournisseur. Avec toutes les transactions Cr茅dit, D茅bit REFER excel fichier 'Rapport requis' D茅claration AP-AR pour une p茅riode.
+        D茅claration du client par date. Afin que nous puissions voir tous les 茅l茅ments ouverts dans le syst猫me 脿 cette date exacte, veuillez REFERER le fichier Excel 'Compte rendu requis' Relev茅 de compte.
+        D茅claration du fournisseur par date. Afin que nous puissions voir tous les 茅l茅ments ouverts dans le syst猫me 脿 cette date exacte REFER excel file 'Rapport requis'
+        D茅claration du client par date. Afin que nous puissions voir le montant total de tous les postes non sold茅s dans le syst猫me 脿 cette date pr茅cise, en ne d茅taillant que les comptes GL pour ces postes non sold茅s. REFERER le fichier Excel requis Rapport.
+        rapport en suspens de la facture, rapport de la facture, rapport de la quantit茅 restante de la facture, rapport en retard de la facture, rapport excel de la facture exceptionnelle
+        D茅claration du fournisseur par date. Afin que nous puissions voir le montant total de tous les postes non sold茅s dans le syst猫me 脿 cette date pr茅cise, en ne d茅taillant que les comptes GL pour ces postes non sold茅s. Fichier REFER excel 'Rapport requis'
+BrowseInfo heeft een nieuwe odoo / OpenERP-module-apps ontwikkeld
+        Deze module wordt gebruikt voor Print Customer Statement, Print Supplier Statement. Stuur de klantverklaring per e-mail.
+        Toont ook het tabblad met de betalingsupdates dat het achterstallige saldo en het totale achterstallige bedrag laat zien.
+        Afdrukken Achterstallige betaling van klant, achterstallige betaling per e-mail verzenden. Bereken achterstallige saldo op basis van betalingsvoorwaarden ook betalingsherinnering. Toont partnerbalans, klantensaldo, partner leadger, account-follow-up. Betalingswaarschuwing, betalingsherinnering.
+        Klantverklaring afdrukken, Leverancierverklaring afdrukken. Stuur de klantverklaring per e-mail. Verzend de leveranciersverklaring per e-mail. Accounting, partnerafschrift, balans, grootboekrapport, afdrukrekeningoverzicht, boekhoudrapporten, overzichtsrapporten, klantrapport, balansoverzicht, klantensaldo-rapport, klantgrootboek, grootboeksaldo. Credit Statement, debetoverzicht . Betalingsachterstandsverklaring. Accountingverklaring, crediteurenrapporten, debiteurenrapporten. Accountopvolging, accountopvolgingsrapport, follow-uprapport voor betalingen, betalingsopvolging.
+        Grootboekrapport afdrukken volgens klant en leverancier.
+        Rapporteringsfunctie voor het genereren van overzicht van alle transacties door partner (leverancier / klant) (AR / AP), voor periode / Alle credits voor alle afschrijvingen.
+        Debiteurenverslag per periode, Debiteurenverslag per klant. Met alle transactie Krediet, Debet - REFER excelbestand 'Vereist Rapport' AP-AR Verklaring voor een periode.
+        Rapport 'Te betalen per rekening per periode', rapport 'Te betalen rekeningen' per leverancier. Met alle transactiekredieten, debet REFER excelbestand 'Vereist rapport' AP-AR verklaring voor een periode.
+        Klantverklaring op datum. Zodat we op die exacte datum alle openstaande items in het systeem kunnen zien. REFER excelbestand 'Vereist rapport' Statement of Account.
+        Leveranciersoverzicht op datum. Zodat we alle openstaande items in het systeem op die exacte datum kunnen zien. REFER excelbestand 'Vereist rapport'
+        Klantverklaring op datum. Zodat we het totale bedrag voor alle open posten in het systeem op die exacte datum kunnen zien met alleen gedetailleerde GL-rekeningen voor deze open posten. REFER excel-bestand vereist rapport.
+        openstaand factuurrapport, factuurrapport, resterend factuurrapport, achterstallige factuurrapport, openstaande excel-rapport
+        Leveranciersoverzicht op datum. Zodat we het totale bedrag voor alle open posten in het systeem op die exacte datum kunnen zien met alleen gedetailleerde GL-rekeningen voor deze open posten. REFER excel-bestand 'Vereist rapport'
+BrowseInfo entwickelte ein neues odoo / OpenERP Modul Apps
+        Dieses Modul verwenden Sie f眉r Print Customer Statement, Drucken Supplier Statement.Send Customer Statement per E-Mail.
+        Zeigt auch die Registerkarte Zahlungsnachverfolgung an, die 眉berf盲lliges Guthaben und 眉berf盲lligen Gesamtbetrag anzeigen.
+        Drucken 脺berf盲llige Kundenzahlung, 脺berf盲llige Zahlung per E-Mail senden. 脺berf盲lliges Guthaben basierend auf den Zahlungsbedingungen berechnen, au脽erdem eine Zahlungserinnerung senden. Zeigt das Partner-Guthaben, den Kundensaldo, den Partner-Leadger, die Kontobewegung, die Zahlungswarnung und die Zahlungserinnerung an.
+        Kundenerkl盲rung drucken, Lieferantenerkl盲rung drucken. Kundenerkl盲rung per E-Mail senden. Versenden Sie die Lieferantenerkl盲rung per E-Mail. Kontoauszug, Partnererkl盲rung, Bilanz, Hauptbuchbericht, Kontoauszug drucken, Buchhaltungsberichte, Kontoausz眉ge, Kundenbericht, Kontoauszug, Kundensaldobericht, Debitorenbuchhaltung, Kontostand. Kreditnachweis, Sollauszug .Customer 脺berf盲llige Anweisung.Accounting-Anweisung, Creditor Reports, Debtor Reports.Account Follow-up, Konto Follow-up-Bericht, Zahlung Follow-up-Bericht, Zahlung Follow-up.
+        Print Ledger Bericht nach Kunden und Lieferanten.
+        Reporting-Funktion zur Erstellung einer Abrechnung aller Transaktionen nach Partner (Kreditor / Kunde) (AR / AP), f眉r Zeitraum / Alle Kredits alle Belastungen.
+        Kontobewegung nach Periode, Debitorenbericht nach Kunde. Mit allen Transaktion Credit, Debit - REFER Excel-Datei 'Required Report' AP-AR-Anweisung f眉r einen Zeitraum.
+        Kontobuch Bericht nach Zeitraum, Kreditorenbericht nach Kreditor. Mit allen Transaktion Credit, Debit REFER Excel-Datei 'Erforderlicher Bericht' AP-AR-Anweisung f眉r einen Zeitraum.
+        Kundenerkl盲rung nach Datum. Damit wir alle offenen Posten im System an diesem genauen Datum sehen k枚nnen, REFER Excel-Datei 'Erforderliche Bericht' Kontoauszug.
+        Lieferantenerkl盲rung nach Datum Damit wir alle offenen Elemente im System an genau diesem Datum sehen k枚nnen, REFER Excel-Datei 'Erforderlicher Bericht'
+        Kundenerkl盲rung nach Datum. Damit wir den Gesamtbetrag f眉r alle offenen Posten im System an diesem genauen Datum sehen k枚nnen, werden nur die Hauptbuchkonten f眉r diese offenen Posten angezeigt. REFER Excel-Datei erforderlich Bericht.
+        Rechnung ausstehenden Bericht, Rechnung Bericht, Rechnung Restbetrag Bericht, Rechnung 眉berf盲lligen Bericht, Rechnung ausstehenden Excel-Bericht
+        Lieferantenerkl盲rung nach Datum Damit wir den Gesamtbetrag f眉r alle offenen Posten im System an diesem genauen Datum sehen k枚nnen, werden nur die Hauptbuchkonten f眉r diese offenen Posten angezeigt. REFER Excel-Datei 'Erforderlicher Bericht'
+
+Module use for invoice followup Account followup Payment Followup Customer followup for invoice 
+    Send letter for invoice Send followup email Send email for outstading payment send email for overdue payment.
+    Account follow-up management Customer follow-up management Account payment follow-up Account customer follow-up 
+    follow-up payment management followup account management Outstading customer followup outstanding followup outstanding payment followup
+Payment Followup payment reminder bill reminder unpaid bill followup email payment followup late invoices reminder
+invoices reminder invoice reminder invoices followup Late Payment followup overdue followup Late Payment reminder
+Late Payment Was Due Email Reminders for Overdue Payments late payments Email Reminders late payments for Overdue Payments Email late payments
+
+Module gebruik voor factuur follow-up, account follow-up, betaling follow-up, klant follow-up voor factuur, stuur brief voor factuur, stuur follow-up e-mail. Stuur e-mail voor betaling buiten de stad, stuur e-mail voor achterstallige betaling. Beheer opvolging van de klant, Follow-up klantbeheer, Follow-up accountbetaling, Follow-up account klant, follow-uppaymentbeheer, follow-up accountbeheer, follow-up klanten Outstading, uitstekende follow-up, openstaande betalingsupdate
+Modulbenutzung f眉r Rechnungsverfolgung, Kontoverfolgung, Zahlungsnachverfolgung, Kundennachverfolgung f眉r Rechnung, Senden eines Briefes f眉r Rechnung, Senden einer Folge-E-Mail. Senden Sie E-Mails zur Zahlungserfassung, senden Sie E-Mails f眉r 眉berf盲llige Zahlungen.Account-Folgemanagement, Kundenfolgemanagement, Nachverfolgung von Kontozahlungen, Konto-Kunden-Follow-up, Follow-up-Zahlungsverwaltung, Follow-up-Kontoverwaltung, Outstading-Kunden-Followup, hervorragendes Follow-up, ausstehende Zahlungsnachfolge
+Utilisation du module pour le suivi des factures, le suivi du compte, le suivi des paiements, le suivi client pour la facture, l'envoi d'une lettre pour la facture, l'envoi d'un courrier 茅lectronique de suivi. Envoyer un e-mail pour un paiement 茅chu, envoyer un e-mail pour un retard de paiement.Gestion de suivi de compte, suivi de client, suivi de compte, suivi de compte client, gestion des paiements de suivi, gestion de compte de suivi, suivi client Outstading, suivi exceptionnel, suivi de paiement exceptionnel
+Uso del m贸dulo para seguimiento de facturas, Seguimiento de cuentas, Seguimiento de pagos, Seguimiento de clientes para facturas, Enviar carta para factura, Enviar seguimiento de correo electr贸nico. Env铆e un correo electr贸nico para pagos pendientes, env铆e un correo electr贸nico por pagos atrasados. Gesti贸n de seguimiento de cuentas, gesti贸n de seguimiento de clientes, seguimiento de pagos de cuentas, seguimiento de clientes de cuentas, seguimiento de gesti贸n de pagos, seguimiento de gesti贸n de cuentas, seguimiento de clientes sobresaliente, seguimiento excepcional, seguimiento de pago pendienteso do m贸dulo para acompanhamento de faturas, Acompanhamento de conta, Acompanhamento de pagamento, Acompanhamento de cliente para fatura, Enviar carta para fatura, Enviar email de acompanhamento. Enviar e-mail para outstading pagamento, enviar e-mail para pagamento em atraso.Gerenciamento de acompanhamento de conta, gerenciamento de acompanhamento do cliente, acompanhamento de pagamento de conta, acompanhamento de cliente de conta, gerenciamento de pagamento de acompanhamento, gerenciamento de contas de acompanhamento, acompanhamento de cliente Outstading, acompanhamento pendente, acompanhamento de pagamento pendente
+Module gebruik voor factuur follow-up, account follow-up, betaling follow-up, klant follow-up voor factuur, stuur brief voor factuur, stuur follow-up e-mail. Stuur e-mail voor betaling buiten de stad, stuur e-mail voor achterstallige betaling. Beheer opvolging van de klant, Follow-up klantbeheer, Follow-up accountbetaling, Follow-up account klant, follow-uppaymentbeheer, follow-up accountbeheer, follow-up klanten Outstading, uitstekende follow-up, openstaande betalingsupdate丕爻鬲禺丿丕賲 賵丨丿丞 賱賲鬲丕亘毓丞 丕賱賮丕鬲賵乇丞 貙 賲鬲丕亘毓丞 丕賱丨爻丕亘 貙 賲鬲丕亘毓丞 丕賱丿賮毓 貙 賲鬲丕亘毓丞 丕賱毓賲賱丕亍 賱賱賮丕鬲賵乇丞 貙 廿乇爻丕賱 乇爻丕賱丞 賱賱賮丕鬲賵乇丞 貙 廿乇爻丕賱 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷 賱賱賲鬲丕亘毓丞. 廿乇爻丕賱 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷 賱丿賮毓 outstading 貙 廿乇爻丕賱 丕賱亘乇賷丿 丕賱廿賱賰鬲乇賵賳賷 賱賱丿賮毓 丕賱賲鬲兀禺乇丞. 廿丿丕乇丞 賲鬲丕亘毓丞 丕賱丨爻丕亘 貙 廿丿丕乇丞 賲鬲丕亘毓丞 丕賱毓賲賱丕亍 貙 賲鬲丕亘毓丞 丕賱丿賮毓 丕賱丨爻丕亘 貙 賲鬲丕亘毓丞 丕賱毓賲賱丕亍 丕賱丨爻丕亘 貙 廿丿丕乇丞 丕賱丿賮毓 丕賱賲鬲丕亘毓丞 貙 廿丿丕乇丞 丨爻丕亘 丕賱賲鬲丕亘毓丞 貙 賲鬲丕亘毓丞 丕賱毓賲賱丕亍 Outstading 貙 丕賱賲鬲丕亘毓丞 丕賱賲鬲賲賷夭丞 貙 賵賲鬲丕亘毓丞 丕賱丿賮毓 丕賱賲毓賱賯丞
+aistikhdam wahdat limutabaeat alfatwrt , mutabaeat alhisab , mutabaeat aldafe , mutabaeat aleumala' lilfaturat , 'iirsal risalat lilfaturat , 'iirsal albarid al'iiliktrunii lilmutabaeata. 'iirsal albarid al'iiliktrunii lidafe outstading 貙 'iirsal albarid al'iiliktrunii lildafe almuta'akhirati. 'iidarat mutabaeat alhisab , 'iidarat mutabaeat aleumla' , mutabaeat aldafe alhisab , mutabaeat aleumala' alhisab , 'iidarat aldafe almutabaeat , 'iidarat hisab almutabaeat , mutabaeat aleumla' Outstading , almutabaeat almutamayizat , wamutabaeat aldafe almuealaq
+""",
+    'author': 'BrowseInfo',
+    'website': 'https://www.browseinfo.in',
+    'images': [],
+    'depends': ['base', 'account', 'sale_management', 'mail', 'sales_team','sale'],
+    
+    'data': ['security/ir.model.access.csv',
+            'views/report.xml',
+             'views/customer_statement_report.xml',
+             'views/supplier_statement_report.xml',
+             'views/monthly_customer_statement_report.xml',
+             'views/weekly_report.xml',
+             'views/mail_data.xml',
+             'views/res_partner_view.xml',
+             'views/overdue_report.xml',
+             'data/account_email_template_data.xml',
+    ],
+    'installable': True,
+    'price': 41,
+    'currency': "EUR",
+    'auto_install': False,
+    'application': True,
+    "images":["static/description/Banner.png"],
+    'live_test_url':'https://youtu.be/Sg2OC9RLiTY',
+}
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

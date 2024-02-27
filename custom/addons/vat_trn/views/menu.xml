@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            name="Generate FAF Report"
+            action="action_account_csv_export"
+            id="menu_account_csv_export"
+            parent="base_accounting_kit.account_reports_partner"
+            sequence="11"
+            />
+        <menuitem
+            name="Generate Excise FAF Report"
+            action="action_account_csv_export_excise"
+            id="menu_account_csv_export_excise"
+            parent="base_accounting_kit.account_reports_partner"
+            sequence="12"
+            />
+        <menuitem
+            name="VAT Returns"
+            action="action_account_vat_return"
+            id="menu_account_vat_return"
+            parent="base_accounting_kit.account_reports_partner"
+            sequence="10"
+            />
+        <record id="vat_return" model="ir.actions.report">
+            <field name="name">VAT Return</field>
+            <field name="model">vat.returns</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vat_trn.vat_return_report</field>
+            <field name="report_file">vat_trn.vat_return_report</field>
+        </record>
+        <record id="faf_report_xlsx" model="ir.actions.report">
+            <field name="name">FAF Report</field>
+            <field name="model">csv.export</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">vat_trn.faf_report</field>
+            <field name="report_file">vat_trn.faf_report</field>
+        </record>
+        <record id="faf_excise_report_xlsx" model="ir.actions.report">
+            <field name="name">FAF Excise Report</field>
+            <field name="model">csv.export_excise</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">vat_trn.faf_excise_report</field>
+            <field name="report_file">vat_trn.faf_excise_report</field>
+        </record>
+    </data>
+</odoo>

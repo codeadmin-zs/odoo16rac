@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+Inheriting base.view_partner_form to add new fields in customer form
+        <record id="view_tenant_customer_form_extend" model="ir.ui.view">
+            <field name="name">view.tenant.customer.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+<!--Adding new tab 'Rental Vehicle Details -->
+                <xpath expr="//notebook/page[@name='sales_purchases']" position="before">
+                    <page string="Rental Vehicle Details" attrs="{'invisible': ['|',('tenant','!=',True),('on_rental_contract','=',0)]}">
+                            <separator string="Rental Vehicle Details" colspan="4"/>
+                            <field name="rent_details" >
+                                <tree string="Rental Vehicle Details">
+<!--                                    <field name="rent_order_id" />-->
+                                    <field name="name" string="Lease id"/>
+                                    <field name="vehicle_id" string="Vehicle Id"/>
+                                    <field name="date_start"/>
+                                    <field name="date_cancel" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

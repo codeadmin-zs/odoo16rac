@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <data>
+         <record id="fleet_rental.view_report_car_rental" model="ir.ui.view">
+            <field name="name">report.fleet.rental.pivot</field>
+            <field name="model">report.fleet.rental</field>
+            <field name="arch" type="xml">
+                <pivot string="Fleet Rental Analysis" display_quantity="true" disable_linking="True">
+                    <field name="amount_type" type="col" />
+                    <field name="product_id" type="row"/>
+                    <field name="cost" type="measure"/>
+                 </pivot>
+             </field>
+        </record>
+        <record id="fleet_costs_report_view_search" model="ir.ui.view">
+            <field name="name">report.fleet.rental.search</field>
+            <field name="model">report.fleet.rental</field>
+            <field name="arch" type="xml">
+                <search string="Fleet Costs Analysis">
+                    <field name="rent_start_date"/>
+                    <field name="rent_end_date"/>
+                    <filter string="Total Rent" name="total_rent" domain="[('amount_type', '=', 'total_rent')]"/>
+                    <filter string="Paid Amount" name="paid_amount" domain="[('amount_type', '=', 'paid_amount')]"/>
+                    <separator/>
+                    <filter name="filter_date_start" date="rent_start_date" string="Date" default_period="this_month"/>
+                    <filter name="current_month" string="Current Month" domain="[
+                    ('rent_end_date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('rent_start_date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Model" name="v_brand" context="{'group_by':'v_brand'}"/>
+                        <filter string="Customer" name="customer_id" context="{'group_by':'customer_id'}"/>
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+                        <filter string="Vehicle" name="vehicle_id" context="{'group_by':'vehicle_id'}"/>
+                        <filter string="Vehicle Categories" name="product_id" context="{'group_by':'product_id'}"/>
+                        <filter string="Rental Terms" name="rental_terms" context="{'group_by':'rental_terms'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

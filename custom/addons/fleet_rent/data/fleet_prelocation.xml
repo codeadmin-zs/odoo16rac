@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Pre Registration Location -->
+        <record id="fleet_pre_location" model="stock.location">
+            <field name="name">Pre Registration Location</field>
+            <field name="location_id" model="stock.location" eval="obj().env.ref('stock.warehouse0').view_location_id.id"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <record id="fleet_pre_location_operation_type" model="stock.picking.type">
+            <field name="name">Pre Registration Receiving</field>
+            <field name="sequence_id">5</field>
+            <field name="sequence_code">IN</field>
+            <field name="code">incoming</field>
+            <field name="show_operations">0</field>
+            <field name="default_location_dest_id" ref="fleet_pre_location"/>
+        </record>
+
+        <delete model="fleet.vehicle.model" id="fleet.model_corsa"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classsls"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classslk"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classs"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classr"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classglk"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classgl"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classm"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classe"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classcls"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classcl"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classc"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classb"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_classa"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_seriehybrid"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_seriem"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_seriez4"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_seriex"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_serie7"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_serie6"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_serie5"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_serie3"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_serie1"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_tt"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_q7"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_q5"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_q3"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a8"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a7"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a6"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a5"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a4"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a3"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_a1"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_ampera"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_antara"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_mokka"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_insignia"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_zafiratourer"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_zafira"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_astragtc"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_meriva"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_combotour"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_agila"/>
+        <delete model="fleet.vehicle.model" id="fleet.model_astra"/>
+    </data>
+
+    <data noupdate="1">
+        <record id="fleet_rental.vehicle_state_inactive" model="fleet.vehicle.state">
+            <field name="name">Inactive</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="fleet.fleet_vehicle_state_registered" model="fleet.vehicle.state">
+            <field name="name">Registered</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="fleet_rental.vehicle_state_active" model="fleet.vehicle.state">
+            <field name="name">Available</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="fleet.fleet_vehicle_state_new_request" model="fleet.vehicle.state">
+            <field name="name">Reserved</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="fleet_rental.vehicle_state_rent" model="fleet.vehicle.state">
+            <field name="name">Rent</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="fleet_rental.vehicle_state_inshop" model="fleet.vehicle.state">
+            <field name="name">In shop</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="fleet_rental.vehicle_state_sold" model="fleet.vehicle.state">
+            <field name="name">Sold</field>
+            <field name="sequence">7</field>
+        </record>
+        <record id="vehicle_state_replaced" model="fleet.vehicle.state">
+            <field name="name">Replaced</field>
+            <field name="sequence">8</field>
+        </record>
+         <record id="vehicle_state_in_workshop" model="fleet.vehicle.state">
+            <field name="name">In Workshop</field>
+            <field name="sequence">9</field>
+        </record>
+        <record id="vehicle_state_in_scrap" model="fleet.vehicle.state">
+            <field name="name">Scrap</field>
+            <field name="sequence">10</field>
+        </record>
+        <delete model="fleet.vehicle.state" id="fleet.fleet_vehicle_state_downgraded"/>
+        <delete model="fleet.vehicle.state" id="fleet.fleet_vehicle_state_to_order"/>
+    </data>
+</odoo>

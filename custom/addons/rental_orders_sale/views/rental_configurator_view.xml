@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="rental_configurator_view_form" model="ir.ui.view">
+        <field name="name">rental.configurator.view.form</field>
+        <field name="model">rental.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+            <!-- TODO change apply button string if edit mode?-->
+                <field name="company_id" invisible="1"/>
+                <field name="pricelist_id" invisible="1"/>
+<!--                <h1>-->
+<!--                    <field name="product_id" readonly="1" nolabel="1"-->
+<!--                        options="{'no_open': True}"/>-->
+<!--                </h1>-->
+                <group name="rental_configurator">
+                    <group name="rental_specs">
+                        <label for="rental_type" string="Rental Type" invisible="True"/>
+                        <div class="o_row">
+                            <field name="rental_type" invisible="True"/>
+                        </div>
+                        <label for="product_id" string="Vehicle"/>
+                        <div class="o_row">
+                            <field name="product_id" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <label for="pickup_date" string="Pickup Date"/>
+                        <div class="o_row">
+                            <field name="pickup_date" />
+                            <!-- <span> to </span>
+                            <field name="return_date" widget="daterange" options="{'related_start_date': 'pickup_date'}"/> -->
+                        </div>
+                        <label for="return_date" string="Return Date"/>
+                        <div class="o_row">
+                            <field name="return_date" />
+                        </div>
+                        <!-- <label for="duration"/> -->
+                        <label for="duration_unit" string="Contract Type"/>
+                        <div class="o_row">
+                            <field name="duration_unit" />
+                        </div>
+                        <label for="duration" string="Duration"/>
+                        <div>
+                            <field name="duration" />
+                        </div>
+                    </group>
+                    <group name="rental_pricing">
+                        <label for="quantity"/>
+                        <div name="qty_to_reserve">
+                            <field name="quantity" class="oe_inline col-lg-3 text-left pl-0"/>
+                            <field name="uom_id" class="oe_inline" options="{'no_open':1}"/>
+                        </div>
+                        <field name="pricing_id" invisible="1"/>
+                        <label for="price_unit"/>
+                        <div>
+                            <field name="price_unit"/>
+                        </div>
+                        <label for="discount_percentage"/>
+                        <div>
+                            <field name="discount_percentage"/>
+                        </div>
+                         <label for="new_price_unit"/>
+                        <div>
+                            <field name="new_price_unit"/>
+                        </div>
+                        <label for="unit_price"/>
+                        <div>
+                            <field name="unit_price"/>
+                            <field name="additional_charges" invisible="1"/>
+                            <!-- <field name="lot_ids" widget="many2many_tags"/> -->
+                            <field name="currency_id" invisible="1"/><!--
+                            <field name="pricing_explanation" class="text-muted"/> -->
+                        </div>
+<!--                        <field name="lot_ids" invisible="1"/>-->
+                        <label for="license_plate_no"/>
+                        <div>
+                            <field name="license_plate_no" widget="many2many_tags" string="Plate Numbers" options="{'create': false, 'create_edit': false}"
+                            attrs="{'required': [('rental_type', '!=', 'long_term')]}"/>
+                        </div>
+                    </group>
+                </group>
+                <notebook name="debug" groups="base.group_no_one" invisible="1">
+                    <page string="Rental">
+                        <group>
+                            <field name="rental_order_line_id" string="Edited Rental Line"/>
+                        </group>
+                    </page>
+                </notebook>
+                <!--               <notebook>
+                    <page name="additional_charges" string="Additional Charges">
+                        <separator colspan="4" string="Additional Charges"/>
+                        <field name="additional_charges_ids" context="{'default_quantity': quantity,'default_duration':duration,'default_duration_unit':duration_unit,'default_pickup_date':pickup_date,'default_return_date':return_date}">
+                            <tree editable="bottom">
+                                <field name="additional_charge_product_id" domain="[('rent_ok','=',True),('fleet_ok','=',False)]"/>
+                                <field name="quantity" invisible="1"/>
+                                <field name="duration" invisible="1"/>
+                                <field name="duration_unit" invisible="1"/>
+                                <field name="pricing_id" invisible="1"/>
+
+                                <field name="pickup_date" invisible="1"/>
+                                <field name="return_date" invisible="1"/>
+                                <field name="lot_ids" widget="many2many_tags" string="Serial Numbers"/>
+                                <field name="cost" sum="Total Additional Charges"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook> -->
+                <footer>
+                    <!-- <button string="Add" class="btn-primary" special="save"/> -->
+                    <!-- <button string="Save" class="btn-primary"/> -->
+                    <button name="set_rental_order_line" string="Save" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

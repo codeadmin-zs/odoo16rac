@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Renew Tenancy Wizard Form View  -->
+        <record model="ir.ui.view" id="invoice_schedule_warning_form">
+            <field name="name">invoice.schedule.warning.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="You already have draft invoice(s) for this rental.Do you want to delete and create new" />
+                    <group>
+	                    <!-- <field name="reason" /> -->
+                    </group>
+                    <footer>
+		                <button name="replace_invoices" type="object" string="Continue" class="oe_highlight"/>
+		                <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

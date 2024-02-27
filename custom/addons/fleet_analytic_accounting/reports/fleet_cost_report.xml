@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_inherit_search" model="ir.ui.view">
+        <field name="name">fleet.vehicle.cost.view.search.expand.filter</field>
+        <field name="model">fleet.vehicle.cost.report</field>
+        <field name="inherit_id" ref="fleet.fleet_costs_report_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/group" position="inside">
+                <filter string="Vehicle Categories" name="product_id" context="{'group_by':'product_id'}"/>
+                <filter string="Fuel" name="fuel_type" context="{'group_by':'fuel_type'}"/>
+            </xpath>
+            <xpath expr="//search/filter[@name='contract']" position="replace">
+                <filter string="Depreciation" name="depreciation" domain="[('cost_type', '=', 'depreciation')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

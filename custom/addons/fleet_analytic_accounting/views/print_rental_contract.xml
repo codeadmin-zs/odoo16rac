@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_print_rental_contract" model="ir.actions.report">
+            <field name="name">Rental Contract</field>
+            <field name="model">account.analytic.account</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">fleet_analytic_accounting.report_rental_contract</field>
+            <field name="report_file">fleet_analytic_accounting.report_rental_contract</field>
+            <field name="print_report_name">'RC_%s_%s' % (object.company_id.name[0:6],object.name)</field>
+<!--            <field name="print_report_name">'Certification - %s' % (object.survey_id.display_name)</field>-->
+            <field name="binding_model_id" ref="analytic.model_account_analytic_account"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

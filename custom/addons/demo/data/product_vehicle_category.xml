@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="model_Discovery" model="fleet.vehicle.model">
+            <field name="name">Discovery</field>
+            <field name="brand_id" ref="fleet.brand_land_rover" />
+            <field name="category_vehicle_fuel_id" ref="vehicle_fuel_petrol"/>
+            <field name="fuel_tank_capacity">55</field>
+            <field name="category_vehicle_class_id" ref="fleet_rent.class_economy" />
+            <field name="category_vehicle_transmission_id" ref="vehicle_transmission_auto_awd" />
+            <field name="vehicle_type">car</field>
+        </record>
+    </data>
+</odoo>

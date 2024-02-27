@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <!--        <record id="uae_account_4000" model="account.account">-->
+        <record id="zt_rac_cri_1001" model="account.account">
+            <field name="name">Vehicle Asset</field>
+            <field name="code">111112</field>
+            <field name="account_type">asset_fixed</field>
+            <field name="internal_group">asset</field>
+            <field name="reconcile">False</field>
+        </record>
+
+        <!--custom account_depreciation_expense_id-->
+        <record id="zt_rac_cri_5001" model="account.account">
+            <field name="name">Acc. Depreciation of Motor Vehicles</field>
+            <field name="code">511112</field>
+            <field name="account_type">expense_depreciation</field>
+            <field name="internal_group">expense</field>
+            <field name="reconcile">False</field>
+        </record>
+
+        <!--        <record id="uae_account_4005" model="account.account">-->
+        <!--        id uae_account_4005 changed to zt_rac_cri_4005-->
+
+        <record id="zt_rac_cri_4005" model="account.account">
+            <field name="name">Car Rental Income</field>
+            <field name="code">411110</field>
+            <field name="account_type">expense_direct_cost</field>
+            <field name="internal_group">income</field>
+            <field name="reconcile">False</field>
+        </record>
+
+        <!--        custom vehicle Vehicle Expenses id-->
+        <record id="zt_rac_cri_5005" model="account.account">
+            <field name="name">Vehicle Expenses</field>
+            <field name="code">511113</field>
+            <field name="account_type">expense</field>
+            <field name="internal_group">expense</field>
+            <field name="reconcile">False</field>
+        </record>
+
+        <record id="vehicle_asset_journal2" model="account.journal">
+            <field name="name">Vehicle Asset</field>
+            <field name="code">VASST</field>
+            <field name="type">general</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="car_rental_account_analytic_plan" model="account.analytic.plan">
+            <field name="name">test_plan</field>
+            <field name="default_applicability">optional</field>
+            <field name="company_id">1</field>
+            <field name="color">8</field>
+            <field name="parent_path">-1/</field>
+        </record>
+
+        <record id="car_rental_analytic_account" model="account.analytic.account">
+            <field name="name">Car Rental</field>
+            <field name="plan_id" ref="car_rental_account_analytic_plan"/>
+        </record>
+
+        <record id="fleet_vehicle_asset_type1" model="account.asset.category">
+            <field name="name">Vehicle Asset</field>
+            <field name="journal_id" ref="fleet_rent.vehicle_asset_journal2"/>
+            <field name="account_asset_id" ref="zt_rac_cri_1001"/>
+            <field name="account_depreciation_id" ref="zt_rac_cri_1001"/>
+            <field name="account_depreciation_expense_id" ref="zt_rac_cri_5001"/>
+            <field name="account_analytic_id" ref="car_rental_analytic_account"/>
+            <field name="method_time">number</field>
+            <field name="method_number">4</field>
+            <field name="method_period">12</field>
+            <field name="method">linear</field>
+            <field name="price">0.0</field>
+        </record>
+    </data>
+</odoo>
+
+
+<!--    <data noupdate="1">-->
+<!--        <record id="zt_rac_cri_1001" model="account.account">-->
+<!--            <field name="name">Vehicle Asset</field>-->
+<!--            <field name="code">100002</field>-->
+<!--            <field name="user_type_id" ref="account.data_account_type_fixed_assets"/>-->
+<!--            <field name="internal_type">other</field>-->
+<!--            <field name="reconcile">False</field>-->
+<!--        </record>-->
+<!--        <record id="uae_account_4005" model="account.account">-->
+<!--            <field name="name">Car Rental Income</field>-->
+<!--            <field name="code">411110</field>-->
+<!--            <field name="user_type_id" ref="account.data_account_type_revenue"/>-->
+<!--            <field name="internal_type">other</field>-->
+<!--            <field name="reconcile">False</field>-->
+<!--        </record>-->
+<!--        <record id="vehicle_asset_journal2" model="account.journal">-->
+<!--            <field name="name">Vehicle Asset</field>-->
+<!--            <field name="code">VASST</field>-->
+<!--            <field name="type">general</field>-->
+<!--            <field name="sequence">100</field>-->
+<!--        </record>-->
+<!--        <record id="car_rental_analytic_account" model="account.analytic.account">-->
+<!--            <field name="name">Car Rental</field>-->
+<!--        </record>-->
+<!--        <record id="fleet_vehicle_asset_type1" model="account.asset.category">-->
+<!--            <field name="name">Vehicle Asset</field>-->
+<!--            <field name="journal_id" ref="fleet_rent.vehicle_asset_journal2"/>-->
+<!--            <field name="account_asset_id" ref="uae_account_4000" />-->
+<!--            <field name="account_depreciation_id" ref="uae_account_4000" />-->
+<!--            <field name="account_depreciation_expense_id" ref="l10n_ae.uae_account_3743" />-->
+<!--            <field name="account_analytic_id" ref="car_rental_analytic_account" />-->
+<!--            <field name="method_time">number</field>-->
+<!--            <field name="method_number">4</field>-->
+<!--            <field name="method_period">12</field>-->
+<!--            <field name="method">linear</field>-->
+<!--        </record>-->
+<!--    </data>-->

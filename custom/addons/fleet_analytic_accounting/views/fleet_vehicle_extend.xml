@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="fleet_vehicle_online_booking_extend" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//form" position="attributes">-->
+<!--                <attribute name="create">0</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='vin_sn']" position="after" >
+                <field name="model_year"/>
+                <field name="vehicle_prodcut_template_id" string="Vehicle Type" invisible="1"/>
+                <field name="vehicle_type_str" string="Vehicle Type"/>
+                <field name="location" />
+            </xpath>
+            <xpath expr="//field[@name='released_date']" position="before" >
+                <field name="online_booking" class="oe_inline"/>
+<!--                <field name="registration_number" />-->
+            </xpath>
+            <xpath expr="//field[@name='released_date']" position="after" >
+                <field name="registration_expiry" />
+                <field name="registration_cost" />
+            </xpath>
+            <xpath expr="//field[@name='active_contract']" position="after" >
+                <field name="color_vehicle"  string="Color"/>
+<!--                widget="colorpicker"-->
+            </xpath>
+            <xpath expr="//field[@name='acquisition_date']" position="attributes" >
+                <attribute name="string">Acquisition Date</attribute>
+            </xpath>
+            <xpath expr="//field[@name='released_date']" position="attributes" >
+                <attribute name="readonly">1</attribute>
+                <attribute name="string">Registration Date</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reg_id']" position="attributes" >
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id='fleet.fleet_vehicle_action' model='ir.actions.act_window'>
+        <field name="name">Vehicles</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name ="view_mode">kanban,tree,form,graph,calendar</field>
+        <field name="context">{'create': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Ready to manage your fleet more efficiently
+            </p><p>
+                Let's create your first vehicle.
+            </p>
+        </field>
+    </record>
+<!--    Inheritance Filter here-->
+     <record id="fleet_vehicle_view_search_inherit" model="ir.ui.view">
+            <field name="name">fleet.vehicle.search.inherit</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_search"/>
+            <field name="arch" type="xml">
+                <!-- New filters -->
+                <xpath expr="//filter[@name='available']" position="replace">
+                    <filter string="Available" name="available" domain="[('state_id.name', '=', 'Available')]"/>
+                    <filter string="In Workshop" name="in workshop" domain="[('state_id.name', '=', 'In Workshop')]"/>
+                    <filter string="In shop" name="in shop" domain="[('state_id.name', '=', 'In shop')]"/>
+                    <filter string="Registered" name="registered" domain="[('state_id.name', '=', 'Registered')]"/>
+                    <filter string="Inactive" name="inactive" domain="[('state_id.name', '=', 'Inactive')]"/>
+                    <filter string="Rent" name="rent" domain="[('state_id.name', '=', 'Rent')]"/>
+                    <filter string="Sold" name="sold" domain="[('state_id.name', '=', 'Sold')]"/>
+                    <filter string="Reserved" name="reserved" domain="[('state_id.name', '=', 'Reserved')]"/>
+                    <filter string="Replaced" name="replaced" domain="[('state_id.name', '=', 'Replaced')]"/>
+                </xpath>
+                <!-- Hide filters -->
+                <xpath expr="//filter[@name='planned']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='alert_true']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group/filter[@name='groupby_make']" position="after">
+                    <filter string="Type" name="groupby_type" context="{'group_by': 'vehicle_type_str'}"/>
+                </xpath>
+            </field>
+        </record>
+<!-- Hide create button from Kanban View -->
+<!--<record id="product_template_kanban_view_hide_create" model="ir.ui.view">-->
+<!--    <field name="name">product.template.kanban.inherit.hide.create</field>-->
+<!--    <field name="model">product.template</field>-->
+<!--    <field name="inherit_id" ref="product.product_template_kanban_view"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <xpath expr="//kanban" position="attributes">-->
+<!--            <attribute name="create">0</attribute>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--    &lt;!&ndash; Hide create button from Kanban View &ndash;&gt;-->
+<!--</record>-->
+<!--    <record id="product_template_list_view_hide_create" model="ir.ui.view">-->
+<!--    <field name="name">product.template.list.inherit.hide.create</field>-->
+<!--    <field name="model">product.template</field>-->
+<!--    <field name="inherit_id" ref="product.product_template_tree_view"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <xpath expr="//tree" position="attributes">-->
+<!--            <attribute name="create">0</attribute>-->
+<!--        </xpath>-->
+<!--    </field>-->
+<!--</record>-->
+<!--    Hide Lot/putaway Here-->
+<!--<record model="ir.ui.view" id="product_template_form_view_procurement_button_inherit">-->
+<!--    <field name="name">product.template_procurement.inherit</field>-->
+<!--    <field name="model">product.template</field>-->
+<!--    <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <data>-->
+<!--            &lt;!&ndash; xpath to target the "Putaway Rules" button &ndash;&gt;-->
+<!--            <xpath expr="//button[@name='action_view_related_putaway_rules']" position="attributes">-->
+<!--                &lt;!&ndash; Set the "invisible" attribute to hide the button &ndash;&gt;-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//button[@name='action_open_product_lot']" position="attributes">-->
+<!--                &lt;!&ndash; Set the "invisible" attribute to hide the button &ndash;&gt;-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+<!--        </data>-->
+<!--    </field>-->
+<!--</record>-->
+<!--&lt;!&ndash;    update_quantity/ Re ordering hiding&ndash;&gt;-->
+<!--    <record model="ir.ui.view" id="product_template_form_view_procurement_button_inherit_update_quantity">-->
+<!--    <field name="name">product.template_procurement.inherit.update.quantity</field>-->
+<!--    <field name="model">product.template</field>-->
+<!--    <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <data>-->
+<!--            <xpath expr="//button[@name='action_update_quantity_on_hand']" position="attributes">-->
+<!--                &lt;!&ndash; Set the "invisible" attribute to hide the button &ndash;&gt;-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//button[@name='action_view_orderpoints']" position="attributes">-->
+<!--                &lt;!&ndash; Set the "invisible" attribute to hide the button &ndash;&gt;-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+<!--        </data>-->
+<!--    </field>-->
+<!--</record>-->
+
+
+    <!--    Repair/Maintenance -->
+<!--    <record model='ir.ui.view' id='fleet_vehicle_log_services_view_inherit'>-->
+<!--	        <field name="name">fleet.vehicle.log.services.view.inherit</field>-->
+<!--	        <field name="model">fleet.vehicle.log.services</field>-->
+<!--	        <field name="inherit_id" ref="fleet_rent.fleet_vehicle_log_services_view" />-->
+<!--	        <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='vechical_location_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//group/group[2]/label[@for='next_service_odometer']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='next_service_odometer']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='odometer_unit']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='next_service_date']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//group/group[1]/field[@name='purchaser_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--    </record>-->
+
+
+
+<!--Hide sale order in sales module-->
+    <record id="view_quotation_tree_with_onboarding_hide_create" model="ir.ui.view">
+        <field name="name">view.quotation.tree.with.onboarding.hide.create</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_view_sale_order_kanban_hide_create" model="ir.ui.view">
+        <field name="name">sale.view.sale.order.kanban.hide.create</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+<!--       add time stamp-->
+<record id="fleet_vehicle_assignation_log_view_tree_inherited" model="ir.ui.view">
+    <field name="name">fleet.vehicle.assignation.log.view.tree.inherited</field>
+    <field name="model">fleet.vehicle.assignation.log</field>
+    <field name="inherit_id" ref="fleet.fleet_vehicle_assignation_log_view_list"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='date_start']" position="attributes">
+            <field name="date_start" widget="datetime_timestamp" />
+        </xpath>
+        <xpath expr="//field[@name='date_end']" position="attributes">
+            <field name="date_end" widget="datetime_timestamp" />
+        </xpath>
+    </field>
+</record>
+
+    <record id="fleet_vehicle_log_services_view_form_inherited" model="ir.ui.view">
+    <field name="name">fleet.vehicle.log.services.view.form.inherited</field>
+    <field name="model">fleet.vehicle.log.services</field>
+    <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='vendor_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+</odoo>

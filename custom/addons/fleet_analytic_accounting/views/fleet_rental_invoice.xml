@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_extend" model="ir.ui.view">
+            <field name="name">account.move.form.extend</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+                    <field name="description" />
+                </xpath>
+                <xpath expr="//tree/control" position="replace"></xpath>
+            </field>
+        </record>
+<!--        <record model="ir.ui.view" id="create_invoice_form">-->
+<!--            <field name="name">tenancy.rent.schedule.form</field>-->
+<!--            <field name="model">tenancy.rent.schedule</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Invoice Confirmation">-->
+<!--                    <footer>-->
+<!--                        <button name="create" string="Modify" type="object" class="btn-primary"/>-->
+<!--                        <button string="Cancel" class="btn-default" special="cancel"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+<!--        <record id="action_create_invoice" model="ir.actions.act_window">-->
+<!--            <field name="name">Create Invoice</field>-->
+<!--            <field name="res_model">tenancy.rent.schedule</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="create_invoice_form"/>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+    </data>
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Closing Tenancy Wizard Form View  -->
+        <record model="ir.ui.view" id="view_vehicle_close_wizard">
+            <field name="name">vehicle.rent.close.form</field>
+            <field name="model">vehicle.rent.close</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Closing Rent"/>
+                    <group>
+                        <field name="vehicle_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Tolls And Fines" name="tolls_and_fines">
+                                <separator string="Tolls Charges" name="tolls"/>
+                                <group name="toll_charges">
+                                    <field name="additional_toll_ids">
+                                        <tree editable="bottom" create="true" delete="true">
+                                            <field name="salik_product_id" />
+                                            <field name="description" />
+                                            <field name="time_date" />
+                                            <field name="unit_price"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <separator string="Fine Charges" name="fines"/>
+                                <group name="fine_charges">
+                                    <field name="additional_fine_ids">
+                                        <tree editable="bottom" create="true" delete="true">
+                                            <field name="fine_product_id" />
+                                            <field name="description" />
+                                            <field name="time_date" />
+                                            <field name="unit_price"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                    <group>
+                        <field name="salik" invisible="1"/>
+                        <field name="fines" invisible="1"/>
+                        <field name="total_other_charges_cost" invisible="1"/>
+                        <field name="can_be_invoiced" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="confirm_rent_close" type="object" string="Confirm" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--  Action for Close Tenancy Wizard -->
+        <record model="ir.actions.act_window" id="action_vehicle_handover_wizard">
+            <field name="name">Rent Closing Wizard</field>
+            <field name="res_model">vehicle.rent.close</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

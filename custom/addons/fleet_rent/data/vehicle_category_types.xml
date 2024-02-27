@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record model="vehicle.category" id="compact_suv">
+            <field name="name">Compact SUV</field>
+        </record>
+        <record model="vehicle.category" id="Compact_saloon_hatchback">
+            <field name="name">Compact Saloon/Hatchback</field>
+        </record>
+        <record model="vehicle.category" id="economy_saloon_hatchback">
+            <field name="name">Economy Saloon/Hatchback</field>
+        </record>
+        <record model="vehicle.category" id="full_size_suv">
+            <field name="name">Full Size SUV</field>
+        </record>
+        <record model="vehicle.category" id="full_size_saloon">
+            <field name="name">Full Size Saloon</field>
+        </record>
+        <record model="vehicle.category" id="hatchback">
+            <field name="name">Hatchback</field>
+        </record>
+        <record model="vehicle.category" id="luxury_suv">
+            <field name="name">Luxury SUV</field>
+        </record>
+            <record model="vehicle.category" id="mid_size_saloon_hatchback">
+            <field name="name">Mid size Saloon/Hatchback</field>
+        </record>
+        <record model="vehicle.category" id="premium_suv">
+            <field name="name">Premium SUV</field>
+        </record>
+        <record model="vehicle.category" id="premium_saloon">
+            <field name="name">Premium Saloon</field>
+        </record>
+        <record model="vehicle.category" id="class_economy">
+            <field name="name">Economy</field>
+        </record>
+ </data>
+</odoo>

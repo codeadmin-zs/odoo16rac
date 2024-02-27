@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upload_excel_file_of_fines_view" model="ir.ui.view">
+        <field name="name">Upload Excel files of Fines</field>
+        <field name="model">vehicle.rental.bulk.upload</field>
+        <field name="arch" type="xml">
+            <form string="Upload Excel files">
+
+                <group col="4">
+                    <button name="download_file" type="object" string="Download Template File" class="oe_highlight"/>
+                </group>
+                <group col="4">
+                    <field name="updated_date"/>
+                    <field name="fines_file"/>
+                </group>
+                <footer>
+                    <button name="upload_file" type="object" string="Upload File" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_upload_excel_files" model="ir.actions.act_window">
+        <field name="name">Upload Excel files of Fines</field>
+        <field name="res_model">vehicle.rental.bulk.upload</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="upload_excel_file_of_fines_view"/>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_upload_excel_file"
+                  name="Excel File of Fines"
+                  sequence="100"
+                  action="action_upload_excel_files"
+                  groups="fleet.fleet_group_manager"
+                  parent="fleet.fleet_configuration"/>
+
+    <data>
+        <record id="download_fine_and_toll_template" model="ir.actions.report">
+            <field name="name">Fine and Toll Template</field>
+            <field name="model">vehicle.rental.bulk.upload</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">fleet_analytic_accounting.fine_and_toll_template</field>
+            <field name="report_file">fleet_analytic_accounting.fine_and_toll_template</field>
+        </record>
+    </data>
+</odoo>
