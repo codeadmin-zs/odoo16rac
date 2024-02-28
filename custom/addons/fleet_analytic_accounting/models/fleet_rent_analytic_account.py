@@ -854,7 +854,7 @@ class AccountAnalyticAccount(models.Model):
             raise ValidationError("You Can't Enter Rental Vehicle Rent Less Than One(1).")
 
         if self.tenant_id.tenant and not self.tenant_id.is_driver and not self.additional_drivers_ids:
-            raise Warning("Please Enter Driver Details.")
+            raise ValidationError("Please Enter Driver Details.")
         if not self.additional_drivers_ids:
             if self.tenant_id.is_driver:
                 line_object = self.env['fleet.additional.drivers']

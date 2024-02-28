@@ -154,6 +154,10 @@
 <!--                            </form>-->
 <!--                        </field>-->
 <!--                    </page>-->
+              <xpath expr="//group/group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <xpath expr="//notebook/page" position="before">
                     <page string="Insurance Terms" name="insurance">
                         <group>
@@ -168,7 +172,6 @@
 <!--                                <field name="payment" />-->
 <!--&lt;!&ndash;                                <field name="payment_deduction" />&ndash;&gt;-->
 <!--                            </group>-->
-
                             <group col="2">
                                 <field name="policy_number" attrs="{'readonly':[('state','in',('write-off'))]}"/>
                                 <field name="payment_in_percent"/>
@@ -177,99 +180,95 @@
                             </group>
                         </group>
                     </page>
+                    <page string="Attachments">
+<!--                        <field name="fleet_attach_ids" nolabel="1" attrs="{'readonly':[('state','in',('write-off'))]}"/>-->
+                        <field name="fleet_attach_ids" nolabel="1" />
+                    </page>
+                    <page string="History">
+                        <group colspan="4" col="6">
+                            <field name="is_color_set" invisible="1"/>
+                            <field name="is_engine_set" invisible="1"/>
+                            <field name="is_vin_set" invisible="1"/>
+                            <field name="is_tire_size_set" invisible="1"/>
+                            <field name="is_tire_srno_set" invisible="1"/>
+                            <field name="is_tire_issue_set" invisible="1"/>
+                            <field name="is_battery_size_set" invisible="1"/>
+                            <field name="is_battery_srno_set" invisible="1"/>
+                            <field name="is_battery_issue_set" invisible="1"/>
+                        </group>
+<!--                        <group colspan="5" col="5">-->
+<!--                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}"  icon="fa-gears" class="oe_stat_button" />-->
+<!--                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" />-->
+<!--                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" />-->
+<!--                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button"  />-->
+<!--                        </group>-->
+<!--                        <group colspan="5" col="5">-->
+<!--                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>-->
+<!--                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>-->
+<!--                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>-->
+<!--                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>-->
+<!--                        </group>-->
+                        <separator string="Engine History" colspan="4"/>
+                        <field name="engine_history_ids" nolabel="1">
+                            <tree>
+                                <field name="previous_engine_no"/>
+                                <field name="new_engine_no"/>
+                                <field name="changed_date"/>
+                                <field name="workorder_id"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                        <separator string="Vin History" colspan="4" invisible="1"/>
+                        <field name="vin_history_ids" nolabel="1" invisible="1">
+                            <tree>
+                                <field name="previous_vin_no"/>
+                                <field name="new_vin_no"/>
+                                <field name="changed_date"/>
+                                <field name="workorder_id"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                        <separator string="Color History" colspan="4"/>
+                        <field name="color_history_ids" nolabel="1">
+                            <tree>
+                                <field name="previous_color_id"/>
+                                <field name="current_color_id"/>
+                                <field name="changed_date"/>
+                                <field name="workorder_id"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                        <separator string="Tire History" colspan="4"/>
+                        <field name="tire_history_ids" nolabel="1">
+                            <tree>
+                                <field name="previous_tire_size"/>
+                                <field name="new_tire_size"/>
+                                <field name="previous_tire_sn"/>
+                                <field name="new_tire_sn"/>
+                                <field name="previous_tire_issue_date"/>
+                                <field name="new_tire_issue_date"/>
+                                <field name="workorder_id"/>
+                                <field name="changed_date"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                        <separator string="Battery History" colspan="4"/>
+                        <field name="battery_history_ids" nolabel="1">
+                            <tree>
+                                <field name="previous_battery_size"/>
+                                <field name="new_battery_size"/>
+                                <field name="previous_battery_sn"/>
+                                <field name="new_battery_sn"/>
+                                <field name="previous_battery_issue_date"/>
+                                <field name="new_battery_issue_date"/>
+                                <field name="workorder_id"/>
+                                <field name="changed_date"/>
+                                <field name="note"/>
+                            </tree>
+                        </field>
+                    </page>
             </xpath>
 
-            <xpath expr="//group/group[1]" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-<!--&lt;!&ndash;                    <page string="Attachments">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        <field name="fleet_attach_ids" nolabel="1" attrs="{'readonly':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="fleet_attach_ids" nolabel="1" />&ndash;&gt;-->
-<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <page string="History">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <group colspan="4" col="6">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_color_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_engine_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_vin_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_tire_size_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_tire_srno_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_tire_issue_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_battery_size_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_battery_srno_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <field name="is_battery_issue_set" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </group>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        <group colspan="5" col="5">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}"  icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" />&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button"  />&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        </group>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        <group colspan="5" col="5">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Engine" context="{'history':'engine'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Color" context="{'history':'color'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Tire" context="{'history':'tire'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                            <button name="update_history" type="object" string="Update Battery" context="{'history':'battery'}" icon="fa-gears" class="oe_stat_button" groups="group_fleet_history" attrs="{'invisible':[('state','in',('write-off'))]}"/>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        </group>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                        <separator string="Engine History" colspan="4"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="engine_history_ids" nolabel="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_engine_no"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_engine_no"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <separator string="Vin History" colspan="4" invisible="1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="vin_history_ids" nolabel="1" invisible="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_vin_no"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_vin_no"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <separator string="Color History" colspan="4"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="color_history_ids" nolabel="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_color_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="current_color_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <separator string="Tire History" colspan="4"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="tire_history_ids" nolabel="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_tire_size"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_tire_size"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_tire_sn"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_tire_sn"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_tire_issue_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_tire_issue_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <separator string="Battery History" colspan="4"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <field name="battery_history_ids" nolabel="1">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_battery_size"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_battery_size"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_battery_sn"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_battery_sn"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="previous_battery_issue_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="new_battery_issue_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="workorder_id"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="changed_date"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <field name="note"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </tree>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </field>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </page>&ndash;&gt;-->
 <!--&lt;!&ndash;                    <page string="Service Configurations" name="service_configurations">&ndash;&gt;-->
 <!--&lt;!&ndash;                        <separator string="Service Configurations" name="service_configurations"/>&ndash;&gt;-->
 <!--&lt;!&ndash;                            <field name="odo_meter_increment_ids" context="{'default_vehicle_id': active_id}">&ndash;&gt;-->

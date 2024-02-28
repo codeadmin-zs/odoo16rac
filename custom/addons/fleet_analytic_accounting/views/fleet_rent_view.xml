@@ -82,7 +82,7 @@
                                     attrs="{'invisible': [ ('lock_state','=','open')]}"/>
                             <field name="rent_entry_chck" invisible="1"/>
                         </div>
-                        <div class="oe_title oe_left">
+                        <div>
                             <!--                            <label for="rental_number" string="Rental Number" invisible="1"/>-->
                             <!--                            <h1>-->
                             <!--                                <field name="rental_number"  readonly="1" placeholder="Rental Number"/>-->
@@ -101,7 +101,6 @@
                             <group colspan="4" col="4">
                                 <separator string="Vehicle Information" colspan="4"/>
                                 <field name="vehicle_id_temp" required="1" readonly="1" placeholder="Vehicle Name"/>
-
 <!--                                <field name="vehicle_id" required="1" placeholder=" New Vehicle Name"-->
 <!--                                       default="env['fleet.vehicle'].search([('state_id.name','=','Available')], limit=1).name"-->
 <!--                                       domain="[('state_id.name','in',['Available'])]" readonly="1"/>-->
@@ -110,8 +109,7 @@
 <!--                                       domain="[('state_id.name','in',['Replacement'])]" invisible="1"-->
 <!--                                       attrs="{'readonly': ['|',('state','!=','draft'),('lock_state','=','locked')]}"/>-->
 
-                                <!--                                <field name="tenant_id" string="Customer" options="{'no_quick_create': True}" context="{'default_tenant':True}" required="1" domain="[('customer','=',True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>-->
-
+<!--                                                                <field name="tenant_id" string="Customer" options="{'no_quick_create': True}" context="{'default_tenant':True}" required="1" domain="[('customer','=',True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>-->
                                 <field name="manager_id" required="1" string="Sales Person"
                                        attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>
                                 <field name="tenant_id" string="Customer" options="{'no_create': True}"
@@ -121,25 +119,26 @@
                                 <field name="sale_order_id" readonly="1"/>
                                 <field name="company_id" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}" options="{'no_open': True,'no_create': True}"/>
 
-                                <label for="current_odometer_temp"/>
-                                <div>
+<!--                                <label for="current_odometer_temp"/>-->
+<!--                                <div>-->
                                     <field name="current_odometer_temp" readonly="1"/>
 <!--                           <field name="current_odometer" class="oe_inline" readonly="1" invisible="1"/>-->
 <!--                                    <field name="odometer_unit" class="oe_inline" readonly="1" required="1"/>-->
-                                </div>
+<!--                                </div>-->
                                  <field name="currency_id"/>
                                  <label for="closing_odometer_temp"
                                        attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
-                                <div>
+<!--                                <div>-->
                                   <field name="closing_odometer_temp" readonly="1"
                                            attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
 <!--                                 <field name="odometer_unit" class="oe_inline" readonly="1" required="1"-->
 <!--                                           attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>-->
-                                 </div>
+<!--                                 </div>-->
                                 <field name="rental_terms" readonly="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                             </group>
+
                             <group colspan="4" col="4" attrs="{'readonly':[('state','=','close')]}">
-                                <separator string="Rental Vehicle Information" colspan="4"/>
+                                <separator string="Rental Vehicle Information" />
                                 <field name="duration_unit" attrs="{'readonly': ['|',('state','!=','draft'),('rental_terms','=','long_term')]}"/>
 <!--                                attrs="{'readonly': ['|', ('state','!=','draft'), ('lock_state','=','locked'), ('from_sale_order','=','True'), ('state','!=','hand_over'), ('state','!=','open')]}"-->
                                 <field name="duration" attrs="{'readonly': ['|',('state','!=','draft'),('rental_terms','=','long_term')]}"/>
@@ -158,8 +157,9 @@
                                        attrs="{'invisible':[('deposit_received', '=', False)]}"/>
                                 <field name="contact_id" attrs="{'readonly': [ ('lock_state','=','locked')]}"/>
                             </group>
-                            <group colspan="4" col="4">
-                                <separator string="Contract Information" colspan="4"/>
+
+                            <group>
+                                <separator string="Contract Information"/>
                                 <!-- <field name="invoice_date" colspan="2" /> -->
                                 <field name="date_start" colspan="2" required="True"
                                        attrs="{'readonly':['|',('state','!=','draft'),('lock_state','=','locked')]}"/>
@@ -170,6 +170,8 @@
                                        attrs="{'invisible': [('state', 'in', ['draft', 'hand_over', 'open'])]}"/>
                             </group>
                         </group>
+
+
                         <field name="product_tmpl_id" invisible="1"/>
                         <field name="multi_prop" invisible="1"/>
                         <field name="from_sale_order" invisible="1"/>
