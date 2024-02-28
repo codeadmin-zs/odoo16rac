@@ -14,32 +14,33 @@
 <!--                </h1>-->
                 <group name="rental_configurator">
                     <group name="rental_specs">
-                        <label for="rental_type" string="Rental Type" invisible="True"/>
-                        <div class="o_row">
-                            <field name="rental_type" invisible="True"/>
-                        </div>
+
                         <label for="product_id" string="Vehicle"/>
                         <div class="o_row">
                             <field name="product_id" options="{'no_create': True, 'no_open': True}"/>
                         </div>
                         <label for="pickup_date" string="Pickup Date"/>
                         <div class="o_row">
-                            <field name="pickup_date" />
+                            <field name="pickup_date"/>
                             <!-- <span> to </span>
                             <field name="return_date" widget="daterange" options="{'related_start_date': 'pickup_date'}"/> -->
                         </div>
                         <label for="return_date" string="Return Date"/>
                         <div class="o_row">
-                            <field name="return_date" />
+                            <field name="return_date"/>
                         </div>
                         <!-- <label for="duration"/> -->
                         <label for="duration_unit" string="Contract Type"/>
                         <div class="o_row">
-                            <field name="duration_unit" />
+                            <field name="duration_unit"/>
                         </div>
                         <label for="duration" string="Duration"/>
                         <div>
-                            <field name="duration" />
+                            <field name="duration"/>
+                        </div>
+                        <label for="rental_type" string="Rental Type" invisible="True"/>
+                        <div class="o_row">
+                            <field name="rental_type" invisible="True"/>
                         </div>
                     </group>
                     <group name="rental_pricing">
