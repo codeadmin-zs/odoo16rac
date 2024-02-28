@@ -181,7 +181,8 @@ class FleetRentalVehicleReport(models.Model):
     @api.model
     def fields_get(self, allfields=None, attributes=None):
         res = super(FleetRentalVehicleReport, self).fields_get(allfields, attributes=attributes)
-        unwanted = ['car_color', 'cost_frequency', 'total', 'tools_missing_cost', 'damage_cost', 'damage_cost_sub', 'total_cost', 'car_brand']
+        unwanted = ['car_color', 'cost_frequency', 'total', 'tools_missing_cost', 'damage_cost', 'damage_cost_sub', 'total_cost', 'car_brand',
+                    'total_rent']
         for each in unwanted:
             del res[each]
         return res
