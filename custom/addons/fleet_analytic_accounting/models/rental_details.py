@@ -9,6 +9,7 @@ import time
 
 _logger = logging.getLogger(__name__)
 
+
 class RentalContractDetails(models.Model):
     _name = 'fleet.rental.vehicle.details'
 
@@ -99,7 +100,6 @@ class RentalContractDetails(models.Model):
     @api.constrains('odometer')
     def _check_positive_odometer(self):
         if self.state == 'return':
-            print(self.rental_contract_id.current_odometer)
             for record in self:
                 if record.odometer <= self.rental_contract_id.current_odometer:
                     raise ValidationError("Odometer should be greater than the Last Odometer value..")
@@ -113,8 +113,8 @@ class RentalContractDetails(models.Model):
             desc_start = tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].description.split(' | Start Odo.: ')[0]
             desc_end = tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].description.split(' | Start Fuel Lvl: ')[1]
             tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].write({'description': desc_start +
-                                                                           ' | Start Odo.: ' + str(self.odometer) +
-                                                                           ' | Start Fuel Lvl: ' + desc_end})
+                                                                                        ' | Start Odo.: ' + str(self.odometer) +
+                                                                                        ' | Start Fuel Lvl: ' + desc_end})
         if self.state == 'return' or self.state == 'replacement' or self.state == 'replacement_return':
             tenancy_starting_odometer = self.rental_contract_id.current_odometer_temp
             allowed_mileage_per_day = self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
@@ -137,15 +137,15 @@ class RentalContractDetails(models.Model):
                 uom_obj = self.env['uom.uom'].search([('name', '=', 'km')])
                 if self.vehicle_id.name != self.rental_contract_id.vehicle_id_temp.name:
                     rental_pricing = self.env['rental.pricing'].search([('parent_product_template_id', '=',
-                                                                       self.rental_contract_id.vehicle_id_temp.vehicle_prodcut_template_id.id),
-                                                                      ('unit', '=', uom_obj.id)])
+                                                                         self.rental_contract_id.vehicle_id_temp.vehicle_prodcut_template_id.id),
+                                                                        ('unit', '=', uom_obj.id)])
                     new_product = self.env['product.product'].search(
                         [('product_tmpl_id', '=', rental_pricing.product_template_id.id)])
                     additional_mileage_cost = additional_mileage_in_km * new_product.lst_price
                 else:
                     rental_pricing = self.env['rental.pricing'].search(
                         [('parent_product_template_id', '=', self.vehicle_id.vehicle_prodcut_template_id.id),
-                        ('unit', '=', uom_obj.id)])
+                         ('unit', '=', uom_obj.id)])
                     new_product = self.env['product.product'].search(
                         [('product_tmpl_id', '=', rental_pricing.product_template_id.id)])
                     additional_mileage_cost = additional_mileage_in_km * new_product.lst_price
@@ -154,7 +154,8 @@ class RentalContractDetails(models.Model):
                                           'unit_price': new_product.lst_price,
                                           'description': 'Plate No: ' + self.vehicle_id.license_plate +
                                                          ' | Additional KMs Used -' +
-                                                         (self.vehicle_id.license_plate if self.state == 'replacement' else '')
+                                                         (
+                                                             self.vehicle_id.license_plate if self.state == 'replacement' else '')
                                                          + str(additional_mileage_in_km),
                                           'product_uom_qty': additional_mileage_in_km,
                                           'cost': additional_mileage_cost,
@@ -183,11 +184,13 @@ class RentalContractDetails(models.Model):
             tenancy_rent_schedule_obj = self.env['tenancy.rent.schedule']
             tenancy_rent_schedule_items = tenancy_rent_schedule_obj.search(
                 [('tenancy_id', '=', self.rental_contract_id.id)])
-            desc_start = tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].description.split(' | Start Fuel Lvl: ')[0]
+            desc_start = \
+            tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].description.split(' | Start Fuel Lvl: ')[0]
             desc_end = tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].description.split(' | Return Odo.: ')[1]
             tenancy_rent_schedule_items.invc_id.invoice_line_ids[0].write({'description': desc_start +
-                                                                           ' | Start Fuel Lvl: ' + str(self.fuel_level) +
-                                                                           ' | Return Odo.: ' + desc_end})
+                                                                                          ' | Start Fuel Lvl: ' + str(
+                self.fuel_level) +
+                                                                                          ' | Return Odo.: ' + desc_end})
         if self.state == 'return' or self.state == 'replacement':
             current_fuel_level = int(self.fuel_level)
             fuel_level_at_handover = int(self.rental_contract_id.fuel_level_temp)
@@ -209,7 +212,8 @@ class RentalContractDetails(models.Model):
                                           'unit_price': new_product.lst_price,
                                           'description': 'Plate No: ' + self.vehicle_id.license_plate +
                                                          ' | Additional Fuels Used -' +
-                                                         (self.vehicle_id.license_plate if self.state == 'replacement' else ' ')
+                                                         (
+                                                             self.vehicle_id.license_plate if self.state == 'replacement' else ' ')
                                                          + str(extra_fuels_used),
                                           'product_uom_qty': extra_fuels_used,
                                           'cost': additional_fuel_cost,
@@ -240,9 +244,9 @@ class RentalContractDetails(models.Model):
     def compute_total_damages_cost(self):
         # if self.state == 'return' or self.state == 'replacement':
         total_dent_cost = self.hood_dent_cost + self.front_r_door_dent_cost + self.front_l_door_dent_cost + \
-                self.back_r_door_dent_cost + self.back_l_door_dent_cost + self.boot_dent_cost
+                          self.back_r_door_dent_cost + self.back_l_door_dent_cost + self.boot_dent_cost
         total_scratch_cost = self.hood_scratch_cost + self.front_r_door_scratch_cost + self.boot_scratch_cost + \
-                                 self.front_l_door_scratch_cost + self.back_r_door_scratch_cost + self.back_l_door_scratch_cost
+                             self.front_l_door_scratch_cost + self.back_r_door_scratch_cost + self.back_l_door_scratch_cost
         total_damages_cost = total_dent_cost + total_scratch_cost
         self.total_damages_cost = total_damages_cost
 
@@ -250,34 +254,33 @@ class RentalContractDetails(models.Model):
         # for record in self:
         #     record.total_damages_cost = _total_damages_cost
 
+        # self.rental_contract_id.total_damages_cost = total_damages_cost
 
-            # self.rental_contract_id.total_damages_cost = total_damages_cost
-
-            # additional_product_obj = self.env['rental.wizard.extra.charges']
-            # if total_dent_cost > 0:
-            #     new_product = self.env.ref('fleet_rent.additional_charge_dents').product_variant_id
-            #     new_additional_product = {'additional_charge_product_id': new_product.id,
-            #                               'unit_measure': new_product.uom_id.id,
-            #                               'unit_price': total_dent_cost,
-            #                               'description': '',
-            #                               'product_uom_qty': 1,
-            #                               'cost': total_dent_cost,
-            #                               'agreement_id': self.rental_contract_id.id}
-            #     new_product = additional_product_obj.create(new_additional_product)
-            #     # if self.rental_contract_id.rental_terms == 'spot':
-            #     self.create_move_lines(new_product)
-            # if total_scratch_cost > 0:
-            #     new_product = self.env.ref('fleet_rent.additional_charge_scratches').product_variant_id
-            #     new_additional_product = {'additional_charge_product_id': new_product.id,
-            #                               'unit_measure': new_product.uom_id.id,
-            #                               'unit_price': total_dent_cost,
-            #                               'description': '',
-            #                               'product_uom_qty': 1,
-            #                               'cost': total_dent_cost,
-            #                               'agreement_id': self.rental_contract_id.id}
-            #     new_product = additional_product_obj.create(new_additional_product)
-            #                     # if self.rental_contract_id.rental_terms == ' spot':
-            #     self.create_move_lines(new_product)
+        # additional_product_obj = self.env['rental.wizard.extra.charges']
+        # if total_dent_cost > 0:
+        #     new_product = self.env.ref('fleet_rent.additional_charge_dents').product_variant_id
+        #     new_additional_product = {'additional_charge_product_id': new_product.id,
+        #                               'unit_measure': new_product.uom_id.id,
+        #                               'unit_price': total_dent_cost,
+        #                               'description': '',
+        #                               'product_uom_qty': 1,
+        #                               'cost': total_dent_cost,
+        #                               'agreement_id': self.rental_contract_id.id}
+        #     new_product = additional_product_obj.create(new_additional_product)
+        #     # if self.rental_contract_id.rental_terms == 'spot':
+        #     self.create_move_lines(new_product)
+        # if total_scratch_cost > 0:
+        #     new_product = self.env.ref('fleet_rent.additional_charge_scratches').product_variant_id
+        #     new_additional_product = {'additional_charge_product_id': new_product.id,
+        #                               'unit_measure': new_product.uom_id.id,
+        #                               'unit_price': total_dent_cost,
+        #                               'description': '',
+        #                               'product_uom_qty': 1,
+        #                               'cost': total_dent_cost,
+        #                               'agreement_id': self.rental_contract_id.id}
+        #     new_product = additional_product_obj.create(new_additional_product)
+        #                     # if self.rental_contract_id.rental_terms == ' spot':
+        #     self.create_move_lines(new_product)
 
     @api.onchange('vehicle_id')
     def replacement_vehicle_checking(self):
@@ -295,7 +298,8 @@ class RentalContractDetails(models.Model):
             if avilable_records:
                 for record in avilable_records:
                     if record.date_start and record.date and record.vehicle_id:
-                        cond1 = (self.rental_contract_id.date_start <= record.date_start <= self.rental_contract_id.date)
+                        cond1 = (
+                                    self.rental_contract_id.date_start <= record.date_start <= self.rental_contract_id.date)
                         cond2 = (self.rental_contract_id.date_start <= record.date <= self.rental_contract_id.date)
                         # if (cond1 or cond2) and record.vehicle_id != self.vehicle_id:
                         #  # vehicle_list.append(record.vehicle_id.id)
@@ -313,7 +317,7 @@ class RentalContractDetails(models.Model):
                   'additional_mileage_cost', 'additional_day_cost', 'additional_fuel_cost', 'total_other_charges_cost')
     def compute_invoicing_condition(self):
         if (self.total_other_charges_cost + self.total_damages_cost + self.additional_mileage_cost
-                + self.additional_day_cost + self.additional_fuel_cost + self.total_other_charges_cost) > 0:
+            + self.additional_day_cost + self.additional_fuel_cost + self.total_other_charges_cost) > 0:
             self.can_be_invoiced = True
         else:
             self.can_be_invoiced = False
@@ -335,24 +339,25 @@ class RentalContractDetails(models.Model):
                                   string='Fuel Level', readonly=False,
                                   related='vehicle_id.fuel_level')
     odometer = fields.Float(string='Odometer', related='vehicle_id.odometer', readonly=False)
-    date = fields.Datetime('Handover Date', help="Date of Vehicle Handover", default=lambda s: datetime.now() + relativedelta(minute=0, second=0, hours=1))
+    date = fields.Datetime('Handover Date', help="Date of Vehicle Handover",
+                           default=lambda s: datetime.now() + relativedelta(minute=0, second=0, hours=1))
     # dents
     hood_dent = fields.Boolean(string="Hood", default=True)
     # related = 'vehicle_id.hood_dent',
     front_r_door_dent = fields.Boolean(string="Front Door (R)", default=True)
-    #related='vehicle_id.front_r_door_dent',
+    # related='vehicle_id.front_r_door_dent',
     front_l_door_dent = fields.Boolean(string="Front Door (L)", default=True)
-    #, related='vehicle_id.front_l_door_dent'
+    # , related='vehicle_id.front_l_door_dent'
     back_r_door_dent = fields.Boolean(string="Back Door (R)", default=True)
-    #, related='vehicle_id.back_r_door_dent'
+    # , related='vehicle_id.back_r_door_dent'
     back_l_door_dent = fields.Boolean(string="Back Door (L)", default=True)
-    #related='vehicle_id.back_l_door_dent',
+    # related='vehicle_id.back_l_door_dent',
     boot_dent = fields.Boolean(string="Boot", default=True)
-    #related='vehicle_id.boot_dent',
+    # related='vehicle_id.boot_dent',
 
     # dent charges
     hood_dent_cost = fields.Float(string="Hood")
-    #, related='vehicle_id.hood_dent_cost'
+    # , related='vehicle_id.hood_dent_cost'
     front_r_door_dent_cost = fields.Float(string="Front Door (R)")
     # related='vehicle_id.front_r_door_dent_cost'
     front_l_door_dent_cost = fields.Float(string="Front Door (L)")
@@ -386,6 +391,7 @@ class RentalContractDetails(models.Model):
         for record in self:
             if record.front_r_door_dent_count_new < 0:
                 raise ValidationError("Count must be a positive value.")
+
     front_l_door_dent_count_new = fields.Integer(string="Front Door (L)")
 
     @api.constrains('front_l_door_dent_count_new')
@@ -393,6 +399,7 @@ class RentalContractDetails(models.Model):
         for record in self:
             if record.front_l_door_dent_count_new < 0:
                 raise ValidationError("Count must be a positive value.")
+
     back_r_door_dent_count_new = fields.Integer(string="Back Door (R)")
 
     @api.constrains('back_r_door_dent_count_new')
@@ -400,6 +407,7 @@ class RentalContractDetails(models.Model):
         for record in self:
             if record.back_r_door_dent_count_new < 0:
                 raise ValidationError("Count must be a positive value.")
+
     back_l_door_dent_count_new = fields.Integer(string="Back Door (L)")
 
     @api.constrains('back_l_door_dent_count_new')
@@ -407,6 +415,7 @@ class RentalContractDetails(models.Model):
         for record in self:
             if record.back_l_door_dent_count_new < 0:
                 raise ValidationError("Count must be a positive value.")
+
     boot_dent_count_new = fields.Integer(string="Boot")
     # scratches
     hood_scratch = fields.Boolean(string="Hood", related='vehicle_id.hood_scratch', default=True)
@@ -515,12 +524,12 @@ class RentalContractDetails(models.Model):
                                           'agreement_id': self.rental_contract_id.id}
                 new_product = additional_product_obj.create(new_additional_product)
                 a = vehicle_salik_and_fines.create({'vehicle_id': self.vehicle_id.id,
-                                                'description': each.description,
-                                                'time_date': each.time_date,
-                                                'location': each.location,
-                                                'amount': each.unit_price,
-                                                'analytic_account_id': self.rental_contract_id.id,
-                                                'fine_or_toll': '0'})
+                                                    'description': each.description,
+                                                    'time_date': each.time_date,
+                                                    'location': each.location,
+                                                    'amount': each.unit_price,
+                                                    'analytic_account_id': self.rental_contract_id.id,
+                                                    'fine_or_toll': '0'})
                 # if self.rental_contract_id.rental_terms == 'spot':
                 self.create_move_lines(new_product)
                 salik += each.unit_price
@@ -539,18 +548,19 @@ class RentalContractDetails(models.Model):
                 # if self.rental_contract_id.rental_terms == 'spot':
                 self.create_move_lines(new_product)
                 b = vehicle_salik_and_fines.create({'vehicle_id': self.vehicle_id.id,
-                                                'description': each.description,
-                                                'time_date': each.time_date,
-                                                'location': each.location,
-                                                'amount': each.unit_price,
-                                                'analytic_account_id': self.rental_contract_id.id,
-                                                'fine_or_toll': '1'})
+                                                    'description': each.description,
+                                                    'time_date': each.time_date,
+                                                    'location': each.location,
+                                                    'amount': each.unit_price,
+                                                    'analytic_account_id': self.rental_contract_id.id,
+                                                    'fine_or_toll': '1'})
                 fine += each.unit_price
         return salik + fine
 
     def create_move_lines(self, additional_product):
         tenancy_rent_schedule_obj = self.env['tenancy.rent.schedule']
-        tenancy_rent_schedule_items = tenancy_rent_schedule_obj.search([('tenancy_id', '=', self.rental_contract_id.id)])
+        tenancy_rent_schedule_items = tenancy_rent_schedule_obj.search(
+            [('tenancy_id', '=', self.rental_contract_id.id)])
         invc_draft_status = False
         inv_line_main = {
             # 'origin': 'tenancy.rent.schedule',
@@ -558,15 +568,13 @@ class RentalContractDetails(models.Model):
             'price_unit': additional_product.unit_price or 0.00,
             'price_subtotal': additional_product.cost or 0.00,
             'quantity': additional_product.product_uom_qty,
-            'product_uom_id': additional_product.unit_measure,
+            'product_uom_id': additional_product.unit_measure.id,
             'account_id': self.vehicle_id.income_acc_id.id or False,
             'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
             'tax_ids': additional_product.additional_charge_product_id.taxes_id,
             'description': additional_product.description,
             'vehicle_id': self.vehicle_id.id,
         }
-
-
         # code for adding invoice lines,
         # if the invoice not confirmed at the time of rental contract return state or close state
         if tenancy_rent_schedule_items:
@@ -579,8 +587,8 @@ class RentalContractDetails(models.Model):
                     if self.rental_contract_id.state == 'open' and len(tenancy_rent_schedule_items.ids) == 1:
                         desc = each.invc_id.invoice_line_ids[0].description.split('Return Odo.:')[0]
                         each.invc_id.invoice_line_ids[0].write({'description': desc + 'Return Odo.: ' +
-                                                               str(self.odometer) + ' | Return Fuel Lvl: ' +
-                                                               str(self.fuel_level)})
+                                                                               str(self.odometer) + ' | Return Fuel Lvl: ' +
+                                                                               str(self.fuel_level)})
                     return True
 
         # code for creating invoices for rental contract,
@@ -759,9 +767,9 @@ class RentalContractDetails(models.Model):
                           'additional_fine_ids': self.additional_fine_ids,
                           'additional_toll_ids': self.additional_toll_ids,
                           'total_damages_cost': self.hood_dent_cost + self.front_r_door_dent_cost + self.front_l_door_dent_cost + \
-                self.back_r_door_dent_cost + self.back_l_door_dent_cost + self.boot_dent_cost +
-self.hood_scratch_cost + self.front_r_door_scratch_cost + self.boot_scratch_cost + \
-                                 self.front_l_door_scratch_cost + self.back_r_door_scratch_cost + self.back_l_door_scratch_cost
+                                                self.back_r_door_dent_cost + self.back_l_door_dent_cost + self.boot_dent_cost +
+                                                self.hood_scratch_cost + self.front_r_door_scratch_cost + self.boot_scratch_cost + \
+                                                self.front_l_door_scratch_cost + self.back_r_door_scratch_cost + self.back_l_door_scratch_cost
                           })
         if tenancy_id.rental_contract_id:
             for reason in tenancy_id.rental_contract_id:
@@ -845,7 +853,7 @@ self.hood_scratch_cost + self.front_r_door_scratch_cost + self.boot_scratch_cost
         if self.total_damages_cost:
             self.get_dent_scratch_products()
         total_count = self.env['fleet.rental.vehicle.details'].search_count([
-                ('rental_contract_id', '=', self.rental_contract_id.id)])
+            ('rental_contract_id', '=', self.rental_contract_id.id)])
         if total_count > 2:
             fleet_vehicle_state = self.env['fleet.vehicle.state'].search([('name', '=', 'Available')]).id
         else:
