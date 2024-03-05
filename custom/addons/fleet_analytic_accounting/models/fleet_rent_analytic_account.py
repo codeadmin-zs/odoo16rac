@@ -469,14 +469,15 @@ class AccountAnalyticAccount(models.Model):
     deposit_scheme_type = fields.Selection(
         [('insurance', 'Insurance-based')],
         'Type of Scheme')
-    # acc_pay_dep_rec_id = fields.Many2one(
-    #     comodel_name='account.voucher',
-    #     string='Account Manager',
-    #     help="Manager of Rental Vehicle.")
-    # acc_pay_dep_ret_id = fields.Many2one(
-    #     comodel_name='account.voucher',
-    #     string='Account Manager',
-    #     help="Manager of Rental Vehicle.")
+    acc_pay_dep_rec_id = fields.Many2one(
+        comodel_name='account.voucher',
+        string='Account Manager',
+        help="Manager of Rental Vehicle.")
+    acc_pay_dep_ret_id = fields.Many2one(
+        comodel_name='account.voucher',
+        string='Account Manager',
+        help="Manager of Rental Vehicle.")
+
     date_start = fields.Datetime(
         string='Start Date',
         default=lambda *a: time.strftime(DT),
@@ -1102,71 +1103,71 @@ class AccountAnalyticAccount(models.Model):
         return True
 
     # @api.multi
-    # def button_receive(self):
-    #     """
-    #     This button method is used to open the related
-    #     account payment form view.
-    #     @param self: The object pointer
-    #     @return: Dictionary of values.
-    #     """
-    #     if not self._ids:
-    #         return []
-    #     for tenancy_rec in self:
-    #         jonral_type = self.env['account.journal'].search([('type', '=', 'cash')])
-    #         if tenancy_rec.acc_pay_dep_rec_id and tenancy_rec.acc_pay_dep_rec_id.id:
-    #             acc_pay_form_id = \
-    #             self.env['ir.model.data'].get_object_reference('account', 'view_account_payment_form')[1]
-    #             return {
-    #                 'view_type': 'form',
-    #                 'view_id': acc_pay_form_id,
-    #                 'view_mode': 'form',
-    #                 'res_model': 'account.payment',
-    #                 'res_id': self.acc_pay_dep_rec_id.id,
-    #                 'type': 'ir.actions.act_window',
-    #                 'target': 'new',
-    #                 'context': {
-    #                     'default_partner_id': tenancy_rec.tenant_id.id,
-    #                     'default_partner_type': 'customer',
-    #                     'default_journal_id': jonral_type and jonral_type.ids[0] or False,
-    #                     'default_payment_type': 'inbound',
-    #                     'default_type': 'receipt',
-    #                     'default_communication': 'Deposit Received',
-    #                     'default_tenancy_id': tenancy_rec.id,
-    #                     'default_amount': tenancy_rec.deposit,
-    #                     'default_property_id':
-    #                         tenancy_rec.vehicle_id.id,
-    #                     'close_after_process': True,
-    #                 }
-    #             }
-    #         # if tenancy_rec.deposit == 0.00:
-    #         #     raise Warning(_('Please Enter Advance amount.'))
-    #         # if tenancy_rec.deposit < 0.00:
-    #         #     raise Warning(_('The deposit amount must be strictly positive.'))
-    #         ir_id = self.env['ir.model.data']._get_id('account', 'view_account_payment_form')
-    #         ir_rec = self.env['ir.model.data'].browse(ir_id)
-    #         return {
-    #             'view_mode': 'form',
-    #             'view_id': [ir_rec.res_id],
-    #             'view_type': 'form',
-    #             'res_model': 'account.payment',
-    #             'type': 'ir.actions.act_window',
-    #             'nodestroy': True,
-    #             'target': 'new',
-    #             'domain': '[]',
-    #             'context': {
-    #                 'default_partner_id': tenancy_rec.tenant_id.id,
-    #                 'default_partner_type': 'customer',
-    #                 'default_journal_id': jonral_type and
-    #                                       jonral_type.ids[0] or False,
-    #                 'default_payment_type': 'inbound',
-    #                 'default_type': 'receipt',
-    #                 'default_communication': 'Deposit Received',
-    #                 'default_tenancy_id': tenancy_rec.id,
-    #                 'default_amount': tenancy_rec.deposit,
-    #                 'default_property_id': tenancy_rec.vehicle_id.id,
-    #                 'close_after_process': True,
-    #             }
-    #         }
+    def button_receive(self):
+        """
+        This button method is used to open the related
+        account payment form view.
+        @param self: The object pointer
+        @return: Dictionary of values.
+        """
+        if not self._ids:
+            return []
+        for tenancy_rec in self:
+            jonral_type = self.env['account.journal'].search([('type', '=', 'cash')])
+            if tenancy_rec.acc_pay_dep_rec_id and tenancy_rec.acc_pay_dep_rec_id.id:
+                acc_pay_form_id = \
+                self.env['ir.model.data'].get_object_reference('account', 'view_account_payment_form')[1]
+                return {
+                    'view_type': 'form',
+                    'view_id': acc_pay_form_id,
+                    'view_mode': 'form',
+                    'res_model': 'account.payment',
+                    'res_id': self.acc_pay_dep_rec_id.id,
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                    'context': {
+                        'default_partner_id': tenancy_rec.tenant_id.id,
+                        'default_partner_type': 'customer',
+                        'default_journal_id': jonral_type and jonral_type.ids[0] or False,
+                        'default_payment_type': 'inbound',
+                        'default_type': 'receipt',
+                        'default_communication': 'Deposit Received',
+                        'default_tenancy_id': tenancy_rec.id,
+                        'default_amount': tenancy_rec.deposit,
+                        'default_property_id':
+                            tenancy_rec.vehicle_id.id,
+                        'close_after_process': True,
+                    }
+                }
+            # if tenancy_rec.deposit == 0.00:
+            #     raise Warning(_('Please Enter Advance amount.'))
+            # if tenancy_rec.deposit < 0.00:
+            #     raise Warning(_('The deposit amount must be strictly positive.'))
+            ir_id = self.env['ir.model']._get_id('view_account_payment_form')
+            ir_rec = self.env['ir.model.data'].browse(ir_id)
+            return {
+                'view_mode': 'form',
+                'view_id': [ir_rec.res_id],
+                'view_type': 'form',
+                'res_model': 'account.payment',
+                'type': 'ir.actions.act_window',
+                'nodestroy': True,
+                'target': 'new',
+                'domain': '[]',
+                'context': {
+                    'default_partner_id': tenancy_rec.tenant_id.id,
+                    'default_partner_type': 'customer',
+                    'default_journal_id': jonral_type and
+                                          jonral_type.ids[0] or False,
+                    'default_payment_type': 'inbound',
+                    'default_type': 'receipt',
+                    'default_communication': 'Deposit Received',
+                    'default_tenancy_id': tenancy_rec.id,
+                    'default_amount': tenancy_rec.deposit,
+                    'default_property_id': tenancy_rec.vehicle_id.id,
+                    'close_after_process': True,
+                }
+            }
 
     # @api.multi
     def button_return(self):

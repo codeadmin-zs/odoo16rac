@@ -27,7 +27,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-9">
-                                    <group string="Dents">
+<!--                                    <group string="Dents">-->
+                                    <separator string="Dents"/>
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -69,12 +70,13 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </group>
+<!--                                    </group>-->
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-9">
-                                    <group string="Scratches">
+<!--                                    <group string="Scratches">-->
+                                    <separator string="Scratches"/>
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -116,7 +118,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </group>
+<!--                                    </group>-->
                                 </div>
                             </div>
                         </page>
@@ -163,7 +165,9 @@
                                 <page string="Dents" name="dents">
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Dents">
+                                    <separator string="Dents"/>
+
+<!--                                            <group string="Dents">-->
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -212,14 +216,16 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
                                 <page string="Scratches" name="scratches">
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Scratches">
+<!--                                            <group string="Scratches">-->
+                                    <separator string="Dents"/>
+
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -268,7 +274,7 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
@@ -396,7 +402,7 @@
                     </group>
                     <notebook>
                         <page string="Vehicle Return" name="vehicle_return">
-                            <separator string="Vehicle Return" name="vehicle_return_details"/>
+                            <separator string="Vehicle Replace" name="vehicle_return_details"/>
                             <div class="row">
                                 <div class="col-6">
                                     <group>
@@ -412,7 +418,9 @@
                                 <page string="Dents" name="dents">
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Dents">
+<!--                                            <group string="Dents">-->
+                                    <separator string="Dents"/>
+
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -461,14 +469,16 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
                                 <page string="Scratches" name="scratches">
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Scratches">
+                                    <separator string="Scratches"/>
+
+<!--                                            <group string="Scratches">-->
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -517,7 +527,7 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
@@ -594,7 +604,9 @@
                                 <page string="Dents" name="dents" >
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Dents">
+                                        <separator string="Dents"/>
+
+<!--                                            <group string="Dents">-->
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -636,14 +648,16 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
                                 <page string="Scratches" name="scratches" >
                                     <div class="row">
                                         <div class="col-9">
-                                            <group string="Scratches">
+                                    <separator string="Scratches"/>
+
+<!--                                            <group string="Scratches">-->
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -685,7 +699,7 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </group>
+<!--                                            </group>-->
                                         </div>
                                     </div>
                                 </page>
