@@ -851,17 +851,16 @@ class AccountAnalyticAccount(models.Model):
         This button method is used to Change contract.
         @param self: The object pointer
         """
-
-        fleet_rental_details_obj = self.env['fleet.rental.vehicle.details']
-        fleet_rental_details = fleet_rental_details_obj.search([('rental_contract_id', '=', self.id),
-                                                                ('state', 'in', ['hand_over', 'replacement_handover'])])
+        context = {'default_duration': self.duration,
+                   'default_duration_unit': self.duration_unit,
+                   'default_active_contract_id': self.id}
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_vehicle_contract_change').id
 
         return {
             'name': 'Rental Contract Updation',
             'res_model': 'vehicle.contract.change',
             'type': 'ir.actions.act_window',
-            # 'context': context,
+            'context': context,
             'view_id': wiz_form_id,
             'view_mode': 'form',
             'view_type': 'form',

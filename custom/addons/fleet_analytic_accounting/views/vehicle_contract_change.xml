@@ -9,6 +9,7 @@
                     <div class="row">
                         <div class="col-6">
                             <group>
+                                <field name="active_contract_id"/>
                                 <field name="reason"/>
                                 <field name="duration"/>
                                 <field name="date"/>
