@@ -9,4 +9,7 @@ access_vehicle_fine_charges,access.vehicle.fine.charge.admin,model_vehicle_fine_
 access_vehicle_rental_bulk_upload,access.vehicle.rental.bulk.upload.admin,model_vehicle_rental_bulk_upload,fleet_rent.group_vehicle_manager,1,1,1,1
 access_vehicle_rental_fines,access.vehicle.rental.fines.admin,model_vehicle_rental_fines,fleet_rent.group_vehicle_manager,1,1,1,1
 access_res_partner_fleet_salesman,access.res.partner.fleet.salesman,base.model_res_partner,fleet_rent.fleet_salesman,1,1,1,0
+access_vehicle_contract_change,vehicle.contract.change,model_vehicle_contract_change,,1,1,1,1
+access_vehicle_contract_log,vehicle.contract.log,model_vehicle_contract_log,,1,1,1,1
+
 

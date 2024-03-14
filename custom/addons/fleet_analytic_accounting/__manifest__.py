@@ -29,6 +29,7 @@
             'views/print_rental_contract_view.xml',
             'views/hide_add_a_line.xml',
             'views/vehicle_details.xml',
+            'views/vehicle_contract_change.xml',
             'reports/maintenance_qtn.xml',
             'reports/maintenance_qtn_report.xml',
     ],

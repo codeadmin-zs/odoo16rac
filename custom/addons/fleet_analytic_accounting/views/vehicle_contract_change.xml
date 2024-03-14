@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="fleet_rental_vehicle_contract_change">
+            <field name="name">fleet.rental.vehicle.contract.change.wizard.form</field>
+            <field name="model">vehicle.contract.change</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Contract Updation"/>
+                    <div class="row">
+                        <div class="col-6">
+                            <group>
+                                <field name="reason"/>
+                                <field name="duration"/>
+                                <field name="date"/>
+                                <field name="duration_unit"/>
+                            </group>
+                        </div>
+                    </div>
+
+                </form>
+            </field>
+    </record>
+</odoo>

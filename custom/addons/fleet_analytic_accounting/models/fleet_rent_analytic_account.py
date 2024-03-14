@@ -564,6 +564,7 @@ class AccountAnalyticAccount(models.Model):
     additional_drivers_ids = fields.One2many('fleet.additional.drivers', 'rental_id')
     fleet_rental_details = fields.One2many('fleet.rental.vehicle.details', 'rental_contract_id')
     replace_vehicle_details = fields.One2many('replace.vehicle.log', 'replace_id')
+    vehicle_contract_log_details = fields.One2many('vehicle.contract.log', 'contract_id')
 
     def name_get(self):
         for analytic in self:
@@ -844,6 +845,28 @@ class AccountAnalyticAccount(models.Model):
             }
         else:
             self.create_rent_schedule()
+
+    def button_change_contract(self):
+        """
+        This button method is used to Change contract.
+        @param self: The object pointer
+        """
+
+        fleet_rental_details_obj = self.env['fleet.rental.vehicle.details']
+        fleet_rental_details = fleet_rental_details_obj.search([('rental_contract_id', '=', self.id),
+                                                                ('state', 'in', ['hand_over', 'replacement_handover'])])
+        wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_vehicle_contract_change').id
+
+        return {
+            'name': 'Rental Contract Updation',
+            'res_model': 'vehicle.contract.change',
+            'type': 'ir.actions.act_window',
+            # 'context': context,
+            'view_id': wiz_form_id,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new'
+        }
 
     # @api.multi
     def button_start(self):

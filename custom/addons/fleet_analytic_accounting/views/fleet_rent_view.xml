@@ -54,6 +54,11 @@
                             <button name="button_hand_over_vehicle_details" string="Handover" type="object"
                                     icon="fa-car" colspan="2" class="oe_inline oe_stat_button"
                                     attrs="{'invisible': [('state','not in',['hand_over'])]}"/>
+
+                             <button name="button_change_contract" string="Edit Contract" type="object"
+                                    icon="fa-cog" colspan="2" class="oe_inline oe_stat_button"/>
+<!--                                    attrs="{'invisible': [('state','not in',['hand_over'])]}"/>-->
+
                             <button name="button_rent_schedules" string=" Schedule Invoices" type="object"
                                     icon="fa-plus" colspan="2" class="oe_inline oe_stat_button"
                                     attrs="{'invisible': ['|', ('state','not in',['open','return','closed']),('scheduled_invoices_status','!=',False)]}"/>
@@ -323,6 +328,19 @@
                                         <field name="end_date" widget="datetime"/>
                                         <field name="current_odometer"/>
                                         <field name="closing_odometer"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="contract_extend" string="Contract Log">
+                                <separator colspan="4" string="CONTRACT LOG"/>
+                                <field name="vehicle_contract_log_details"
+                                      readonly="1">
+                                    <tree editable="bottom" create="true" delete="true" >
+                                        <field name="cont_vehicle"/>
+                                        <field name="cont_start_date" widget="datetime"/>
+                                        <field name="cont_end_date" widget="datetime"/>
+                                        <field name="cont_current_odometer"/>
+                                        <field name="cont_closing_odometer"/>
                                     </tree>
                                 </field>
                             </page>

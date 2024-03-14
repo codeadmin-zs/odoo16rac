@@ -6,7 +6,7 @@ class NewVehicleDetails(models.Model):
     _inherit = 'product.template'
 
     name = fields.Char('Name', index=True, translate=True, trackvisibility='onchange')
-    model_id_temp = fields.Many2one("Vehicle Model", 'fleet.vehicle.model')
+    model_id_temp = fields.Many2one('fleet.vehicle.model', "Vehicle Model", )
     model_name = fields.Char('Name', required=1)
     brand_id_temp = fields.Many2one('fleet.vehicle.model.brand', 'Manufacturer', required=True,
                                    help='Manufacturer of the vehicle')
