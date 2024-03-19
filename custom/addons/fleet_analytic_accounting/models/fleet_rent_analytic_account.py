@@ -375,6 +375,7 @@ class AccountAnalyticAccount(models.Model):
             if record.tenant_id:
                 record.name = record.tenant_id.name + '-' + record.vehicle_id.name
 
+    plan_id = fields.Many2one('account.analytic.plan',string='Plan',check_company=True,required=True,default=1)
     name = fields.Char(string='Analytic Account', compute='_set_vehicle_name',
                        index=True, required=True, tracking=True, store=True)
     vehicle_brand = fields.Many2one('fleet.vehicle.model.brand', string="Fleet Brand", size=50,
