@@ -110,9 +110,10 @@
 <!--                                       domain="[('state_id.name','in',['Replacement'])]" invisible="1"-->
 <!--                                       attrs="{'readonly': ['|',('state','!=','draft'),('lock_state','=','locked')]}"/>-->
 
-<!--                                                                <field name="tenant_id" string="Customer" options="{'no_quick_create': True}" context="{'default_tenant':True}" required="1" domain="[('customer','=',True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>-->                              <field name="tenant_id" string="Customer" options="{'no_create': True}"
-                                       context="{'default_tenant':True}" required="1"
-                                       domain="[('customer_rank', '>', 0), ('parent_id', '=', False), ('tenant', '=', True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>
+<!--                             <field name="tenant_id" string="Customer" options="{'no_quick_create': True}" context="{'default_tenant':True}" required="1" domain="[('customer','=',True)]" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}"/>-->
+                                <field name="tenant_id" string="Customer" options="{'no_quick_create': True}"
+                                       context="{'default_tenant':True,'default_on_rental_contract': 1}" required="1"
+                                       domain="[('customer_rank', '>', 0), ('parent_id', '=', False), ('tenant', '=', True)]" attrs="{'readonly': ['|','|',('state','!=','draft'), ('lock_state','=','locked'),('rental_terms','!=','spot')]}"/>
                                 <field name="company_id" attrs="{'readonly': ['|',('state','!=','draft'), ('lock_state','=','locked')]}" options="{'no_open': True,'no_create': True}"/>
                                  <field name="currency_id"/>
                                 <field name="rental_terms" readonly="1" attrs="{'readonly': [('state','!=','draft')]}"/>

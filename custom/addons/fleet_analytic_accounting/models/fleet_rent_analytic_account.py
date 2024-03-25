@@ -520,7 +520,7 @@ class AccountAnalyticAccount(models.Model):
         inverse_name='analytic_account_id',
         string='Entries',
         readonly=True,
-        # domain=[('exclude_from_invoice_tab', '=', False)],
+        domain=[('display_type', '=', 'product')],
         states={'draft': [('readonly', False)]})
     total_debit_amt = fields.Float(
         string='Total Debit Amount',

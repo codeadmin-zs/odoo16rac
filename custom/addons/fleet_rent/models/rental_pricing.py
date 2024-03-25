@@ -68,7 +68,7 @@ class RentalPricing(models.Model):
             converted_duration = math.ceil((duration * PERIOD_RATIO[unit]) / (self.duration * PERIOD_RATIO[self.unit.name]))
         else:
             converted_duration = math.ceil(duration / self.duration)
-        return self.price * converted_duration
+        return self.price
 
     # def name_get(self):
     #     result = []
