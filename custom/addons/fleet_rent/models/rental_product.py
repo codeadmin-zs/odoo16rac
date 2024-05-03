@@ -10,7 +10,7 @@ class RentalProduct(models.Model):
     fleet_ok = fields.Boolean(string="Is Vehicle", help="Enable to create vehicle in fleet module.", default=False)
     accessories_ok = fields.Boolean(string="Accessory", help="Allow if its an accessory", default=False)
     charges_ok = fields.Boolean(string="Charges", help="Allow if its rental charges", default=False)
-    type = fields.Selection([
+    detailed_type = fields.Selection([
         ('consu', 'Consumable'),
         ('service', 'Service'),
         ('product', 'Storable Product')], string='Product Type', default='product', required=True,
@@ -42,13 +42,13 @@ class RentalProduct(models.Model):
     @api.onchange('service_ok')
     def _onchange_service_ok(self):
         if self.service_ok:
-            self.type = 'service'
+            self.detailed_type = 'service'
         else:
-            self.type = 'product'
+            self.detailed_type = 'product'
 
-    @api.onchange('rent_ok', 'type')
+    @api.onchange('rent_ok', 'detailed_type')
     def onchange_rent_ok(self):
-        if self.rent_ok and self.type == 'product':
+        if self.rent_ok and self.detailed_type == 'product':
             self.tracking = 'serial'
             self.asset_category_id = False
             self.service_ok = False
@@ -61,13 +61,13 @@ class RentalProduct(models.Model):
 
     @api.onchange('accessories_ok')
     def onchange_accessories_ok(self):
-        if self.accessories_ok and self.type == 'product':
+        if self.accessories_ok and self.detailed_type == 'product':
             self.fleet_ok = False
             self.service_ok = False
 
     @api.onchange('fleet_ok')
     def onchange_fleet_ok(self):
-        if self.fleet_ok and (self.type == 'product' or self.type == 'service'):
+        if self.fleet_ok and (self.detailed_type == 'product' or self.detailed_type == 'service'):
             self.accessories_ok = False
             self.service_ok = False
 
@@ -128,7 +128,7 @@ class RentalProduct(models.Model):
                 'rent_ok': False,
                 'charges_ok': True,
                 'accessories_ok': False,
-                'type': 'service',
+                'detailed_type': 'service',
                 'list_price': 10,
                 'uom_id': uom_hour.id,
                 'uom_po_id': uom_hour.id,
@@ -145,7 +145,7 @@ class RentalProduct(models.Model):
                 'charges_ok': True,
                 'accessories_ok': False,
                 'fleet_ok': False,
-                'type': 'service',
+                'detailed_type': 'service',
                 'list_price': 80,
                 'uom_id': uom_day.id,
                 'uom_po_id': uom_day.id,
@@ -162,7 +162,7 @@ class RentalProduct(models.Model):
                 'fleet_ok': False,
                 'charges_ok': True,
                 'accessories_ok': False,
-                'type': 'service',
+                'detailed_type': 'service',
                 'list_price': 80,
                 'uom_id': uom_week.id,
                 'uom_po_id': uom_week.id,
@@ -179,7 +179,7 @@ class RentalProduct(models.Model):
                 'charges_ok': True,
                 'accessories_ok': False,
                 'fleet_ok': False,
-                'type': 'service',
+                'detailed_type': 'service',
                 'list_price': 80,
                 'uom_id': uom_month.id,
                 'uom_po_id': uom_month.id,
@@ -196,7 +196,7 @@ class RentalProduct(models.Model):
                 'fleet_ok': False,
                 'charges_ok': True,
                 'accessories_ok': False,
-                'type': 'service',
+                'detailed_type': 'service',
                 'list_price': 80,
                 'uom_id': uom_day.id,
                 'uom_po_id': uom_day.id,
@@ -214,7 +214,7 @@ class RentalProduct(models.Model):
                     'fleet_ok': False,
                     'charges_ok': True,
                     'accessories_ok': False,
-                    'type': 'service',
+                    'detailed_type': 'service',
                     'list_price': 80,
                     'uom_id': uom_km.id,
                     'uom_po_id': uom_km.id,
@@ -367,7 +367,7 @@ class FleetVehicleModel(models.Model):
                 'accessories_ok': False,
                 'model_id_zt': res.id,
                 'brand_id_zt': res.brand_id.id,
-                'type': 'product',
+                'detailed_type': 'product',
                 'list_price': 0.0,
                 'uom_id': uom_units.id,
                 'uom_po_id': uom_units.id,
@@ -396,9 +396,9 @@ class ProductProduct(models.Model):
 
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
 
-    @api.onchange('rent_ok', 'type')
+    @api.onchange('rent_ok', 'detailed_type')
     def onchange_rent_ok(self):
-        if self.rent_ok and self.type == 'product':
+        if self.rent_ok and self.detailed_type == 'product':
             self.tracking = 'serial'
             self.asset_category_id = False
 

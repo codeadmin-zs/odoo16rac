@@ -785,11 +785,12 @@ class RentalContractDetails(models.Model):
                                                                   + ' Return Date: ' + str(self.date)
                                                                   + ' Return Odo.: ' + str(self.odometer)
                                                                   + ' | Return Fuel Lvl: ' + str(self.fuel_level)})
-                contract_id = self.env['account.analytic.account'].search([('id', '=', self.rental_contract_id.id)])
-                ten_id = self.env['tenancy.rent.schedule'].search([('tenancy_id', '=', contract_id.id)])
-                ten_id.invc_id[0].invoice_line_ids[0].update({
-                    'description': reason.extra_charges_ids[0].description
-                })
+                if self.rental_contract_id.rent_schedule_ids:
+                    contract_id = self.env['account.analytic.account'].search([('id', '=', self.rental_contract_id.id)])
+                    ten_id = self.env['tenancy.rent.schedule'].search([('tenancy_id', '=', contract_id.id)])
+                    ten_id.invc_id[0].invoice_line_ids[0].update({
+                        'description': reason.extra_charges_ids[0].description
+                    })
 
         if self.vehicle_id:
             self.vehicle_id.update({'hood_dent': self.hood_dent,

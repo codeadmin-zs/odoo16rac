@@ -375,6 +375,7 @@ class AccountAnalyticAccount(models.Model):
             if record.tenant_id:
                 record.name = record.tenant_id.name + '-' + record.vehicle_id.name
 
+    plan_id = fields.Many2one('account.analytic.plan',string='Plan',check_company=True,required=True,default=1)
     name = fields.Char(string='Analytic Account', compute='_set_vehicle_name',
                        index=True, required=True, tracking=True, store=True)
     vehicle_brand = fields.Many2one('fleet.vehicle.model.brand', string="Fleet Brand", size=50,
@@ -519,7 +520,7 @@ class AccountAnalyticAccount(models.Model):
         inverse_name='analytic_account_id',
         string='Entries',
         readonly=True,
-        # domain=[('exclude_from_invoice_tab', '=', False)],
+        domain=[('display_type', '=', 'product')],
         states={'draft': [('readonly', False)]})
     total_debit_amt = fields.Float(
         string='Total Debit Amount',
