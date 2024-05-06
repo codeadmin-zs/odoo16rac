@@ -82,13 +82,16 @@
 <!--                <attribute name="domain">['&amp;', ('vehicle_model_id.status', '=', 'not_used'), ('attribute_id.name', '=', 'Vehicle Model')]</attribute>-->
             </xpath>
             <xpath expr="//field[@name='property_account_income_id']" position="attributes">
-                <attribute name="required">1</attribute>
+                <attribute name="attrs">{'required':['|','|',('fleet_ok', '=', True),('accessories_ok','=',True),('service_ok','=',True)]}</attribute>
+<!--                <attribute name="required">1</attribute>-->
             </xpath>
             <xpath expr="//field[@name='property_account_expense_id']" position="attributes">
-                <attribute name="required">1</attribute>
+                 <attribute name="attrs">{'required':['|','|',('fleet_ok', '=', True),('accessories_ok','=',True),('service_ok','=',True)]}</attribute>
+<!--                <attribute name="required">1</attribute>-->
             </xpath>
             <xpath expr="//field[@name='asset_category_id']" position="attributes">
-                <attribute name="required">1</attribute>
+                 <attribute name="attrs">{'required':['|','|',('fleet_ok', '=', True),('accessories_ok','=',True),('service_ok','=',True)]}</attribute>
+<!--                <attribute name="required">1</attribute>-->
             </xpath>
         </field>
     </record>

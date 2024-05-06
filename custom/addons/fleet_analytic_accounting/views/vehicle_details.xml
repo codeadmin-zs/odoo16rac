@@ -6,9 +6,7 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="attributes">
-                <attribute name="required">0</attribute>
-                <attribute name="attrs">{'invisible':[('accessories_ok', '=', False), ('service_ok', '=', False)]}</attribute>
-<!--                <attribute name="invisible">1</attribute>-->
+                <attribute name="attrs">{'invisible':[('fleet_ok', '=', True)]}</attribute>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="before">
                 <page name="vehicle_details" string="Vehicle Details" groups="product.group_product_variant"

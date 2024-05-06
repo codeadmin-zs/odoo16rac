@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class RentalProduct(models.Model):
     _inherit = 'product.template'
 
-    rent_ok = fields.Boolean(string="Can be Rented", help="Allow renting of this product.", default=True)
+    rent_ok = fields.Boolean(string="Can be Rented", help="Allow renting of this product.")
     fleet_ok = fields.Boolean(string="Is Vehicle", help="Enable to create vehicle in fleet module.", default=False)
     accessories_ok = fields.Boolean(string="Accessory", help="Allow if its an accessory", default=False)
     charges_ok = fields.Boolean(string="Charges", help="Allow if its rental charges", default=False)
@@ -70,6 +70,7 @@ class RentalProduct(models.Model):
         if self.fleet_ok and (self.detailed_type == 'product' or self.detailed_type == 'service'):
             self.accessories_ok = False
             self.service_ok = False
+            self.rent_ok = True
 
     @api.onchange('service_ok')
     def onchange_service_ok(self):
