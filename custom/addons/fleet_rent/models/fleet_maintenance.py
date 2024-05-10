@@ -812,7 +812,10 @@ class FleetVehicleLogServices(models.Model):
                 'quantity': repair_line.quantity,
                 'tax_ids': repair_line.tax_ids,
                 'account_id': self.expence_acc_id.id or False,
-                'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
+                # 'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
+                'analytic_distribution': {
+                    self.vehicle_id.analytic_account_id.id: 100.0
+                },
             }
             inv_line_ids.append((0, 0, inv_line_values))
         inv_values['invoice_line_ids'] = inv_line_ids

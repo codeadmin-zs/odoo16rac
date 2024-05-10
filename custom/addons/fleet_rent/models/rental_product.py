@@ -6,14 +6,14 @@ from odoo.exceptions import ValidationError
 class RentalProduct(models.Model):
     _inherit = 'product.template'
 
-    rent_ok = fields.Boolean(string="Can be Rented", help="Allow renting of this product.")
+    rent_ok = fields.Boolean(string="Can be Rented", help="Allow renting of this product.", default=False)
     fleet_ok = fields.Boolean(string="Is Vehicle", help="Enable to create vehicle in fleet module.", default=False)
     accessories_ok = fields.Boolean(string="Accessory", help="Allow if its an accessory", default=False)
     charges_ok = fields.Boolean(string="Charges", help="Allow if its rental charges", default=False)
     detailed_type = fields.Selection([
         ('consu', 'Consumable'),
         ('service', 'Service'),
-        ('product', 'Storable Product')], string='Product Type', default='product', required=True,
+        ('product', 'Storable Product')], string='Product Type', default='consu', required=True,
         help='A storable product is a product for which you manage stock. The Inventory app has to be installed.\n'
              'A consumable product is a product for which stock is not managed.\n'
              'A service is a non-material product you provide.')
@@ -42,15 +42,31 @@ class RentalProduct(models.Model):
     @api.onchange('service_ok')
     def _onchange_service_ok(self):
         if self.service_ok:
+            print('_if')
             self.detailed_type = 'service'
-        else:
+            self.accessories_ok = False
+            self.sale_ok = False
+            self.purchase_ok = False
+            self.rent_ok = False
+            self.fleet_ok = False
+            self.charges_ok = False
+            self.asset_category_id = False
+            self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
+            self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
+        elif self.fleet_ok or self.accessories_ok:
+            print('_if2')
             self.detailed_type = 'product'
+        elif self.accessories_ok == False and self.fleet_ok == False:
+            print('_if3')
+            self.asset_category_id = False
+            self.property_account_expense_id = False
+            self.property_account_income_id = False
 
     @api.onchange('rent_ok', 'detailed_type')
     def onchange_rent_ok(self):
         if self.rent_ok and self.detailed_type == 'product':
             self.tracking = 'serial'
-            self.asset_category_id = False
+            # self.asset_category_id = False
             self.service_ok = False
 
     @api.onchange('attribute_line_ids')
@@ -59,28 +75,62 @@ class RentalProduct(models.Model):
             for i in self.attribute_line_ids.value_ids.vehicle_model_id:
                 i.update({'status': 'used'})
 
-    @api.onchange('accessories_ok')
-    def onchange_accessories_ok(self):
-        if self.accessories_ok and self.detailed_type == 'product':
-            self.fleet_ok = False
-            self.service_ok = False
+    # @api.onchange('accessories_ok')
+    # def onchange_accessories_ok(self):
+    #     if self.accessories_ok and self.detailed_type == 'product':
+    #         self.fleet_ok = False
+    #         self.service_ok = False
 
     @api.onchange('fleet_ok')
     def onchange_fleet_ok(self):
-        if self.fleet_ok and (self.detailed_type == 'product' or self.detailed_type == 'service'):
+        if self.fleet_ok:
+            self.detailed_type = 'product'
             self.accessories_ok = False
             self.service_ok = False
+            self.sale_ok = True
+            self.purchase_ok = True
             self.rent_ok = True
+            self.asset_category_id = self.env.ref('fleet_rent.fleet_vehicle_asset_type1')
+            self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
+            self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
 
-    @api.onchange('service_ok')
-    def onchange_service_ok(self):
-        if self.service_ok:
-            self.accessories_ok = False
-            self.sale_ok = False
-            self.purchase_ok = False
-            self.rent_ok = False
+        elif self.accessories_ok == False and self.service_ok == False and self.fleet_ok == False:
+            self.asset_category_id = False
+            self.property_account_expense_id = False
+            self.property_account_income_id = False
+
+    @api.onchange('accessories_ok')
+    def onchange_accessories_ok(self):
+        if self.accessories_ok:
             self.fleet_ok = False
-            self.charges_ok = False
+            self.sale_ok = True
+            self.purchase_ok = True
+            self.rent_ok = True
+            self.asset_category_id = self.env.ref('fleet_rent.fleet_vehicle_asset_type1')
+            self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
+            self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
+        elif self.accessories_ok == False and self.service_ok == False and self.fleet_ok == False:
+            self.asset_category_id = False
+            self.property_account_expense_id = False
+            self.property_account_income_id = False
+
+    # @api.onchange('service_ok')
+    # def onchange_service_ok(self):
+    #     if self.service_ok:
+    #         self.accessories_ok = False
+    #         self.sale_ok = False
+    #         self.purchase_ok = False
+    #         self.rent_ok = False
+    #         self.fleet_ok = False
+    #         self.charges_ok = False
+    #
+    #         # self.asset_category_id = self.env.ref('fleet_rent.fleet_vehicle_asset_type1')
+    #         self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
+    #         self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
+    #     else:
+    #         self.asset_category_id = False
+    #         self.property_account_expense_id = False
+    #         self.property_account_income_id = False
 
     @api.onchange('purchase_ok')
     def onchange_purchase_ok(self):
