@@ -60,7 +60,7 @@
                         <field name="finished_registration" invisible="1"/>
                         <field name="ready_for_approval" invisible="1"/>
                         <field name="vehicle_prodcut_template_id" invisible="1"/>
-                        <field name="vehicle_cost_price" />
+                        <field name="vehicle_cost_price" invisible="1"/>
                         <field name="vin_sn"/>
                         <field name="vehicle_type_image" widget="image"/>
                         <field name="company_id" groups="base.group_multi_company"/>
@@ -180,11 +180,11 @@
                             </group>
                         </group>
                     </page>
-                    <page string="Attachments">
+                    <page string="Attachments" invisible="1">
 <!--                        <field name="fleet_attach_ids" nolabel="1" attrs="{'readonly':[('state','in',('write-off'))]}"/>-->
                         <field name="fleet_attach_ids" nolabel="1" />
                     </page>
-                    <page string="History">
+                    <page string="History" invisible="1">
                         <group colspan="4" col="6">
                             <field name="is_color_set" invisible="1"/>
                             <field name="is_engine_set" invisible="1"/>

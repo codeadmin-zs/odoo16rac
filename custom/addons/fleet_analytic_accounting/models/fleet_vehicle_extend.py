@@ -9,11 +9,11 @@ class FleetVehicleExtend(models.Model):
 
     online_booking = fields.Boolean(string="Online booking", help="Allow renting of this product via online booking.",
                                     default=True)
-    model_year = fields.Char(string="Model year",  size=4)
+    # model_year = fields.Char(string="Model year",  size=4)
     # registration_number = fields.Char(string="Registration Number")
     registration_expiry = fields.Date('Registration Expiry')
     registration_cost = fields.Integer('Registration Cost')
-    color_vehicle = fields.Char('Color of vehicle')
+    # color_vehicle = fields.Char('Color of vehicle')
     next_service_date = fields.Date('Next Service Date')
     last_service_cost = fields.Float('Last service Cost')
     next_tyre_replacement_due = fields.Integer('Next Tyre Replacement')

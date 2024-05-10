@@ -30,6 +30,7 @@ class NewVehicleDetails(models.Model):
     def write(self, vals):
         res = super(NewVehicleDetails, self).write(vals)
         if self.qty_available > 0:
-            if self.accessories_ok:
-                raise ValidationError('Cannot change to Accessories')
+                raise ValidationError('This product has been used in at least one inventory movement. '
+                    'It is not advised to change the Product Type since it can lead to inconsistencies. '
+                    'A better solution could be to archive the product and create a new one instead.')
         return res

@@ -199,7 +199,7 @@ class AssetLoanManagement(models.Model):
                 'name': "EMI for " + self.name,
                 'debit': 0.0,
                 'credit': abs(self.emi),
-                'account_id': self.bank_journal_id.payment_credit_account_id.id, }
+                'account_id': self.bank_journal_id.company_id.account_journal_payment_credit_account_id.id, }
 
             vals = {
                 'journal_id': self.bank_journal_id.id,
