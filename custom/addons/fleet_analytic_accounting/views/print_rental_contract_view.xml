@@ -395,29 +395,28 @@
                 </div>
                 </div>
             </div>
-<!--            <div class="fill">-->
-<!--                -->
+            <br></br>
+<!--            <div class="text-center" style="border-top: 1px solid black;">-->
+<!--                <ul class="list-inline mb4">-->
+<!--                    &lt;!&ndash; using the list-inline-item class from bootstrap causes weird behaviours in pdf report-->
+<!--                         adding d-inline class fixes the problem&ndash;&gt;-->
+<!--                    <li t-if="docs.company_id.phone" class="list-inline-item d-inline"><span class="o_force_ltr" t-field="docs.company_id.phone"/></li>-->
+<!--                    <li t-if="docs.company_id.email" class="list-inline-item d-inline"><span t-field="docs.company_id.email"/></li>-->
+<!--                    <li t-if="docs.company_id.website" class="list-inline-item d-inline"><span t-field="docs.company_id.website"/></li>-->
+<!--                    <li t-if="docs.company_id.vat" class="list-inline-item d-inline"><t t-esc="docs.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="docs.company_id.vat"/></li>-->
+<!--                </ul>-->
+
+<!--                <div name="financial_infos">-->
+<!--                    <span t-field="docs.company_id.report_footer"/>-->
+<!--                </div>-->
+
+<!--                <div t-if="report_type == 'pdf'" class="text-muted">-->
+<!--                    Page: <span class="page"/> / <span class="topage"/>-->
+<!--                </div>-->
 <!--            </div>-->
 
         </t>
-        <div class="text-center" style="border-top: 1px solid black;">
-                <ul class="list-inline mb4">
-                    <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
-                         adding d-inline class fixes the problem-->
-                    <li t-if="docs.company_id.phone" class="list-inline-item d-inline"><span class="o_force_ltr" t-field="docs.company_id.phone"/></li>
-                    <li t-if="docs.company_id.email" class="list-inline-item d-inline"><span t-field="docs.company_id.email"/></li>
-                    <li t-if="docs.company_id.website" class="list-inline-item d-inline"><span t-field="docs.company_id.website"/></li>
-                    <li t-if="docs.company_id.vat" class="list-inline-item d-inline"><t t-esc="docs.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="docs.company_id.vat"/></li>
-                </ul>
 
-                <div name="financial_infos">
-                    <span t-field="docs.company_id.report_footer"/>
-                </div>
-
-                <div t-if="report_type == 'pdf'" class="text-muted">
-                    Page: <span class="page"/> / <span class="topage"/>
-                </div>
-            </div>
             <t t-raw="0"/>
     </template>
 
