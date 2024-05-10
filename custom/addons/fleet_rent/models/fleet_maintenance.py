@@ -1845,67 +1845,71 @@ class TeamAssignParts(models.Model):
         self.issue_date = issue_date_o
 
 
-class StockLocation(models.Model):
-    _inherit = 'stock.location'
-
-    # @api.multi
-    def _get_teamp_trip_status(self):
-        fleet_team_obj = self.env["fleet.team"]
-        for location in self:
-            flag = False
-            trip_ids = fleet_team_obj.search([
-                ('destination_location_id', '=', location.id),
-                ('state', '=', 'close')])
-            if trip_ids:
-                for trip in trip_ids:
-                    if trip.is_work_order_done is False:
-                        flag = True
-                        break
-            location.is_team_trip = flag
-
-    is_team = fields.Boolean(string='Is Team?')
-    workshop = fields.Char(string='Work Shop Name')
-    trip = fields.Boolean(string="Trip?")
-    is_team_trip = fields.Boolean(compute="_get_teamp_trip_status",
-                                  string="Is Team Trip", store=True)
-
-    # @api.multi
-    def name_get(self):
-        res = {}
-        for m in self:
-            res[m.id] = m.name
-        return res.items()
-
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        team_trip_obj = self.env['fleet.team']
-        if args is None:
-            args = []
-        ids = self.search(args).ids or []
-        team_trip_ids = team_trip_obj.search([
-            ('destination_location_id', 'in', ids)])
-        team_ids = ids
-        wo_team_ids = []
-        if self._context.get('t_trip', False):
-            for team_trip in team_trip_ids:
-                if self._context.get('t_trip', False):
-                    if not team_trip.is_work_order_done and \
-                            team_trip.destination_location_id.id in team_ids:
-                        team_ids.remove(team_trip.destination_location_id.id)
-                else:
-                    if not team_trip.is_work_order_done and \
-                            team_trip.destination_location_id.id \
-                            not in wo_team_ids:
-                        wo_team_ids.append(
-                            team_trip.destination_location_id.id)
-            if not self._context.get('t_trip', False):
-                team_ids = wo_team_ids
-            if team_trip_ids:
-                args = [('id', 'in', team_ids)]
-        return super(StockLocation, self).name_search(name=name,
-                                                      args=args,
-                                                      operator=operator,
-                                                      limit=limit)
+# class StockLocation(models.Model):
+#     _inherit = 'stock.location'
+#
+#     # @api.multi
+#     def _get_teamp_trip_status(self):
+#         fleet_team_obj = self.env["fleet.team"]
+#         for location in self:
+#             flag = False
+#             trip_ids = fleet_team_obj.search([
+#                 ('destination_location_id', '=', location.id),
+#                 ('state', '=', 'close')])
+#             if trip_ids:
+#                 for trip in trip_ids:
+#                     if trip.is_work_order_done is False:
+#                         flag = True
+#                         break
+#             location.is_team_trip = flag
+#
+#     is_team = fields.Boolean(string='Is Team?')
+#     workshop = fields.Char(string='Work Shop Name')
+#     trip = fields.Boolean(string="Trip?")
+#     is_team_trip = fields.Boolean(compute="_get_teamp_trip_status",
+#                                   string="Is Team Trip", store=True)
+#
+#     # @api.multi
+#     def name_get(self):
+#         res = {}
+#         for m in self:
+#             res[m.id] = m.name
+#         return res.items()
+#
+#     @api.model
+#     def name_search(self, name='', args=None, operator='ilike', limit=100):
+#         team_trip_obj = self.env['fleet.team']
+#         if args is None:
+#             args = []
+#         ids = self.search(args).ids or []
+#         team_trip_ids = team_trip_obj.search([
+#             ('destination_location_id', 'in', ids)])
+#         team_ids = ids
+#         wo_team_ids = []
+#         if self._context.get('t_trip', False):
+#             for team_trip in team_trip_ids:
+#                 if self._context.get('t_trip', False):
+#                     if not team_trip.is_work_order_done and \
+#                             team_trip.destination_location_id.id in team_ids:
+#                         team_ids.remove(team_trip.destination_location_id.id)
+#                 else:
+#                     if not team_trip.is_work_order_done and \
+#                             team_trip.destination_location_id.id \
+#                             not in wo_team_ids:
+#                         wo_team_ids.append(
+#                             team_trip.destination_location_id.id)
+#             if not self._context.get('t_trip', False):
+#                 team_ids = wo_team_ids
+#             if team_trip_ids:
+#                 args = [('id', 'in', team_ids)]
+#         print(name)
+#         print(args)
+#         print(operator)
+#         print(limit)
+#         return super(StockLocation, self).name_search(name=name,
+#                                                       args=args,
+#                                                       operator=operator,
+#                                                       limit=limit)
 
 
 class ResUsers(models.Model):
