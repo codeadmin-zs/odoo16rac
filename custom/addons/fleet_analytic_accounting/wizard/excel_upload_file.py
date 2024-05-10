@@ -75,6 +75,16 @@ class CSVExportExciseXLSX(models.AbstractModel):
         worksheet.write(row, col+5, 'Amount')
         worksheet.write(row, col+6, 'Fine/Toll')
 
+        worksheet.write('A1', 'Vehicle Fines and Tolls')
+        row, col = 1, 0
+        worksheet.write(row, col, 'No.')
+        worksheet.write(row, col + 1, 'Vehicle plate No.')
+        worksheet.write(row, col + 2, 'Location')
+        worksheet.write(row, col + 3, 'Date and Time')
+        worksheet.write(row, col + 4, 'Description')
+        worksheet.write(row, col + 5, 'Amount')
+        worksheet.write(row, col + 6, 'Fine/Toll')
+
         n = 1
         for each in vehicle:
             row += 1

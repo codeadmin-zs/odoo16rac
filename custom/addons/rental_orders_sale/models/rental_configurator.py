@@ -172,8 +172,7 @@ class RentalWizard(models.Model):
         domain = [('vehicle_prodcut_id', '=', self.product_id.id)]
         if self.rental_type == 'long_term':
             self.duration_unit = "month"
-            domain += [('state_id.name', '!=', 'Sold'), ('state_id.name', '!=', 'Workshop'),
-                       ('online_booking', '=', False)]
+            domain = [('id', '=', False)]
         else:
             domain += [('state_id.name', '=', 'Available')]
             if self.rental_type == 'online':
