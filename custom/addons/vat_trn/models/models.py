@@ -16,8 +16,8 @@ class CompanyVatConfig(models.Model):
         if self.name:
             self.taxable_name_english = self.name
 
-    country_id_new = fields.Many2one('res.country', required=True, search=True)
-    vat_enabled = fields.Boolean(related='country_id_new.vat_enabled', default=False)
+    country_id = fields.Many2one('res.country', required=True, search=True)
+    vat_enabled = fields.Boolean(related='country_id.vat_enabled', default=False)
     taxable_name_english = fields.Char(string='Taxable Person Name (English)', default=_get_default_company_name,
                                        store=True)
     company_name_arabic = fields.Char(string='Taxable Person Name (Arabic)', store=True)
