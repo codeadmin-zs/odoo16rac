@@ -1,6 +1,9 @@
 {
     'name': 'Fleet Rent',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
+    'author': 'Zaeem Solutions',
+    'company': 'Zaeem Solutions',
+    'website': "https://zaeemsolutions.com/",
     'depends': ['base', 'fleet', 'purchase', 'product', 'sale', 'stock', 'fleet_rental', 'multi_company_hide_any_menu', 'account', 'l10n_ae', 'hr_expense', 'sale_management', 'purchase'],
     'data': [
             'security/fleet_security.xml',
@@ -31,6 +34,7 @@
     ],
     'demo': [
     ],
+    "license": "LGPL-3",
     'installable': True,
     'application': True,
 }
