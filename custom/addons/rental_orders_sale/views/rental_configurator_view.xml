@@ -71,10 +71,11 @@
                             <field name="pricing_explanation" class="text-muted"/> -->
                         </div>
 <!--                        <field name="lot_ids" invisible="1"/>-->
-                        <label for="license_plate_no"/>
+                        <label for="license_plate_no"
+                               attrs="{'invisible': [('rental_type', '=', 'long_term')]}"/>
                         <div>
                             <field name="license_plate_no" widget="many2many_tags" string="Plate Numbers" options="{'create': false, 'create_edit': false}"
-                            attrs="{'required': [('rental_type', '!=', 'long_term')]}"/>
+                            attrs="{'required': [('rental_type', '!=', 'long_term')], 'invisible': [('rental_type', '=', 'long_term')]}"/>
                         </div>
                     </group>
                 </group>

@@ -12,18 +12,25 @@ class FleetVehicleFinesAndSalik(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account',
                                           'Analytic Account')
     vehicle_id = fields.Many2one('fleet.vehicle', 'Vehicle', required=True)
+    name = fields.Char(related='vehicle_id.name', readonly=True)
     fine_or_toll = fields.Selection(
-        [('0', 'Fine'), ('1', 'Toll')], 'Fine or Toll', default='0', required=True)
+        [('2', 'Fine'), ('1', 'Toll')], 'Fine or Toll', default='1', required=True, store=True)
     # is_a_fine = fields.Boolean(string='Fine', default=False)
     # is_a_salik = fields.Boolean(string='Salik', default=False)
 
     @api.model_create_multi
     def create(self, vals_list):
-        vals_list[0]['fine_or_toll'] = '0' if vals_list[0]['fine_or_toll'] == 'Fine' else '1'
+        if vals_list[0]['fine_or_toll'] in ['Toll', '1']:
+            vals_list[0]['fine_or_toll'] = '1'
+        else:
+            vals_list[0]['fine_or_toll'] = '2'
         vehicle_id = self.env['fleet.vehicle'].browse(vals_list[0]['vehicle_id'])
         additional_product_obj = self.env['rental.wizard.extra.charges']
         if not vals_list[0]['analytic_account_id']:
-            fine_or_toll = 'Fines' if vals_list[0]['fine_or_toll'] == 0 else 'Toll Charges'
+            if vals_list[0]['fine_or_toll'] in ['Toll', '1']:
+                fine_or_toll = 'Toll Charges'
+            else:
+                fine_or_toll = 'Fines'
             fine_or_toll_prod = self.env['product.product'].search([('name', '=', fine_or_toll)])
             self._cr.execute('''
                                 SELECT contract.id as contract_id

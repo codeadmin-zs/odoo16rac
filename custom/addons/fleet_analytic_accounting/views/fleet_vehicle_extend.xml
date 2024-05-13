@@ -9,7 +9,7 @@
 <!--                <attribute name="create">0</attribute>-->
 <!--            </xpath>-->
             <xpath expr="//field[@name='vin_sn']" position="after" >
-                <field name="model_year"/>
+<!--                <field name="model_year"/>-->
                 <field name="vehicle_prodcut_template_id" string="Vehicle Type" invisible="1"/>
                 <field name="vehicle_type_str" string="Vehicle Type"/>
                 <field name="location" />
@@ -22,10 +22,10 @@
                 <field name="registration_expiry" />
                 <field name="registration_cost" />
             </xpath>
-            <xpath expr="//field[@name='active_contract']" position="after" >
-                <field name="color_vehicle"  string="Color"/>
-<!--                widget="colorpicker"-->
-            </xpath>
+<!--            <xpath expr="//field[@name='active_contract']" position="after" >-->
+<!--                <field name="color_vehicle"  string="Color"/>-->
+<!--&lt;!&ndash;                widget="colorpicker"&ndash;&gt;-->
+<!--            </xpath>-->
             <xpath expr="//field[@name='acquisition_date']" position="attributes" >
                 <attribute name="string">Acquisition Date</attribute>
             </xpath>
@@ -222,5 +222,29 @@
         </data>
     </field>
 </record>
+
+    <record id="hide_odometer_tree_create" model="ir.ui.view">
+        <field name="name">odoometer.tree.view.hide.create</field>
+        <field name="model">fleet.vehicle.odometer</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="hide_odometer_kanban_create" model="ir.ui.view">
+        <field name="name">odoometer.kanban.view.hide.create</field>
+        <field name="model">fleet.vehicle.odometer</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_odometer_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
 
 </odoo>

@@ -16,6 +16,27 @@ _logger = logging.getLogger(__name__)
 class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
 
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super().fields_get(allfields, attributes)
+        filter_list = ['acc_pay_dep_ret_id', 'acc_pay_dep_rec_id', 'current_odometer', 'current_odometer_temp',
+                     'deposit_scheme_type', 'duration_cover', 'extra_charges_ids', 'fleet_rental_details',
+                     'from_sale_order', 'vehicle_id_temp', 'closing_odometer_temp', 'closing_odometer',
+                     'new_vehicle_id', 'additional_charges', 'additional_rental_charges_ids', 'additional_day_cost',
+                     'additional_drivers_ids', 'additional_fuel_cost', 'additional_fuel_cost', 'amount_return',
+                     'account_move_line_ids', 'cr_rent_btn', 'cost_id', 'deposit']
+        group_list = ['closing_odometer_temp', 'current_odometer_temp', 'additional_rental_charges_ids', 'acc_pay_dep_ret_id',
+                      'rent_entry_chck', 'replace_vehicle_details', 'new_vehicle_id', 'vehicle_id_temp',
+                      'deposit', 'amount_return', 'cr_rent_btn', 'ref',
+                      'cost_id']
+        for field in filter_list:
+            if res.get(field):
+                res[field]['searchable'] = False
+        for field in group_list:
+            if res.get(field):
+                res[field]['sortable'] = False
+        return res
+
     @api.onchange('tenant_id')
     def _change_tenant(self):
         ten_id = self.env['sale.order'].search([('id', '=', self.sale_order_id.id)])
@@ -1168,14 +1189,15 @@ class AccountAnalyticAccount(models.Model):
             #     raise Warning(_('The deposit amount must be strictly positive.'))
             ir_id = self.env['ir.model']._get_id('view_account_payment_form')
             ir_rec = self.env['ir.model.data'].browse(ir_id)
+            wiz_form_id = self.env.ref('account.view_account_payment_form').id
             return {
                 'view_mode': 'form',
-                'view_id': [ir_rec.res_id],
+                'view_id': wiz_form_id,
                 'view_type': 'form',
                 'res_model': 'account.payment',
                 'type': 'ir.actions.act_window',
-                'nodestroy': True,
-                'target': 'new',
+                # 'nodestroy': True,
+                'target': 'current',
                 'domain': '[]',
                 'context': {
                     'default_partner_id': tenancy_rec.tenant_id.id,
@@ -1212,23 +1234,24 @@ class AccountAnalyticAccount(models.Model):
                     account_id = account.id
                 inv_line_values.update({'account_id': account_id})
 
-        inv_values = {
-            # 'origin': 'Deposit Return For ' + self.name or "",
-            'move_type': 'in_invoice',
-            # 'property_id': self.vehicle_id.id,
-            'partner_id': self.tenant_id.id or False,
-            # 'account_id':
-            #     self.tenant_id.property_account_payable_id.id or False,
-            'invoice_line_ids': [(0, 0, inv_line_values)],
-            'date_invoice': datetime.now().strftime(DT) or False,
-            'new_tenancy_id': self.id,
-            'ref': self.ref,
-            'journal_id': account_jrnl_obj and
-                          account_jrnl_obj.ids[0] or False,
-        }
+        if not self.invc_id:
+            inv_values = {
+                # 'origin': 'Deposit Return For ' + self.name or "",
+                'move_type': 'in_invoice',
+                # 'property_id': self.vehicle_id.id,
+                'partner_id': self.tenant_id.id or False,
+                # 'account_id':
+                #     self.tenant_id.property_account_payable_id.id or False,
+                'invoice_line_ids': [(0, 0, inv_line_values)],
+                'date_invoice': datetime.now().strftime(DT) or False,
+                'new_tenancy_id': self.id,
+                'ref': self.ref,
+                'journal_id': account_jrnl_obj and
+                              account_jrnl_obj.ids[0] or False,
+            }
 
-        acc_id = self.env['account.move'].create(inv_values)
-        self.write({'invc_id': acc_id.id})
+            acc_id = self.env['account.move'].create(inv_values)
+            self.write({'invc_id': acc_id.id})
         wiz_form_id = self.env.ref('account.view_move_form').id
         return {
             'view_type': 'form',
