@@ -42,7 +42,6 @@ class RentalProduct(models.Model):
     @api.onchange('service_ok')
     def _onchange_service_ok(self):
         if self.service_ok:
-            print('_if')
             self.detailed_type = 'service'
             self.accessories_ok = False
             self.sale_ok = False
@@ -54,10 +53,8 @@ class RentalProduct(models.Model):
             self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
             self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
         elif self.fleet_ok or self.accessories_ok:
-            print('_if2')
             self.detailed_type = 'product'
         elif self.accessories_ok == False and self.fleet_ok == False:
-            print('_if3')
             self.asset_category_id = False
             self.property_account_expense_id = False
             self.property_account_income_id = False
@@ -406,27 +403,27 @@ class FleetVehicleModel(models.Model):
         brand_temp = res.brand_id.id
         product_temp_obj_temp = self.env['product.template'].search([('model_name', '=', name_temp),
                                                                      ('brand_id_temp', '=', brand_temp)])
-        if not res.id:
+        if not product_temp_obj_temp:
             self.env['product.template'].create({
-                'name': res.brand_id.name + ' ' + res.name,
-                'sale_ok': True,
-                'purchase_ok': True,
-                'rent_ok': True,
-                'fleet_ok': True,
-                'charges_ok': False,
-                'accessories_ok': False,
-                'model_id_zt': res.id,
-                'brand_id_zt': res.brand_id.id,
-                'detailed_type': 'product',
-                'list_price': 0.0,
-                'uom_id': uom_units.id,
-                'uom_po_id': uom_units.id,
-                'supplier_taxes_id': False,
-                'tracking': 'serial',
-                'property_account_income_id': account_income.id,
-                'property_account_expense_id': account_expense.id,
-                'asset_category_id': asset_category_id.id
-            })
+                    'name': res.brand_id.name + ' ' + res.name,
+                    'sale_ok': True,
+                    'purchase_ok': True,
+                    'rent_ok': True,
+                    'fleet_ok': True,
+                    'charges_ok': False,
+                    'accessories_ok': False,
+                    'model_id_zt': res.id,
+                    'brand_id_zt': res.brand_id.id,
+                    'detailed_type': 'product',
+                    'list_price': 0.0,
+                    'uom_id': uom_units.id,
+                    'uom_po_id': uom_units.id,
+                    'supplier_taxes_id': False,
+                    'tracking': 'serial',
+                    'property_account_income_id': account_income.id,
+                    'property_account_expense_id': account_expense.id,
+                    'asset_category_id': asset_category_id.id
+                })
         return res
 
     # def write(self, values):
