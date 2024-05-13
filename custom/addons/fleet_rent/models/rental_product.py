@@ -403,27 +403,27 @@ class FleetVehicleModel(models.Model):
         brand_temp = res.brand_id.id
         product_temp_obj_temp = self.env['product.template'].search([('model_name', '=', name_temp),
                                                                      ('brand_id_temp', '=', brand_temp)])
-        if not res.id:
+        if not product_temp_obj_temp:
             self.env['product.template'].create({
-                'name': res.brand_id.name + ' ' + res.name,
-                'sale_ok': True,
-                'purchase_ok': True,
-                'rent_ok': True,
-                'fleet_ok': True,
-                'charges_ok': False,
-                'accessories_ok': False,
-                'model_id_zt': res.id,
-                'brand_id_zt': res.brand_id.id,
-                'detailed_type': 'product',
-                'list_price': 0.0,
-                'uom_id': uom_units.id,
-                'uom_po_id': uom_units.id,
-                'supplier_taxes_id': False,
-                'tracking': 'serial',
-                'property_account_income_id': account_income.id,
-                'property_account_expense_id': account_expense.id,
-                'asset_category_id': asset_category_id.id
-            })
+                    'name': res.brand_id.name + ' ' + res.name,
+                    'sale_ok': True,
+                    'purchase_ok': True,
+                    'rent_ok': True,
+                    'fleet_ok': True,
+                    'charges_ok': False,
+                    'accessories_ok': False,
+                    'model_id_zt': res.id,
+                    'brand_id_zt': res.brand_id.id,
+                    'detailed_type': 'product',
+                    'list_price': 0.0,
+                    'uom_id': uom_units.id,
+                    'uom_po_id': uom_units.id,
+                    'supplier_taxes_id': False,
+                    'tracking': 'serial',
+                    'property_account_income_id': account_income.id,
+                    'property_account_expense_id': account_expense.id,
+                    'asset_category_id': asset_category_id.id
+                })
         return res
 
     # def write(self, values):
