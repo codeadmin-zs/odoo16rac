@@ -88,7 +88,7 @@
                  <attribute name="attrs">{'required':['|','|',('fleet_ok', '=', True),('accessories_ok','=',True),('service_ok','=',True)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='asset_category_id']" position="attributes">
-                 <attribute name="attrs">{'required':['|','|',('fleet_ok', '=', True),('accessories_ok','=',True),('service_ok','=',True)]}</attribute>
+                 <attribute name="attrs">{'required':['|',('fleet_ok', '=', True),('accessories_ok','=',True)]}</attribute>
             </xpath>
         </field>
     </record>
