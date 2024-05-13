@@ -1,6 +1,9 @@
 {
     'name': 'Fleet Rental Orders Sale',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
+    'author': 'Zaeem Solutions',
+    'company': 'Zaeem Solutions',
+    'website': "https://zaeemsolutions.com/",
     'depends': ['base', 'fleet', 'product', 'sale', 'fleet_rent'],
     'data': [
             # 'security/fleet_security.xml',

@@ -1,6 +1,9 @@
 {
     'name': 'VAT/TRN for UAE and OMAN',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
+    'author': 'Zaeem Solutions',
+    'company': 'Zaeem Solutions',
+    'website': "https://zaeemsolutions.com/",
     'depends': ['base', 'account', 'report_xlsx'],
     'data': [
                 'security/ir.model.access.csv',

@@ -1,6 +1,9 @@
 {
     'name': 'Fleet Analytic Account',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
+    'author': 'Zaeem Solutions',
+    'company': 'Zaeem Solutions',
+    'website': "https://zaeemsolutions.com/",
     'depends': ['base', 'fleet_rent', 'report_xlsx', 'sales_team'],
     'data': [
             'security/fleet_analytic_account_security.xml',
