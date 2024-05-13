@@ -42,7 +42,6 @@ class RentalProduct(models.Model):
     @api.onchange('service_ok')
     def _onchange_service_ok(self):
         if self.service_ok:
-            print('_if')
             self.detailed_type = 'service'
             self.accessories_ok = False
             self.sale_ok = False
@@ -54,10 +53,8 @@ class RentalProduct(models.Model):
             self.property_account_expense_id = self.env.ref('fleet_rent.zt_rac_cri_5005')
             self.property_account_income_id = self.env.ref('fleet_rent.zt_rac_cri_4005')
         elif self.fleet_ok or self.accessories_ok:
-            print('_if2')
             self.detailed_type = 'product'
         elif self.accessories_ok == False and self.fleet_ok == False:
-            print('_if3')
             self.asset_category_id = False
             self.property_account_expense_id = False
             self.property_account_income_id = False
