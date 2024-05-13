@@ -39,7 +39,7 @@
     'assets': {'web.report_assets_common': ['fleet_analytic_accounting/static/src/scss/contract.scss']},
     'demo': [
     ],
-
+    "license": "LGPL-3",
     'installable': True,
     'application': True,
 }
