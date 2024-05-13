@@ -86,6 +86,7 @@ class FleetVehicle(models.Model):
 
                 if purchase_line_id:
                     record.vehicle_cost_price = purchase_line_id.price_unit
+                    record.net_car_value = purchase_line_id.price_unit
                     invoice_line_obj = self.env['account.move.line'].search(
                         [('purchase_line_id', '=', purchase_line_id.id), ('move_id.state', 'in', ['open', 'paid'])],
                         limit=1, order="id asc")
@@ -97,6 +98,8 @@ class FleetVehicle(models.Model):
                     #     record.down_payment = 0
                 else:
                     record.vehicle_cost_price = 0
+                    record.net_car_value = 0
+
 
 
     @api.depends('name')

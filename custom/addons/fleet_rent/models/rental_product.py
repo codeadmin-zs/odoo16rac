@@ -18,7 +18,7 @@ class RentalProduct(models.Model):
              'A consumable product is a product for which stock is not managed.\n'
              'A service is a non-material product you provide.')
     reference_product = fields.Many2one('product.template', string='Reference Vehicle')
-    category_vehicle_type_id = fields.Many2one('fleet.category.vehicle.type', string='Vehicle Type', required=True)
+    category_vehicle_type_id = fields.Many2one('fleet.category.vehicle.type', string='Vehicle Category Type', required=True)
     category_vehicle_class_id = fields.Many2one('fleet.category.vehicle.class', string='Vehicle Class', required=True)
     category_vehicle_transmission_id = fields.Many2one('fleet.category.vehicle.transmission', string='Transmission',
                                                        required=True)
@@ -36,7 +36,7 @@ class RentalProduct(models.Model):
     # brand_id = fields.Many2one("Vehicle Manufacturer", 'fleet.vehicle.model.brand')
     service_ok = fields.Boolean(string="Is Service", help="Allow if its a service", default=False)
 
-    model_id_zt = fields.Many2one('fleet.vehicle.model', string='Vehicle Model')
+    model_id_zt = fields.Many2one('fleet.vehicle.model', string='Vehicle Model Id')
     brand_id_zt = fields.Many2one('fleet.vehicle.model.brand', string='Vehicle Manufacturer')
 
     @api.onchange('service_ok')

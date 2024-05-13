@@ -54,11 +54,8 @@
                             <button name="button_hand_over_vehicle_details" string="Handover" type="object"
                                     icon="fa-car" colspan="2" class="oe_inline oe_stat_button"
                                     attrs="{'invisible': [('state','not in',['hand_over'])]}"/>
-
-                             <button name="button_change_contract" string="Edit Contract" type="object"
-                                    icon="fa-cog" colspan="2" class="oe_inline oe_stat_button"/>
-<!--                                    attrs="{'invisible': [('state','not in',['hand_over'])]}"/>-->
-
+                            <button name="button_change_contract" string="Edit Contract" type="object"
+                                    icon="fa-cog" colspan="2" class="oe_inline oe_stat_button" invisible="1"/>
                             <button name="button_rent_schedules" string=" Schedule Invoices" type="object"
                                     icon="fa-plus" colspan="2" class="oe_inline oe_stat_button"
                                     attrs="{'invisible': ['|', ('state','not in',['open','return','closed']),('scheduled_invoices_status','!=',False)]}"/>
@@ -332,7 +329,9 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page name="contract_extend" string="Contract Log">
+
+<!--  Invisible attr added for future purpose                        -->
+                            <page name="contract_extend" string="Contract Log" invisible="1">
                                 <separator colspan="4" string="CONTRACT LOG"/>
                                 <field name="vehicle_contract_log_details"
                                       readonly="1">

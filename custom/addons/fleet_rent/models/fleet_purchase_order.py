@@ -145,8 +145,13 @@ class PickingType(models.Model):
                                           'income_acc_id': product_id.property_account_income_id.id,
                                           'expence_acc_id': product_id.property_account_expense_id.id,
                                           'model_id': product_id.product_tmpl_id.model_id_zt.id,
-                                          'f_brand_id': product_id.product_tmpl_id.brand_id_zt.id,}
+                                          'f_brand_id': product_id.product_tmpl_id.brand_id_zt.id,
+                                          'name': (product_id.product_tmpl_id.brand_id_zt.name or '') + '/' +
+                                                  (product_id.product_tmpl_id.model_id_zt.name or '') + '/' +
+                                                  'No Plate' }
 
+                            msg1 = ("This is my debug message vehicle! %s", fleet_data)
+                            _logger.error(msg1)
                             vehicle = fleet_object.create(fleet_data)
                             msg1 = ("This is my debug message vehicle! %s", vehicle)
                             _logger.error(msg1)
