@@ -404,7 +404,7 @@ class FleetVehicleModel(models.Model):
         product_temp_obj_temp = self.env['product.template'].search([('model_name', '=', name_temp),
                                                                      ('brand_id_temp', '=', brand_temp)])
         if not product_temp_obj_temp:
-            self.env['product.template'].create({
+            product_temp_id = self.env['product.template'].create({
                     'name': res.brand_id.name + ' ' + res.name,
                     'sale_ok': True,
                     'purchase_ok': True,
@@ -424,6 +424,10 @@ class FleetVehicleModel(models.Model):
                     'property_account_expense_id': account_expense.id,
                     'asset_category_id': asset_category_id.id
                 })
+            product_temp_id.write({
+                'model_name': product_temp_id.model_id_zt.name,
+                'brand_id_temp': product_temp_id.brand_id_zt.id
+            })
         return res
 
     # def write(self, values):
