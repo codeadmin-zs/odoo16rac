@@ -1,6 +1,9 @@
 {
     'name': 'Fleet Analytic Account',
-    'version': '14.0.1.0.0',
+    'version': '16.0.1.0.0',
+    'author': 'Zaeem Solutions',
+    'company': 'Zaeem Solutions',
+    'website': "https://zaeemsolutions.com/",
     'depends': ['base', 'fleet_rent', 'report_xlsx', 'sales_team'],
     'data': [
             'security/fleet_analytic_account_security.xml',
@@ -36,7 +39,7 @@
     'assets': {'web.report_assets_common': ['fleet_analytic_accounting/static/src/scss/contract.scss']},
     'demo': [
     ],
-
+    "license": "LGPL-3",
     'installable': True,
     'application': True,
 }
