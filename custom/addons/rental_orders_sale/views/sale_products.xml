@@ -39,7 +39,8 @@
 	            <header>
                     <field name="is_rental_order" invisible="1"/>
                     <field name="rental_rank" invisible="1" />
-                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" class="btn-primary" attrs="{'invisible': ['|',('invoice_status', '!=', 'to invoice'), ('is_rental_order', '=', True)]}"/>
+<!--                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" class="btn-primary" attrs="{'invisible': ['|',('invoice_status', '!=', 'to invoice'), ('is_rental_order', '=', True)]}"/>-->
+                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" class="btn-primary" attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}"/>
                     <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" context="{'default_advance_payment_method': 'percentage'}" attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}"/>
                     <button name="action_quotation_send" string="Send by Email" type="object" states="draft" class="btn-primary"/>
 <!--                    <button name="print_quotation" string="Print" type="object" states="draft" class="btn-primary"/>-->
@@ -49,7 +50,7 @@
                     <button name="action_quotation_send" string="Send by Email" type="object" states="sent,sale"/>
                     <button name="action_cancel" states="draft,sent,sale" type="object" string="Cancel"/>
                     <button name="return_action_to_generate_rental" type="object" class="btn-primary"
-                        attrs="{'invisible': [('state', '!=', 'draft')]}" string="Add Product"/>
+                        attrs="{'invisible': ['|',('state', '!=', 'draft'), ('is_rental_order', '=', False)]}" string="Add Product"/>
                     <field name="rental_count_flag" invisible="1"/>
                     <button name="button_create_rental_contract" type="object" class="btn-primary"
                             attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'sale'), ('is_rental_order', '=', False), ('rental_count_flag', '=', True), ('rental_term', '!=', 'long_term')]}" string="Create Rental Contract"/>
@@ -130,15 +131,16 @@
 	                <!-- <label for="analytic_tag_ids" groups="analytic.group_analytic_accounting"/> -->
 	                <div>
 	                    <!-- <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_accounting"/> -->
-	                    <label for="return_action_to_generate_rental"/>
+	                    <label for="return_action_to_generate_rental" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
 	                    <div>
-                            <button class="btn btn-link fa fa-gear" name="return_action_to_generate_rental" type="object" string="Rental" />
+                            <button class="btn btn-link fa fa-gear" name="return_action_to_generate_rental"
+                                    type="object" string="Rental" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
 	                    </div>
 	                </div>
 	                <div>
-	                    <label for="duration" />
+	                    <label for="duration" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
 	                    <div>
-	                        <field name="duration"/>
+	                        <field name="duration" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
 	                    </div>
 	                </div>
 	            </group>
