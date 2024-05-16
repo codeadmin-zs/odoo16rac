@@ -53,44 +53,6 @@ class RentalOrder(models.Model):
         required=True, change_default=True, index=True, tracking=1,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", )
 
-    # @api.onchange('start_date')
-    # def onchange_start_date(self):
-    #     if datetime.strptime(str(self.start_date.replace(microsecond=0)), '%Y-%m-%d %H:%M:%S').date() < \
-    #             datetime.now().date():
-    #         warning = {
-    #             'title': 'Warning',
-    #             'message': 'Pick up date should be greater than current date.'
-    #         }
-    #         return {'warning': warning}
-    #
-    # @api.onchange('end_date')
-    # def onchange_end_date(self):
-    #     if datetime.strptime(str(self.start_date.replace(microsecond=0)), '%Y-%m-%d %H:%M:%S').date() > \
-    #             datetime.strptime(str(self.end_date.replace(microsecond=0)), '%Y-%m-%d %H:%M:%S').date():
-    #         warning = {
-    #             'title': 'Warning',
-    #             'message': 'End date should be greater than Start date.'
-    #         }
-    #         return {'warning': warning}
-    #     else:
-    #         delta = relativedelta(self.end_date, self.start_date)
-    #         if delta.years:
-    #             self.duration_unit = 'year'
-    #             self.duration = delta.years
-    #             self.rental_term = 'long_term'
-    #         elif delta.months:
-    #             self.duration_unit = 'month'
-    #             self.duration = delta.months
-    #         elif delta.weeks:
-    #             self.duration_unit = 'week'
-    #             self.duration = delta.weeks
-    #         elif delta.days:
-    #             self.duration_unit = 'day'
-    #             self.duration = delta.days
-    #         elif delta.hours:
-    #             self.duration_unit = 'hour'
-    #             self.duration = delta.hours
-
     # using from odoo 14's _amount_all, not used odoo 10's _amount_all, getting singleton error
     @api.depends('order_line.price_total')
     def _amount_all(self):
