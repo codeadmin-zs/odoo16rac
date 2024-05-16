@@ -318,11 +318,11 @@ class RentalProduct(models.Model):
                 'tax_ids': extra_day_product.taxes_id.ids,
             }
             rental_pricing_obj.create(additional_products_extra_day)
-            if res.fleet_ok:
-                if 'brand_id_temp' in vals and 'name' in vals:
+            if res.fleet_ok and res.model_name:
+                if 'brand_id_zt' in vals and 'name' in vals:
                     model_id_obj = self.env['fleet.vehicle.model'].create({
                         'name': res.model_name,
-                        'brand_id': res.brand_id_temp.id,
+                        'brand_id': res.brand_id_zt.id,
                         'active': True,
                         'vehicle_type': res.vehicle_type,
                         'fuel_tank_capacity': res.fuel_tank_capacity,
@@ -332,13 +332,13 @@ class RentalProduct(models.Model):
                         'doors': res.doors,
                         'seats': res.seats
                     })
-                    product_temp_obj = self.env['product.template'].search([('model_name', '=', model_id_obj.name),
-                                                                            ('brand_id_temp', '=',
-                                                                             model_id_obj.brand_id.id)])
-                    product_temp_obj.update({
-                        'model_id_zt': model_id_obj.id,
-                        'brand_id_zt': model_id_obj.brand_id.id
-                    })
+                    # product_temp_obj = self.env['product.template'].search([('model_name', '=', model_id_obj.name),
+                    #                                                         ('brand_id_temp', '=',
+                    #                                                          model_id_obj.brand_id.id)])
+                    # product_temp_obj.update({
+                    #     'model_id_zt': model_id_obj.id,
+                    #     'brand_id_zt': model_id_obj.brand_id.id
+                    # })
         else:
             return res
         return res
@@ -402,7 +402,7 @@ class FleetVehicleModel(models.Model):
         name_temp = res.name
         brand_temp = res.brand_id.id
         product_temp_obj_temp = self.env['product.template'].search([('model_name', '=', name_temp),
-                                                                     ('brand_id_temp', '=', brand_temp)])
+                                                                     ('brand_id_zt', '=', brand_temp)])
         if not product_temp_obj_temp:
             product_temp_id = self.env['product.template'].create({
                     'name': res.brand_id.name + ' ' + res.name,
@@ -426,20 +426,9 @@ class FleetVehicleModel(models.Model):
                 })
             product_temp_id.write({
                 'model_name': product_temp_id.model_id_zt.name,
-                'brand_id_temp': product_temp_id.brand_id_zt.id
+                'brand_id_zt': product_temp_id.brand_id_zt.id
             })
         return res
-
-    # def write(self, values):
-    #     """Override default Odoo write function and extend."""
-    #     if 'name' in values:
-    #         new_name = values['name'].lower().replace(" ", "")
-    #         brand_id = self.brand_id.id
-    #         existing_models = self.env['fleet.vehicle.model'].search([('brand_id', '=', brand_id)])
-    #         for model in existing_models:
-    #             if model.name.lower().replace(" ", "") == new_name:
-    #                 raise ValidationError('Model Name Already Exists with Same Manufacturer')
-    #     return super(FleetVehicleModel, self).write(values)
 
 
 class ProductProduct(models.Model):
