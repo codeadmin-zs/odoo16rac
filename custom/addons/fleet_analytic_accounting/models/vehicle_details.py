@@ -8,8 +8,8 @@ class NewVehicleDetails(models.Model):
     name = fields.Char('Name', index=True, translate=True, trackvisibility='onchange')
     model_id_temp = fields.Many2one('fleet.vehicle.model', "Vehicle Model", )
     model_name = fields.Char('Name', required=1)
-    brand_id_temp = fields.Many2one('fleet.vehicle.model.brand', 'Manufacturer', required=True,
-                                   help='Manufacturer of the vehicle')
+    # brand_id_temp = fields.Many2one('fleet.vehicle.model.brand', 'Manufacturer', required=True,
+    #                                help='Manufacturer of the vehicle')
     vehicle_type = fields.Selection([('car', 'Car'), ('bike', 'Bike')], default='car', required=True)
     # manager_id = fields.Many2one('res.users', compute='_compute_manager_id', domain=lambda self: [
     #     ('groups_id', 'in', self.env.ref('fleet.fleet_group_manager').id)], store=True, readonly=False)
@@ -21,10 +21,10 @@ class NewVehicleDetails(models.Model):
     doors = fields.Integer('Doors Number', help='Number of doors of the vehicle', default=4)
     seats = fields.Integer('Seats Number', help='Number of seats of the vehicle', default=5)
 
-    @api.onchange('model_name', 'brand_id_temp')
+    @api.onchange('model_name', 'brand_id_zt')
     def set_product_name(self):
-        if self.model_name and self.brand_id_temp:
-            self.name = self.brand_id_temp.name + ' ' + self.model_name
+        if self.model_name and self.brand_id_zt:
+            self.name = self.brand_id_zt.name + ' ' + self.model_name
 
 
     def write(self, vals):

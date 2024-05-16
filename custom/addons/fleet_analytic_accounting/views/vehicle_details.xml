@@ -18,9 +18,9 @@
                                 <h1>
                                     <field name="model_name" placeholder="e.g. Model S" attrs="{'required':[('fleet_ok', '=', True)]}"/>
                                 </h1>
-                                <label for="brand_id_temp" class="oe_edit_only"/>
+                                <label for="brand_id_zt" class="oe_edit_only"/>
                                 <h2>
-                                    <field name="brand_id_temp" placeholder="e.g. Tesla " attrs="{'required':[('fleet_ok', '=', True)]}"/>
+                                    <field name="brand_id_zt" placeholder="e.g. Tesla " attrs="{'required':[('fleet_ok', '=', True)]}"/>
                                 </h2>
                             </div>
                             <group>

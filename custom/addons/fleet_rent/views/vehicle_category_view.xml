@@ -82,8 +82,8 @@
                 <field name="fuel_tank_capacity" string="Fuel Tank Capacity in L"/>
                 <field name="category_vehicle_class_id"/>
                 <field name="category_vehicle_transmission_id" string="Transmission"/>
-                <field name="seats"/>
-                <field name="doors"/>
+<!--                <field name="seats"/>-->
+<!--                <field name="doors"/>-->
             </xpath>
         </field>
     </record>
