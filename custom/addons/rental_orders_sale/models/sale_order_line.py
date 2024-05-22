@@ -12,7 +12,8 @@ class RentalOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     is_rental = fields.Boolean(default=False)  # change to compute if pickup_date and return_date set?
-    is_rental_order = fields.Boolean("Created In App Rental", related='order_id.is_rental_order')
+    is_rental_order = fields.Boolean("Created In App Rental", compute='_compute_is_rental_order',
+                                     store=True, default=False)
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
 
     pickup_date = fields.Datetime(string="Pickup")
@@ -200,12 +201,12 @@ class RentalOrderLine(models.Model):
         else:
             return ""
 
-    def _get_display_price(self, product):
+    def _get_display_price(self):
         """Ensure unit price isn't recomputed."""
         if self.is_rental:
             return self.price_unit
         else:
-            return super(RentalOrderLine, self)._get_display_price(product)
+            return super(RentalOrderLine, self)._get_display_price()
 
     def _generate_delay_line(self, qty):
         """Generate a sale order line representing the delay cost due to the late return.
@@ -302,3 +303,8 @@ class RentalOrderLine(models.Model):
                 'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
             })
+
+    @api.depends('order_id.is_rental_order_temp')
+    def _compute_is_rental_order(self):
+        for line in self:
+            line.is_rental_order = line.order_id.is_rental_order_temp

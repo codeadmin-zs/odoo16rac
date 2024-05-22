@@ -122,6 +122,9 @@ class NonEditableInheritedFleetVehicleState(models.Model):
 class SaleOrderInherited(models.Model):
     _inherit = 'sale.order'
 
+    is_rental_order = fields.Boolean("Created In App Rental")
+    is_rental_order_temp = fields.Boolean("Created For Hide")
+
     validity_date = fields.Date(
         string='Expiration',
         readonly=True,
