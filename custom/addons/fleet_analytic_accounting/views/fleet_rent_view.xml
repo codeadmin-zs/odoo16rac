@@ -367,7 +367,8 @@
                         </attribute>
                     </xpath>
                     <xpath expr="//field[@name='partner_id']" position="after">
-                        <field name="invoice_policies_temp"/>
+                        <field name="invoice_policies_temp"  attrs="{'invisible': [('is_rental_order_temp', '=', False)]}"/>
+                        <field name="is_rental_order_temp" invisible="1"/>
                     </xpath>
                 </data>
             </field>

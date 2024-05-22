@@ -9,7 +9,6 @@ _logger = logging.getLogger(__name__)
 class RentalOrder(models.Model):
     _inherit = 'sale.order'
 
-    is_rental_order = fields.Boolean("Created In App Rental")
     rental_status = fields.Selection([
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),

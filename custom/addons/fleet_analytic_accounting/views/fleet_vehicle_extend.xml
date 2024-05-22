@@ -173,28 +173,6 @@
 
 
 <!--Hide sale order in sales module-->
-    <record id="view_quotation_tree_with_onboarding_hide_create" model="ir.ui.view">
-        <field name="name">view.quotation.tree.with.onboarding.hide.create</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="attributes">
-                <attribute name="create">0</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="sale_view_sale_order_kanban_hide_create" model="ir.ui.view">
-        <field name="name">sale.view.sale.order.kanban.hide.create</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr="//kanban" position="attributes">
-                <attribute name="create">0</attribute>
-            </xpath>
-        </field>
-    </record>
-
 <!--       add time stamp-->
 <record id="fleet_vehicle_assignation_log_view_tree_inherited" model="ir.ui.view">
     <field name="name">fleet.vehicle.assignation.log.view.tree.inherited</field>
