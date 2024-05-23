@@ -246,7 +246,8 @@ class TenancyRentSchedule(models.Model):
         @param vals: dictionary of fields value.
         """
         res = super(TenancyRentSchedule, self).create(vals)
-        res.create_invoice()
+        if res.tenancy_id.invoice_policies != 'periodic' or res.tenancy_id.rental_terms != 'long_term':
+            res.create_invoice()
         return res
 
     def _get_default_pen_amount(self):
@@ -269,8 +270,8 @@ class TenancyRentSchedule(models.Model):
     cheque_detail = fields.Char(string='Cheque Detail', size=30)
     move_check = fields.Boolean(compute='_get_move_check', method=True,
                                 string='Posted', store=True, default=False)
-    rel_tenant_id = fields.Many2one(comodel_name='res.partner',
-                                    string="Tenant")
+    rel_tenant_id = fields.Many2one(comodel_name='res.partner', string='Rental Customer',
+                                    help='Rental Customer Name.')
     move_id = fields.Many2one(comodel_name='account.move',
                               string='Depreciation Entry')
     vehicle_id = fields.Many2one(comodel_name='fleet.vehicle',
@@ -301,100 +302,67 @@ class TenancyRentSchedule(models.Model):
             # if each.state == 'draft':
             #     self.pen_amt = self.amount
 
+    def get_rental_contracts(self):
+        contracts = self.env['account.analytic.account'].search([('tenant_id', '=', self.tenancy_id.tenant_id.id),
+                                                                 ('state', 'not in', ['draft', 'close', 'cancelled'])])
+        return contracts
+
+
+
+    def get_tenancy_ids(self, rental_contracts=None):
+        tenancy_ids = self.env['tenancy.rent.schedule'].search([('rel_tenant_id', '=', self.tenancy_id.tenant_id.id),
+                                                                ('tenancy_id', 'in', rental_contracts.ids)])
+        return tenancy_ids
+
+    def create_all_invoices(self):
+        rental_contracts = self.get_rental_contracts()
+        inv_values = self.get_invoice_data(rental_contracts)
+        acc_id = self.env['account.move'].create(inv_values)
+        current_date = datetime.now()  # Get current date
+        current_month = current_date.month
+        tenancy_ids = self.get_tenancy_ids(rental_contracts)
+        for tenancy in tenancy_ids:
+            for line in acc_id.line_ids:
+                if tenancy.start_date.month == current_month and line.fleet_vehicle_id.id == tenancy.vehicle_id.id:
+                    tenancy.write({'invc_id': acc_id.id,
+                                   'inv': True,
+                                   'amount': acc_id.amount_total,
+                                   'pen_amt': acc_id.amount_total})
+                    tenancy.tenancy_id.account_move_line_ids += line
+        self.env['invoice.tracking.customer.based'].create({'customer_id': self.tenancy_id.tenant_id.id,
+                                                            'invoice_id': acc_id.id,
+                                                            'invoice_date': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT) or False,
+                                                            'amount': acc_id.amount_total})
+
+        context = dict(self._context or {})
+        wiz_form_id = self.env.ref('account.view_move_form').id
+
+        return {
+            'view_type': 'form',
+            'view_id': wiz_form_id,
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id': self.invc_id.id,
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'context': context,
+        }
+
     # @api.multi
     def create_invoice(self):
         """
         Create invoice for Rent Schedule.
         """
-        journal_ids = self.env['account.journal'].search([('type', '=', 'sale')])
-        if not self.tenancy_id.vehicle_id.income_acc_id.id:
-            raise Warning(_('Please Configure Income Account from Vehicle.'))
-        inv_add_prod = []
-        if self.tenancy_id.extra_charges_ids:
-            for each in self.tenancy_id.extra_charges_ids:
-                if self.tenancy_id.invoice_policies == 'periodic' and self.tenancy_id.extra_charges_ids.unit_measure.name == 'Months':
-                    start_date = self.tenancy_id.date_start
-                    inv_date = self.start_date-timedelta(days=1)
-                    diff_date = inv_date-start_date
-                    closing_date = self.tenancy_id.date
-                    first_day_of_next_month = date(closing_date.year, closing_date.month, 1)
-                    diff_closing_date = self.tenancy_id.date.date() - first_day_of_next_month
-                    if 0 < diff_date.days < 30:
-                        unit_price = each.unit_price/30 * diff_date.days
-                    elif closing_date == inv_date+timedelta(days=1):
-                        unit_price = each.unit_price/30 * (diff_closing_date.days + 1) \
-                            if diff_closing_date.days > 0 else each.unit_price
-                    else:
-                        unit_price = each.unit_price
-                else:
-                    unit_price = each.unit_price
-                if not each.line_added_status:
-                    self.vehicle_id.license_plate if self.state == 'replacement' else ' '
-                    inv_line_main = {
-                        # 'origin': 'tenancy.rent.schedule',
-                        'name': each.additional_charge_product_id.name,
-                        'price_unit': unit_price or 0.00,
-                        # 'price_unit': self.tenancy_id.rent or 0.00,
-                        'price_subtotal': each.cost/self.tenancy_id.duration or 0.00 if self.tenancy_id.invoice_policies == 'periodic' else each.cost or 0.00,
-                        'product_uom_id': each.unit_measure.id,
-                        'quantity': each.product_uom_qty/self.tenancy_id.duration if self.tenancy_id.invoice_policies == 'periodic' else each.product_uom_qty,
-                        'account_id': self.tenancy_id.vehicle_id.income_acc_id.id or False,
-                        'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
-                        'tax_ids': each.additional_charge_product_id.taxes_id,
-                        'description': each.description,
-                    }
-                    if self.tenancy_id.multi_prop:
-                        for data in self.tenancy_id.prop_id:
-                            for account in data.property_ids.income_acc_id:
-                                inv_line_main.update({'account_id': account.id})
-                    inv_add_prod.append((0, 0, inv_line_main))
-        if self.tenancy_id.additional_charges > 0:
-            for each in self.tenancy_id.additional_rental_charges_ids:
-                if not each.line_added_status:
-                    inv_line_main = {
-                        'name': each.additional_charge_product_id.name,
-                        # 'price_unit': each.unit_price or 0.00, changed price of invoice
-                        'price_unit': self.tenancy_id.rent or 0.00,
-                        'product_uom_id': each.unit_measure.id,
-                        'price_subtotal': each.cost/self.tenancy_id.duration or 0.00 if self.tenancy_id.invoice_policies == 'periodic' else each.cost or 0.00,
-                        'quantity': each.product_uom_qty/self.tenancy_id.duration if self.tenancy_id.invoice_policies == 'periodic' else each.product_uom_qty,
-                        'account_id': self.tenancy_id.vehicle_id.income_acc_id.id or False,
-                        'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
-                        'tax_ids': each.additional_charge_product_id.taxes_id,
-                        'description': each.description,
-                    }
-                    if self.tenancy_id.multi_prop:
-                        for data in self.tenancy_id.prop_id:
-                            for account in data.property_ids.income_acc_id:
-                                inv_line_main.update({'account_id': account.id})
-                    inv_add_prod.append((0, 0, inv_line_main))
-
-        inv_line_values = {
-            'name': 'Vehicle Rental Charge',
-            'price_unit': self.tenancy_id.rent or 0.00,
-            'quantity': 1,
-            'account_id': self.tenancy_id.vehicle_id.income_acc_id.id or False,
-            'analytic_account_id': self.tenancy_id.vehicle_id.analytic_account_id.id or False,
-            'tenancy_id': self.tenancy_id.id or False
-        }
-        if self.tenancy_id.multi_prop:
-            for data in self.tenancy_id.prop_id:
-                for account in data.property_ids.income_acc_id:
-                    inv_line_values.update({'account_id': account.id})
-        inv_values = {
-            'partner_id': self.tenancy_id and self.tenancy_id.tenant_id and self.tenancy_id.tenant_id.id or False,
-            'move_type': 'out_invoice',
-            'fleet_vehicle_id': self.tenancy_id.vehicle_id.id or False,
-            'date_invoice': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT) or False,
-            'invoice_date': self.start_date or False,
-            'journal_id': journal_ids and journal_ids[0].id or False,
-            'state': 'draft',
-            'invoice_line_ids': inv_add_prod
-        }
+        contract = self.tenancy_id
+        inv_values = self.get_invoice_data(contract)
         acc_id = self.env['account.move'].create(inv_values)
         self.write({'invc_id': acc_id.id, 'inv': True, 'amount': acc_id.amount_total, 'pen_amt': acc_id.amount_total})
-        if self.tenancy_id.rental_terms == 'spot':
-            self.tenancy_id.account_move_line_ids = acc_id.line_ids
+        self.tenancy_id.account_move_line_ids = acc_id.line_ids
+        self.env['invoice.tracking.customer.based'].create({'customer_id': self.tenancy_id.tenant_id.id,
+                                                            'invoice_id': acc_id.id,
+                                                            'invoice_date': datetime.now().strftime(
+                                                                DEFAULT_SERVER_DATE_FORMAT) or False,
+                                                            'amount': acc_id.amount_total})
         context = dict(self._context or {})
         wiz_form_id = self.env.ref('account.view_move_form').id
 
@@ -408,6 +376,111 @@ class TenancyRentSchedule(models.Model):
             'target':  'current',
             'context': context,
         }
+
+    def get_invoice_data(self, rental_contract=None):
+        journal_ids = self.env['account.journal'].search([('type', '=', 'sale')])
+        if not self.tenancy_id.vehicle_id.income_acc_id.id:
+            raise Warning(_('Please Configure Income Account from Vehicle.'))
+        inv_add_prod, start_date = [], datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT)
+        for contract in rental_contract:
+            if contract.extra_charges_ids:
+                for each in contract.extra_charges_ids:
+                    if contract.invoice_policies == 'periodic' and \
+                            contract.duration_unit == 'month':
+                        start_date = contract.date_start
+                        closing_date = contract.date
+                        current_month = datetime.now()
+                        diff_date_by_today = (current_month.year - start_date.year) * 12 + current_month.month - start_date.month
+                        diff_date_by_ending = (closing_date.year - current_month.year) * 12 + closing_date.month - current_month.month
+                        if diff_date_by_today == 0:
+                            start_date = start_date.replace(day=30)
+                            start_date1 = contract.date_start
+                            unit_price = each.unit_price / 30 * (start_date1.replace(day=30) - contract.date_start).days
+                        elif diff_date_by_ending == 0:
+                            start_date = closing_date
+                            unit_price = each.unit_price / 30 * (start_date.replace(day=30) - closing_date.days)
+                        else:
+                            unit_price = each.unit_price
+                            start_date = current_month.replace(day=30)
+                    else:
+                        unit_price = each.unit_price
+                    if not each.line_added_status:
+                        contract.vehicle_id.license_plate if contract.state == 'replacement' else ' '
+                        if contract.invoice_policies == 'periodic':
+                            if each.additional_charge_product_id.product_tmpl_id.reference_product:
+                                quantity = each.product_uom_qty/contract.duration
+                            else:
+                                quantity = each.product_uom_qty
+                        else:
+                            quantity = each.product_uom_qty
+                        inv_line_main = {
+                            # 'origin': 'tenancy.rent.schedule',
+                            'name': each.additional_charge_product_id.name,
+                            'price_unit': unit_price or 0.00,
+                            'fleet_vehicle_id': contract.vehicle_id.id,
+                            # 'price_unit': self.tenancy_id.rent or 0.00,
+                            'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
+                            'product_uom_id': each.unit_measure.id,
+                            'quantity': quantity,
+                            'account_id': contract.vehicle_id.income_acc_id.id or False,
+                            'analytic_account_id': contract.vehicle_id.analytic_account_id.id or False,
+                            'tax_ids': each.additional_charge_product_id.taxes_id,
+                            'description': each.description,
+                        }
+                        if contract.multi_prop:
+                            for data in contract.prop_id:
+                                for account in data.property_ids.income_acc_id:
+                                    inv_line_main.update({'account_id': account.id})
+                        inv_add_prod.append((0, 0, inv_line_main))
+            if contract.additional_charges > 0:
+                for each in contract.additional_rental_charges_ids:
+                    if not each.line_added_status:
+                        if contract.invoice_policies == 'periodic':
+                            quantity = each.product_uom_qty / contract.duration
+                        else:
+                            quantity = each.product_uom_qty
+                        inv_line_main = {
+                            'name': each.additional_charge_product_id.name,
+                            # 'price_unit': each.unit_price or 0.00, changed price of invoice
+                            'price_unit': contract.rent or 0.00,
+                            'product_uom_id': each.unit_measure.id,
+                            'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
+                            'quantity': quantity,
+                            'account_id': contract.vehicle_id.income_acc_id.id or False,
+                            'analytic_account_id': contract.analytic_account_id.id or False,
+                            'tax_ids': each.additional_charge_product_id.taxes_id,
+                            'description': each.description,
+                            'fleet_vehicle_id': contract.vehicle_id.id,
+                        }
+                        if contract.multi_prop:
+                            for data in contract.prop_id:
+                                for account in data.property_ids.income_acc_id:
+                                    inv_line_main.update({'account_id': account.id})
+                        inv_add_prod.append((0, 0, inv_line_main))
+            inv_line_values = {
+                'name': 'Vehicle Rental Charge',
+                'price_unit': contract.rent or 0.00,
+                'quantity': 1,
+                'fleet_vehicle_id': contract.vehicle_id.id,
+                'account_id': contract.vehicle_id.income_acc_id.id or False,
+                'analytic_account_id': contract.vehicle_id.analytic_account_id.id or False,
+                'tenancy_id': contract.id or False
+            }
+            if contract.multi_prop:
+                for data in contract.prop_id:
+                    for account in data.property_ids.income_acc_id:
+                        inv_line_values.update({'account_id': account.id})
+        inv_values = {
+            'partner_id': self.tenancy_id and self.tenancy_id.tenant_id and self.tenancy_id.tenant_id.id or False,
+            'move_type': 'out_invoice',
+            # 'fleet_vehicle_id': self.tenancy_id.vehicle_id.id or False,
+            'invoice_date': start_date or False,
+            # 'invoice_date': self.start_date or False,
+            'journal_id': journal_ids and journal_ids[0].id or False,
+            'state': 'draft',
+            'invoice_line_ids': inv_add_prod
+        }
+        return inv_values
 
     # @api.multi
     def open_invoice(self):
@@ -569,6 +642,7 @@ class RentalWizardFleetAdditionalDrivers(models.Model):
                                          related='additional_driver.dl_number')
     description = fields.Text(string='Description')
 
+
 class ReplaceVehicleLog(models.Model):
     _name = 'replace.vehicle.log'
 
@@ -578,4 +652,24 @@ class ReplaceVehicleLog(models.Model):
     end_date = fields.Datetime(string='End Date')
     current_odometer = fields.Float(string='Starting Odometer')
     closing_odometer = fields.Float(string='Closing Odometer')
+
+
+class InvoiceTrackingCustomer(models.Model):
+    _name = 'invoice.tracking.customer.based'
+
+    customer_id = fields.Many2one('res.partner', 'Customer')
+    invoice_id = fields.Many2one('account.move', string='Invoice')
+    invoice_date = fields.Date(string='Start Date', related='invoice_id.invoice_date')
+    amount = fields.Float(string='Amount')
+
+    # def unlink(self):
+    #     for each in self:
+    #         if each.invoice_id.state == 'draft' and each.invoice_date.month == datetime.now().month:
+    #             return super(InvoiceTrackingCustomer, self).unlink()
+
+
+class AccountMovelineInherit(models.Model):
+    _inherit = 'account.move.line'
+
+    fleet_vehicle_id = fields.Many2one('fleet.vehicle', 'Fleet')
 

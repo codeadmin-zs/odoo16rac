@@ -152,10 +152,10 @@ class RentalContractDetails(models.Model):
                 new_additional_product = {'additional_charge_product_id': new_product.id,
                                           'unit_measure': new_product.uom_id.id,
                                           'unit_price': new_product.lst_price,
-                                          'description': 'Plate No: ' + self.vehicle_id.license_plate +
+                                          'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                         ' Plate No: ' + self.vehicle_id.license_plate +
                                                          ' | Additional KMs Used -' +
-                                                         (
-                                                             self.vehicle_id.license_plate if self.state == 'replacement' else '')
+                                                         (self.vehicle_id.license_plate if self.state == 'replacement' else '')
                                                          + str(additional_mileage_in_km),
                                           'product_uom_qty': additional_mileage_in_km,
                                           'cost': additional_mileage_cost,
@@ -210,7 +210,8 @@ class RentalContractDetails(models.Model):
                 new_additional_product = {'additional_charge_product_id': new_product.id,
                                           'unit_measure': new_product.uom_id.id,
                                           'unit_price': new_product.lst_price,
-                                          'description': 'Plate No: ' + self.vehicle_id.license_plate +
+                                          'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                         ' Plate No: ' + self.vehicle_id.license_plate +
                                                          ' | Additional Fuels Used -' +
                                                          (
                                                              self.vehicle_id.license_plate if self.state == 'replacement' else ' ')
@@ -481,7 +482,8 @@ class RentalContractDetails(models.Model):
             new_additional_product = {'additional_charge_product_id': new_product.id,
                                       'unit_measure': new_product.uom_id.id,
                                       'unit_price': total_dent_cost,
-                                      'description': 'Plate No: ' + self.vehicle_id.license_plate +
+                                      'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                     ' Plate No: ' + self.vehicle_id.license_plate +
                                                      ' | Total Cost of Dents ' +
                                                      self.vehicle_id.license_plate if self.state == 'replacement' else '',
                                       'product_uom_qty': 1,
@@ -495,7 +497,8 @@ class RentalContractDetails(models.Model):
             new_additional_product = {'additional_charge_product_id': new_product.id,
                                       'unit_measure': new_product.uom_id.id,
                                       'unit_price': total_scratch_cost,
-                                      'description': 'Plate No: ' + self.vehicle_id.license_plate +
+                                      'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                     ' Plate No: ' + self.vehicle_id.license_plate +
                                                      ' | Total Cost of Scratches ' +
                                                      self.vehicle_id.license_plate if self.state == 'replacement' else '',
                                       'product_uom_qty': 1,
@@ -517,7 +520,8 @@ class RentalContractDetails(models.Model):
                                           'unit_measure': each.fine_product_id.uom_id.id,
                                           'unit_price': each.unit_price,
                                           'product_uom_qty': 1,
-                                          'description': 'Plate No: ' + self.vehicle_id.license_plate + ' | Date: ' +
+                                          'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                         ' Plate No: ' + self.vehicle_id.license_plate + ' | Date: ' +
                                                          str(each.time_date) + ' | Fine Loc.: ' + each.location +
                                                          ' | Description: ' + (each.description or ''),
                                           'cost': each.unit_price,
@@ -539,7 +543,8 @@ class RentalContractDetails(models.Model):
                                           'unit_measure': each.salik_product_id.uom_id.id,
                                           'unit_price': each.unit_price,
                                           'product_uom_qty': 1,
-                                          'description': 'Plate No: ' + self.vehicle_id.license_plate + ' | Date: ' +
+                                          'description': 'Contract No: ' + self.rental_contract_id.name +
+                                                         ' Plate No: ' + self.vehicle_id.license_plate + ' | Date: ' +
                                                          str(each.time_date) + ' | Toll Loc.: ' + each.location +
                                                          ' | Description: ' + (each.description or ''),
                                           'cost': each.unit_price,
@@ -582,7 +587,7 @@ class RentalContractDetails(models.Model):
                 if each.invc_id.state == 'draft':
                     invc_draft_status = True
                     each.invc_id.update({'invoice_line_ids': [(0, 0, inv_line_main)]})
-                    each.tenancy_id.account_move_line_ids = each.invc_id.line_ids
+                    each.tenancy_id.account_move_line_ids += each.invc_id.line_ids
                     each.amount = each.invc_id.amount_total
                     if self.rental_contract_id.state == 'open' and len(tenancy_rent_schedule_items.ids) == 1:
                         desc = each.invc_id.invoice_line_ids[0].description.split('Return Odo.:')[0]
@@ -615,7 +620,7 @@ class RentalContractDetails(models.Model):
                     'partner_id': rent_schedule.tenancy_id and rent_schedule.tenancy_id.tenant_id and rent_schedule.tenancy_id.tenant_id.id or False,
                     'move_type': 'out_invoice',
                     'fleet_vehicle_id': self.vehicle_id.id or False,
-                    'date_invoice': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT) or False,
+                    'invoice_date': datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT) or False,
                     'invoice_date': rent_schedule.start_date or False,
                     'journal_id': journal_ids and journal_ids[0].id or False,
                     'state': 'draft',
@@ -623,7 +628,7 @@ class RentalContractDetails(models.Model):
                 }
                 acc_id = self.env['account.move'].create(inv_values)
                 rent_schedule.write({'invc_id': acc_id.id, 'inv': True, 'amount': acc_id.amount_total})
-                rent_schedule.tenancy_id.account_move_line_ids = acc_id.line_ids
+                rent_schedule.tenancy_id.account_move_line_ids += acc_id.line_ids
                 context = dict(self._context or {})
                 wiz_form_id = self.env.ref('account.view_move_form').id
                 return {

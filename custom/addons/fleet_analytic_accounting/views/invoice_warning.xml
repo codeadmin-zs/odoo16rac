@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <!--Warning for creating invoice for multiple contracts  -->
+        <record model="ir.ui.view" id="invoice_creation_multiple_records_warning">
+            <field name="name">invoice.creation.multiple.records.warning</field>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <separator string="Customer have to add more than one vehicles Rental charges.
+                    Are you proceeding all or not?" />
+                    <footer>
+		                <button name="create_all_invoices" type="object" string="Create all" class="oe_highlight"/>
+                        <button name="create_invoice" type="object" string="Create current"/>
+		                <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

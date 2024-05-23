@@ -9,7 +9,6 @@
             # 'security/fleet_security.xml',
             'security/ir.model.access.csv',
             # 'data/fleet_prelocation.xml',
-            # 'wizard/update_history_view.xml',
             'views/sale_products.xml',
             'views/rental_configurator_view.xml',
             'views/stock_move_line_lot_id_to_vin.xml',

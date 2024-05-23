@@ -17,7 +17,7 @@
             'reports/fleet_rental_report.xml',
             # 'reports/fleet_vehicle_utilisation_report.xml',
             'wizard/rent_vehicle_return_view.xml',
-            # 'views/contract.xml',
+            'views/invoice_warning.xml',
             'views/vehicle_fine_and_salik.xml',
             'views/rental_details_view.xml',
             'views/fleet_rental_invoice.xml',

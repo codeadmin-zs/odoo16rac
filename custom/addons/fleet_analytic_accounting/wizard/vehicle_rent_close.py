@@ -104,6 +104,7 @@ class WizardRentCloseReason(models.TransientModel):
             inv_values.update({'invoice_line_ids': invoice_line_ids_list})
             acc_id = self.env['account.move'].create(inv_values)
             created_rent_obj.update({'invc_id': acc_id.id, 'inv': True})
+            tenancy_id.account_move_line_ids += acc_id.line_ids
         self.confirm_rent_close()
 
     # @api.multi
