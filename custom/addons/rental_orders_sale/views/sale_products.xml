@@ -110,7 +110,7 @@
 <!--            <xpath expr="//notebook/page//field[@name='order_line']//tree//control/create[@name='add_note_control']" position="attributes">-->
 <!--                <attribute name="attrs">{'invisible': [('rental_rank', '=', 0)]}</attribute>-->
 <!--            </xpath>-->
-            <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='product_id']" position="replace">
+            <xpath expr="//tree/field[@name='product_id']" position="replace">
                 <field name="product_id"
                     domain="[('product_tmpl_id.sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id),
                     ('product_tmpl_id.fleet_ok', '=', True), ('product_tmpl_id.charges_ok', '=', False)]"
@@ -118,7 +118,7 @@
                     attrs="{
                         'readonly': [('product_updatable', '=', False)],
                         'required': [('display_type', '=', False)],
-                        'invisible': [('is_rental_order', '=', False)]
+                        'column_invisible': [('parent.is_rental_order_temp', '=', False)]
                     }"
                     force_save="1"
                     widget="many2one_barcode"
@@ -155,19 +155,19 @@
 
 
             <xpath expr="//notebook/page//field[@name='order_line']//tree//field[@name='product_uom']" position="replace">
-                <field name="product_uom" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))],'invisible':[('is_rental_order', '=', False)]}" context="{'company_id': parent.company_id}" options="{&quot;no_open&quot;: True}"/>
+                <field name="product_uom" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))],'column_invisible':[('parent.is_rental_order_temp', '=', False)]}" context="{'company_id': parent.company_id}" options="{&quot;no_open&quot;: True}"/>
 <!--                <field name="product_uom" attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}" context="{'company_id': parent.company_id}" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>-->
                 <!-- <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/> -->
                 <field name="rental_wizard_id" invisible="1"/>
                 <field name="is_rental_order" invisible="1"/>
                 <button class="btn btn-link fa fa-gear" name="return_action_to_generate_rental" type="object"
-                        attrs="{'invisible':[('is_rental_order', '=', False)]}" string="Rental">
+                        attrs="{'column_invisible':[('parent.is_rental_order_temp', '=', False)]}" string="Rental">
                 </button>
 
-                <field name="duration" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
+                <field name="duration" attrs="{'column_invisible':[('parent.is_rental_order_temp', '=', False)]}"/>
 <!--                <field name="duration" attrs="{'invisible': [('rental_wizard_id', '=', False),]}"/>-->
 
-                <field name="duration_unit" attrs="{'invisible': [('is_rental_order', '=', False)]}"/>
+                <field name="duration_unit" attrs="{'column_invisible':[('parent.is_rental_order_temp', '=', False)]}"/>
 <!--                <field name="duration_unit" attrs="{'invisible': [('rental_wizard_id', '=', False)]}"/>-->
                 <field name="lot_state" invisible="True"/>
             </xpath>
@@ -190,7 +190,5 @@
             </xpath>
         </field>
     </record>
-
-
 
 </odoo>

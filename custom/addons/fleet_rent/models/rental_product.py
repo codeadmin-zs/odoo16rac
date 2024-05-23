@@ -332,13 +332,13 @@ class RentalProduct(models.Model):
                         'doors': res.doors,
                         'seats': res.seats
                     })
-                    # product_temp_obj = self.env['product.template'].search([('model_name', '=', model_id_obj.name),
-                    #                                                         ('brand_id_temp', '=',
-                    #                                                          model_id_obj.brand_id.id)])
-                    # product_temp_obj.update({
-                    #     'model_id_zt': model_id_obj.id,
-                    #     'brand_id_zt': model_id_obj.brand_id.id
-                    # })
+                    product_temp_obj = self.env['product.template'].search([('model_name', '=', model_id_obj.name),
+                                                                            ('brand_id_zt', '=',
+                                                                             model_id_obj.brand_id.id)])
+                    product_temp_obj.update({
+                        'model_id_zt': model_id_obj.id,
+                        'brand_id_zt': model_id_obj.brand_id.id
+                    })
         else:
             return res
         return res
