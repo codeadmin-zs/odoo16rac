@@ -335,7 +335,7 @@ class RentalProduct(models.Model):
                     product_temp_obj = self.env['product.template'].search([('model_name', '=', model_id_obj.name),
                                                                             ('brand_id_zt', '=',
                                                                              model_id_obj.brand_id.id)])
-                    product_temp_obj.update({
+                    product_temp_obj.write({
                         'model_id_zt': model_id_obj.id,
                         'brand_id_zt': model_id_obj.brand_id.id
                     })
