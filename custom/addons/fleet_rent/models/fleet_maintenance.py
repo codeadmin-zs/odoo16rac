@@ -212,7 +212,7 @@ class FleetVehicleLogServices(models.Model):
                 #                     'workorder': work_order})
                 # self.env.args = cr, uid, misc.frozendict(context)
                 if work_order.odometer == 0:
-                    raise Warning(_("Please set the current Odometer of vehicle in work order!"))
+                    raise ValidationError("Please set the current Odometer of vehicle in work order!")
                 odometer_increment += work_order.odometer
                 next_service_date = datetime.strptime(
                     str(date.today()), DEFAULT_SERVER_DATE_FORMAT)
