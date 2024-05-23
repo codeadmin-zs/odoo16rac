@@ -1493,7 +1493,7 @@ class AccountAnalyticAccount(models.Model):
         @param self: The object pointer
         """
         for tenancy_rec in self:
-            if tenancy_rec.invoice_plicies == 'periodic':
+            if tenancy_rec.invoice_policies == 'periodic':
                 for customer in tenancy_rec.tenant_id.invoice_tracking_ids:
                     if customer.invoice_id.state == 'draft':
                         msg1 = "This is my debug message wizard rent_line1! %s", customer
