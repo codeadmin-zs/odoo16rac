@@ -26,6 +26,10 @@ class ResPartnerExtend(models.Model):
     insurance = fields.Boolean(string='Insurance')
     on_rental_contract = fields.Integer(string='On a Rental Contract', default=0)
     national_id = fields.Char(string='National id')
+    invoice_tracking_ids = fields.One2many(
+        comodel_name='invoice.tracking.customer.based',
+        inverse_name='customer_id',
+        string='Customer')
 
     @api.constrains('passport_expiry_date')
     def _check_date_field_passport_expiry_date(self):
