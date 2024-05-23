@@ -740,11 +740,7 @@ class AccountAnalyticAccount(models.Model):
             driver_id = res.additional_drivers_ids.additional_driver.id
             if not driver_id:
                 raise ValidationError('Please Add Driver Details.')
-            # self.env['fleet.vehicle.assignation.log'].create({
-            #     'vehicle_id': res.vehicle_id.id,
-            #     'driver_id': driver_id,
-            #     'date_start': time.strftime(DT)
-            # })
+        # self.create_rent_schedule()
 
         return res
 
@@ -853,7 +849,19 @@ class AccountAnalyticAccount(models.Model):
         This button method is used to Change Tenancy state to close.
         @param self: The object pointer
         """
-        if not self.scheduled_invoices_status and self.rent_schedule_ids and len(self.rent_schedule_ids) > 0:
+        if self.rental_terms == 'long_term' and self.invoice_policies == 'periodic' and self.duration_unit == 'month':
+            form = "fleet_analytic_accounting.invoice_creation_multiple_records_warning"
+            return {
+                'name': 'Warning',
+                'res_model': 'account.analytic.account',
+                'type': 'ir.actions.act_window',
+                'view_id': self.env.ref(form).id,
+                'view_mode': 'form',
+                'view_type': 'form',
+                'res_id': self.id,
+                'target': 'new'
+            }
+        elif not self.scheduled_invoices_status and self.rent_schedule_ids and len(self.rent_schedule_ids) > 0:
             form = "fleet_analytic_accounting.invoice_schedule_warning_form"
             return {
                 'name': 'Warning',
@@ -931,7 +939,7 @@ class AccountAnalyticAccount(models.Model):
                                       # 'unit_price': rental_pricing.price,
                                       'unit_price': self.rent,
                                       'product_uom_qty': self.duration,
-                                      'description': 'Plate No:' + self.vehicle_id.license_plate + ' | Vehicle: ' +
+                                      'description': 'Contract No: ' + self.name + ' Plate No:' + self.vehicle_id.license_plate + ' | Vehicle: ' +
                                                      self.vehicle_id.name + ' | Start Date: ' + str(value) +
                                                      ' | Start Odo.: ' + str(self.odometer) + ' | Start Fuel Lvl: ' +
                                                      str(self.vehicle_id.fuel_level) + ' | Return Odo.: ' + 'TBD' +
@@ -950,7 +958,7 @@ class AccountAnalyticAccount(models.Model):
                            'name': prefix + '/' + str(rental_number)})
 
     # @api.multi
-    def create_rent_schedule(self):
+    def create_rent_schedule(self, allOrCurrentInvoices=None):
         """
         This button method is used to create rent schedule Lines.
         @param self: The object pointer
@@ -979,6 +987,9 @@ class AccountAnalyticAccount(models.Model):
                         'currency_id': tenancy_rec.currency_id.id or False,
                         'rel_tenant_id': tenancy_rec.tenant_id.id or False
                     })
+                    if rent_schedule:
+                        # rent_schedule.create_invoice()
+                        tenancy_rec.cr_rent_btn = True
                 if tenancy_rec.invoice_policies == 'post_invoicing':
                     d2 = d2 + relativedelta(months=int(1))
                     rent_schedule = rent_obj.create({
@@ -992,15 +1003,15 @@ class AccountAnalyticAccount(models.Model):
                         'rel_tenant_id': tenancy_rec.tenant_id.id or False
                     })
                     if rent_schedule:
-                        rent_schedule.create_invoice()
+                        # rent_schedule.create_invoice()
+                        tenancy_rec.cr_rent_btn = True
                 if tenancy_rec.invoice_policies == 'periodic':
                     if tenancy_rec.duration_unit == 'month':
                         closing_date = self.date.date()
                         first_day_of_next_month_closing = date(closing_date.year, closing_date.month, 1)
                         interval = interval + (closing_date != first_day_of_next_month_closing)
+                        next_month_start = d1.replace(day=1)
                         for i in range(0, interval):
-                            d1 = d1 + relativedelta(months=int(1))
-                            next_month_start = d1.replace(day=1)
                             if i == 0:
                                 rent_schedule = rent_obj.create({
                                     # 'start_date': d1.strftime(DT),
@@ -1009,7 +1020,6 @@ class AccountAnalyticAccount(models.Model):
                                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
                                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
                                     'tenancy_id': tenancy_rec.id,
-                                    'single_inv': True,
                                     'currency_id': tenancy_rec.currency_id.id or False,
                                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
                                 })
@@ -1034,32 +1044,15 @@ class AccountAnalyticAccount(models.Model):
                                     'currency_id': tenancy_rec.currency_id.id or False,
                                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
                                 })
-                            if rent_schedule:
+                            print(rent_schedule.start_date)
+                            d1 = d1 + relativedelta(months=int(1))
+                            next_month_start = d1.replace(day=1)
+                            #     HIDING FOR CUSTOMER BASED INVOICING
+                        if rent_schedule:
+                            if allOrCurrentInvoices == 'current_invoice':
                                 rent_schedule.create_invoice()
-                    # if tenancy_rec.rent_type_id.renttype == 'Years':
-                    #     for i in range(0, interval):
-                    #         d1 = d1 + relativedelta(years=int(1))
-                    #         if i == 0:
-                    #             rent_obj.create({
-                    #                 'single_inv': True,
-                    #                 'start_date': d1.strftime(DT),
-                    #                 'amount': tenancy_rec.rent+tenancy_rec.additional_charges,
-                    #                 'vehicle_id': tenancy_rec.vehicle_id and
-                    #                 tenancy_rec.vehicle_id.id or False,
-                    #                 'tenancy_id': tenancy_rec.id,
-                    #                 'currency_id': tenancy_rec.currency_id.id or False,
-                    #                 'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                    #             })
-                    #         else:
-                    #             rent_obj.create({
-                    #                 'start_date': d1.strftime(DT),
-                    #                 'amount': tenancy_rec.rent,
-                    #                 'vehicle_id': tenancy_rec.vehicle_id and
-                    #                 tenancy_rec.vehicle_id.id or False,
-                    #                 'tenancy_id': tenancy_rec.id,
-                    #                 'currency_id': tenancy_rec.currency_id.id or False,
-                    #                 'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                    #             })
+                            elif allOrCurrentInvoices == 'all_invoices':
+                                rent_schedule.create_all_invoices()
                     if tenancy_rec.duration_unit == 'week':
                         for i in range(0, interval):
                             d1 = d1 + relativedelta(weeks=int(1))
@@ -1141,9 +1134,10 @@ class AccountAnalyticAccount(models.Model):
                                 'currency_id': tenancy_rec.currency_id.id or False,
                                 'rel_tenant_id': tenancy_rec.tenant_id.id or False
                             })
-                        if rent_schedule:
-                            rent_schedule.create_invoice()
-                tenancy_rec.cr_rent_btn = True
+
+                    tenancy_rec.cr_rent_btn = False
+                        # if rent_schedule:
+                        #     rent_schedule.create_invoice()
         return True
 
     # @api.multi
@@ -1243,7 +1237,7 @@ class AccountAnalyticAccount(models.Model):
                 # 'account_id':
                 #     self.tenant_id.property_account_payable_id.id or False,
                 'invoice_line_ids': [(0, 0, inv_line_values)],
-                'date_invoice': datetime.now().strftime(DT) or False,
+                'invoice_date': datetime.now().strftime(DT) or False,
                 'new_tenancy_id': self.id,
                 'ref': self.ref,
                 'journal_id': account_jrnl_obj and
@@ -1493,22 +1487,40 @@ class AccountAnalyticAccount(models.Model):
         return True
 
     # @api.multi
-    def replace_invoices(self):
+    def replace_invoices(self, allOrCurrentInvoices=None):
         """
         This button method is used to create rent schedule Lines.
         @param self: The object pointer
         """
-        if self.duration_unit == 'month' and self.invoice_policies == 'periodic':
-            self.create_rent_schedule()
-        else:
-            for tenancy_rec in self:
-                for rent_line in tenancy_rec.rent_schedule_ids:
-                    msg1 = "This is my debug message wizard rent_line1! %s", rent_line
-                    _logger.error(msg1)
-                    rent_line.unlink()
-                    msg1 = "This is my debug message wizard rent_line2! %s", rent_line
-                    _logger.error(msg1)
-            self.create_rent_schedule()
+        for tenancy_rec in self:
+            if tenancy_rec.invoice_plicies == 'periodic':
+                for customer in tenancy_rec.tenant_id.invoice_tracking_ids:
+                    if customer.invoice_id.state == 'draft':
+                        msg1 = "This is my debug message wizard rent_line1! %s", customer
+                        _logger.error(msg1)
+                        customer.unlink()
+                for contracts in tenancy_rec.tenant_id.rent_details.account_move_line_ids:
+                    if contracts.move_id.state == 'draft':
+                        msg1 = "This is my debug message wizard rent_line1! %s", contracts.move_id
+                        _logger.error(msg1)
+                        contracts.unlink()
+            for rent_line in tenancy_rec.rent_schedule_ids:
+                msg1 = "This is my debug message wizard rent_line1! %s", rent_line
+                _logger.error(msg1)
+                rent_line.unlink()
+                msg1 = "This is my debug message wizard rent_line2! %s", rent_line
+                _logger.error(msg1)
+                # if tenancy_rec.invoice_policies != 'periodic':
+
+        self.create_rent_schedule(allOrCurrentInvoices)
+
+    def create_invoice(self):
+        current_invoice = 'current_invoice'
+        self.replace_invoices(current_invoice)
+
+    def create_all_invoices(self):
+        all_invoices = 'all_invoices'
+        self.replace_invoices(all_invoices)
 
 
 class CustomFleetVehicleAssignationLog(models.Model):

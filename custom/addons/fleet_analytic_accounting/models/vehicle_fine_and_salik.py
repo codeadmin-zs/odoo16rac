@@ -50,8 +50,8 @@ class FleetVehicleFinesAndSalik(models.Model):
                                           'unit_measure': fine_or_toll_prod.uom_id.id,
                                           'unit_price': vals_list[0]['amount'],
                                           'product_uom_qty': 1,
-                                          'description': 'Plate No: ' + vehicle_id.license_plate + ' | Date: ' +
-                                                         str(vals_list[0]['time_date']) + ' | Fine Loc.: ' + vals_list[0]['location'] +
+                                          'description': 'Contract No: ' + analytic_account.name + ' Plate No: ' + vehicle_id.license_plate + ' | Date: ' +
+                                                         str(vals_list[0]['time_date']) + ' | Fine/Toll Loc.: ' + vals_list[0]['location'] +
                                                          ' | Description: ' + (vals_list[0]['description'] or ''),
                                           'cost': vals_list[0]['amount'],
                                           'agreement_id': analytic_account.id}

@@ -38,3 +38,5 @@ access_vehicle_category,access.vehicle.category,model_vehicle_category,,1,1,1,1
 access_replace_vehicle_log,access.replace.vehicle.log,model_replace_vehicle_log,,1,1,1,1
 access_next_increment_number,access.next.increment.number,model_next_increment_number,,1,1,1,1
 access_buffer_hours,access.buffer.hours,model_buffer_hours,,1,1,1,1
+access_invoice_tracking_customer_based,access.invoice.tracking.customer.based,model_invoice_tracking_customer_based,,1,1,1,1
+

@@ -320,6 +320,7 @@ class WizardRentReturnReason(models.TransientModel):
                 'name': 'Extra Day Usage Charge',
                 'price_unit': self.additional_day_cost,
                 'quantity': 1,
+                'fleet_vehicle_id': tenancy_id.vehicle_id.id,
                 'account_id': tenancy_id.vehicle_id.income_acc_id.id or False,
                 'analytic_account_id': tenancy_id.vehicle_id.analytic_account_id.id or False,
             }
@@ -334,6 +335,7 @@ class WizardRentReturnReason(models.TransientModel):
             inv_values.update({'invoice_line_ids': invoice_line_ids_list})
             acc_id = self.env['account.move'].create(inv_values)
             created_rent_obj.update({'invc_id': acc_id.id, 'inv': True})
+            tenancy_id.account_move_line_ids += acc_id.line_ids
         self.vehicle_rent_return()
 
     # @api.multi

@@ -210,41 +210,14 @@
                         <field name="additional_charges" invisible="1"/>
                         <field name="cr_rent_btn" invisible="1"/>
                         <notebook>
-                            <page string="Invoicing History" name="rent_schedule">
-                                <separator string="Invoice Schedule Details" colspan="4"/>
-                                <field name="rent_schedule_ids" nolabel="1" context="{'active_id': active_id}"
-                                       attrs="{'readonly': [('lock_state','=','locked')]}">
-                                    <tree string="Invoicing Schedule" editable="bottom" create="true" delete="true">
-                                        <field name="start_date"/>
-                                        <field name="move_id" invisible="1"/>
-                                        <field name="invc_id" widget="many2one_barcode"/>
-                                        <field name="amount" sum="Total Amount"/>
-                                        <field name="pen_amt"/>
-                                        <field name="duration" invisible="1"/>
-                                        <field name="cheque_detail" invisible="1"/>
-                                        <field name="paid" invisible="1"/>
-                                        <field name="move_check" invisible="1"/>
-                                        <field name="note"/>
-                                        <field name="inv" invisible="1"/>
-                                        <field name="state" invisible="1"/>
-                                        <field name="currency_id" invisible="1"/>
-                                        <!--                                        <button name="create_invoice" icon="fa-pencil"-->
-                                        <!--                                                attrs="{'invisible':['|', ('inv','=',True), ('state','=','close')]}"-->
-                                        <!--                                                class="oe_highlight" string="Create Invoice" type="object"/>-->
-                                        <!--                                        <button name="open_invoice" icon="fa-arrow-circle-o-right fa-lg"-->
-                                        <!--                                                attrs="{'invisible':[('inv','=',False)]}"-->
-                                        <!--                                                class="oe_highlight" string="Open Invoice" type="object" context="{'openinvoice':1}"/>-->
-                                    </tree>
-                                </field>
-                            </page>
                             <page string="Invoicing">
                                 <field name="account_move_line_ids" readonly="1">
                                     <tree string="Journal Items" create="false">
                                         <field name="date"/>
+                                        <field name="move_id" required="0" invisible="0"/>
                                         <field name="name"/>
                                         <field name="ref" string="Reference" invisible="1"/>
                                         <field name="description"/>
-                                        <field name="move_id" required="0" invisible="1"/>
                                         <field name="journal_id" invisible="1"/>
                                         <field name="quantity"/>
                                         <field name="product_uom_id"/>
