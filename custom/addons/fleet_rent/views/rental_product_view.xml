@@ -49,7 +49,7 @@
                 <page string="Rental" attrs="{'invisible': [('rent_ok','!=',True)]}">
                     <group colspan="1">
                         <group string="Rental Pricing" name="pricing">
-                            <field name="rental_pricing_ids" nolabel="1">
+                            <field name="rental_pricing_ids" nolabel="1" string="">
                                 <tree editable="bottom">
                                     <field name="product_template_id" string="Product Name" edit="false"/>
                                     <field name="duration" invisible="1"/>
