@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DT
 import logging
 import datetime
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -162,21 +163,23 @@ class AssetLoanManagement(models.Model):
         # msg1 = ("This is my debug message loan credit_vals! %s", credit_vals)
         # _logger.error(msg1)
 
-        vals = {
-            'journal_id': self.bank_journal_id.id,
-            'fleet_vehicle_id': self.fleet_vehicle_id.id,
-            'date': self.first_insatllement_date,
-            'loan_id': self.id,
-            'ref': "Loan for " + self.name,
-            'state': 'draft',
-            'line_ids': [(0, 0, debit_vals_loan_amount), (0, 0, credit_vals_loan_amount)]}
 
 
-
-        msg1 = ("This is my debug message loan vals! %s", vals)
-        _logger.error(msg1)
-
-        move = self.env['account.move'].create(vals)
+        #commented because of multiple entry of full emi amount
+        # vals = {
+        #     'journal_id': self.bank_journal_id.id,
+        #     'fleet_vehicle_id': self.fleet_vehicle_id.id,
+        #     'date': self.first_insatllement_date,
+        #     'loan_id': self.id,
+        #     'ref': "Loan for " + self.name,
+        #     'state': 'draft',
+        #     'line_ids': [(0, 0, debit_vals_loan_amount), (0, 0, credit_vals_loan_amount)]}
+        #
+        # msg1 = ("This is my debug message loan vals! %s", vals)
+        # _logger.error(msg1)
+        #
+        #
+        # move = self.env['account.move'].create(vals)
 
         # Journal entry for emi
         for x in range(self.loan_tenure):
@@ -216,11 +219,6 @@ class AssetLoanManagement(models.Model):
             self.env['account.analytic.line'].create(
                 {'name': 'Vehicle Loan EMI', 'account_id': analytic_account_id, 'date': due_date,
                  'amount': analytic_line_amount})
-
-
-
-
-
 
     # @api.multi
     def open_loan_entries(self):

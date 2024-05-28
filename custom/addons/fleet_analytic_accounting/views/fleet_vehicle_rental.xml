@@ -55,6 +55,9 @@
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                                 <ul>
+                                     <li>
+                                        <strong><t t-if="record.name_seq.raw_value"><field name="name_seq"/></t></strong>
+                                    </li>
                                     <li>
                                         <t t-if="record.driver_id.raw_value"><field name="driver_id"/></t>
                                     </li>

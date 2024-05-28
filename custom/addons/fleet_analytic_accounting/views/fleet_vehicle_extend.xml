@@ -80,6 +80,9 @@
                 <xpath expr="//group/filter[@name='groupby_make']" position="after">
                     <filter string="Type" name="groupby_type" context="{'group_by': 'vehicle_type_str'}"/>
                 </xpath>
+                  <xpath expr="//search" position="inside">
+                    <field string="Fleet Id" name="name_seq"/>
+                </xpath>
             </field>
         </record>
 <!-- Hide create button from Kanban View -->
