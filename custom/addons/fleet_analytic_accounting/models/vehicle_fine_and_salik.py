@@ -15,6 +15,7 @@ class FleetVehicleFinesAndSalik(models.Model):
     name = fields.Char(related='vehicle_id.name', readonly=True)
     fine_or_toll = fields.Selection(
         [('2', 'Fine'), ('1', 'Toll')], 'Fine or Toll', default='1', required=True, store=True)
+    added_to = fields.Boolean(default=False)
     # is_a_fine = fields.Boolean(string='Fine', default=False)
     # is_a_salik = fields.Boolean(string='Salik', default=False)
 
@@ -46,16 +47,17 @@ class FleetVehicleFinesAndSalik(models.Model):
             for each in self._cr.fetchall():
                 analytic_account = self.env['account.analytic.account'].browse(each[0])
                 vals_list[0]['analytic_account_id'] = analytic_account.id
-                new_additional_product = {'additional_charge_product_id': fine_or_toll_prod.id,
-                                          'unit_measure': fine_or_toll_prod.uom_id.id,
-                                          'unit_price': vals_list[0]['amount'],
-                                          'product_uom_qty': 1,
-                                          'description': 'Contract No: ' + analytic_account.name + ' Plate No: ' + vehicle_id.license_plate + ' | Date: ' +
-                                                         str(vals_list[0]['time_date']) + ' | Fine/Toll Loc.: ' + vals_list[0]['location'] +
-                                                         ' | Description: ' + (vals_list[0]['description'] or ''),
-                                          'cost': vals_list[0]['amount'],
-                                          'agreement_id': analytic_account.id}
-                additional_product_obj.create(new_additional_product)
+                # new_additional_product = {'additional_charge_product_id': fine_or_toll_prod.id,
+                #                           'unit_measure': fine_or_toll_prod.uom_id.id,
+                #                           'unit_price': vals_list[0]['amount'],
+                #                           'product_uom_qty': 1,
+                #                           'description': 'Contract No: ' + analytic_account.name + ' Plate No: ' + vehicle_id.license_plate + ' | Date: ' +
+                #                                          str(vals_list[0]['time_date']) + ' | Fine/Toll Loc.: ' + vals_list[0]['location'] +
+                #                                          ' | Description: ' + (vals_list[0]['description'] or ''),
+                #                           'cost': vals_list[0]['amount'],
+                #                           'agreement_id': analytic_account.id}
+                # additional_product_obj.create(new_additional_product)
+                # self.write({'added_to': True})
 
         res = super(FleetVehicleFinesAndSalik, self).create(vals_list)
         return res

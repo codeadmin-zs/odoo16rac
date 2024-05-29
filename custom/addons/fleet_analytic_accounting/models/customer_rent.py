@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class RentalDetails(models.Model):
     _inherit = "res.partner"
 

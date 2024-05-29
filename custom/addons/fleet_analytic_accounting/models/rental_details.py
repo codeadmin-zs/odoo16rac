@@ -478,30 +478,34 @@ class RentalContractDetails(models.Model):
                              self.front_l_door_scratch_cost + self.back_r_door_scratch_cost + self.back_l_door_scratch_cost
         additional_product_obj = self.env['rental.wizard.extra.charges']
         if total_dent_cost > 0:
+            total_dent_count = self.hood_dent_count_new + self.front_r_door_dent_count_new + \
+                               self.front_l_door_dent_count_new + self.back_r_door_dent_count_new + \
+                               self.back_l_door_dent_count_new + self.boot_dent_count_new
             new_product = self.env.ref('fleet_rent.additional_charge_dents').product_variant_id
             new_additional_product = {'additional_charge_product_id': new_product.id,
                                       'unit_measure': new_product.uom_id.id,
-                                      'unit_price': total_dent_cost,
+                                      'unit_price': total_dent_cost / total_dent_count,
                                       'description': 'Contract No: ' + self.rental_contract_id.name +
                                                      ' Plate No: ' + self.vehicle_id.license_plate +
-                                                     ' | Total Cost of Dents ' +
-                                                     self.vehicle_id.license_plate if self.state == 'replacement' else '',
-                                      'product_uom_qty': 1,
+                                                     ' | Total No. of Dents ' + str(total_dent_count)
+                                                     (self.vehicle_id.license_plate if self.state == 'replacement' else ''),
+                                      'product_uom_qty': total_dent_count,
                                       'cost': total_dent_cost,
                                       'agreement_id': self.rental_contract_id.id}
             new_product = additional_product_obj.create(new_additional_product)
             # if self.rental_contract_id.rental_terms == 'spot':
             self.create_move_lines(new_product)
         if total_scratch_cost > 0:
+            total_scratch_count = self.hood_scratch_count_new + self.front_r_door_scratch_count_new + self.front_l_door_scratch_count_new + self.back_r_door_scratch_count_new + self.back_l_door_scratch_count_new + self.boot_scratch_count_new
             new_product = self.env.ref('fleet_rent.additional_charge_scratches').product_variant_id
             new_additional_product = {'additional_charge_product_id': new_product.id,
                                       'unit_measure': new_product.uom_id.id,
-                                      'unit_price': total_scratch_cost,
+                                      'unit_price': total_scratch_cost / total_scratch_count,
                                       'description': 'Contract No: ' + self.rental_contract_id.name +
                                                      ' Plate No: ' + self.vehicle_id.license_plate +
-                                                     ' | Total Cost of Scratches ' +
-                                                     self.vehicle_id.license_plate if self.state == 'replacement' else '',
-                                      'product_uom_qty': 1,
+                                                     ' | Total No. of Scratches ' + str(total_scratch_count)
+                                                     (self.vehicle_id.license_plate if self.state == 'replacement' else ''),
+                                      'product_uom_qty': total_scratch_count,
                                       'cost': total_scratch_cost,
                                       'agreement_id': self.rental_contract_id.id}
             new_product = additional_product_obj.create(new_additional_product)
@@ -533,7 +537,8 @@ class RentalContractDetails(models.Model):
                                                     'location': each.location,
                                                     'amount': each.unit_price,
                                                     'analytic_account_id': self.rental_contract_id.id,
-                                                    'fine_or_toll': '0'})
+                                                    'fine_or_toll': '2',
+                                                    'added_to': True})
                 # if self.rental_contract_id.rental_terms == 'spot':
                 self.create_move_lines(new_product)
                 salik += each.unit_price
@@ -558,7 +563,8 @@ class RentalContractDetails(models.Model):
                                                     'location': each.location,
                                                     'amount': each.unit_price,
                                                     'analytic_account_id': self.rental_contract_id.id,
-                                                    'fine_or_toll': '1'})
+                                                    'fine_or_toll': '1',
+                                                    'added_to': True})
                 fine += each.unit_price
         return salik + fine
 
@@ -629,6 +635,12 @@ class RentalContractDetails(models.Model):
                 acc_id = self.env['account.move'].create(inv_values)
                 rent_schedule.write({'invc_id': acc_id.id, 'inv': True, 'amount': acc_id.amount_total})
                 rent_schedule.tenancy_id.account_move_line_ids += acc_id.line_ids
+                self.env['invoice.tracking.customer.based'].create({'customer_id': rent_schedule.rel_tenant_id.id,
+                                                                    'invoice_id': acc_id.id,
+                                                                    'invoice_date': datetime.now().strftime(
+                                                                        DEFAULT_SERVER_DATE_FORMAT) or False,
+                                                                    'amount': acc_id.amount_total,
+                                                                    'contract_id': rent_schedule.tenancy_id.id if rent_schedule.rental_type == 'long_term' else None})
                 context = dict(self._context or {})
                 wiz_form_id = self.env.ref('account.view_move_form').id
                 return {
@@ -717,7 +729,7 @@ class RentalContractDetails(models.Model):
                                     'description': each.description,
                                     'contract_details': self.id,
                                     })
-            if each.fine_or_toll == '0':
+            if each.fine_or_toll == '2':
                 fine_table.create({'fine_product_id': fine_id.id,
                                    'analytic_account_id': each.analytic_account_id.id,
                                    'vehicle_id': each.vehicle_id.id,
@@ -728,7 +740,8 @@ class RentalContractDetails(models.Model):
                                    })
 
     def confirm_return(self):
-
+        if self.total_damages_cost:
+            self.get_dent_scratch_products()
         self.get_bulk_toll_fine_amount()
         self.compute_total_extra_day_usage()
         self.compute_total_extra_mileage_usage()
@@ -737,8 +750,8 @@ class RentalContractDetails(models.Model):
         if self.additional_fine_ids or self.additional_toll_ids:
             self.total_other_charges_cost = self.get_toll_fine_amount()
         # calling dents and scratches
-        if self.total_damages_cost:
-            self.get_dent_scratch_products()
+        # if self.total_damages_cost:
+        #     self.get_dent_scratch_products()
         tenancy_id = self.env[self._context['active_model']].browse(self._context.get('active_id', False))
         tenancy_id.write({'reason': self.reason,
                           'date': self.date,
