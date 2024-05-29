@@ -47,7 +47,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_view_delivery']" position="attributes">
-                   <attribute name="invisible">1</attribute>
+                   <attribute name="attrs">{'invisible': [('is_rental_order_temp','=', True)]}</attribute>
                 </xpath>
             </field>
      </record>

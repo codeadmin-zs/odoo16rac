@@ -10,7 +10,8 @@ class RentalOrder(models.Model):
 class AccountMoveLineExtend(models.Model):
     _inherit = 'account.move.line'
 
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Tenancy Account')
+    analytic_account_id = fields.Many2one('analytic_account_id', string='Tenancy Account')
+    tenancy_id = fields.Many2one('account.analytic.account', string='Tenancy Account')
     description = fields.Text(string='Description')
     payment_done = fields.Boolean(String='Payment done for invoice line', default=False)
 
