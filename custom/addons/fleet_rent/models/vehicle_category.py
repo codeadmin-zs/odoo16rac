@@ -246,8 +246,6 @@ class TenancyRentSchedule(models.Model):
         @param vals: dictionary of fields value.
         """
         res = super(TenancyRentSchedule, self).create(vals)
-        if res.tenancy_id.invoice_policies != 'periodic' or res.tenancy_id.rental_terms != 'long_term':
-            res.create_invoice()
         return res
 
     def _get_default_pen_amount(self):
@@ -288,6 +286,7 @@ class TenancyRentSchedule(models.Model):
     pen_amt = fields.Float(string='Pending Amount', help='Pending Amount.',
                            store=True)
     duration = fields.Float(string='Duration', default=0.0)
+    rental_type = fields.Char(string='Rental Type')
 
     @api.depends('invc_id.invoice_line_ids', 'invc_id.invoice_line_ids.price_subtotal')
     def _compute_total_invoice_line_amount(self):
@@ -306,8 +305,6 @@ class TenancyRentSchedule(models.Model):
         contracts = self.env['account.analytic.account'].search([('tenant_id', '=', self.tenancy_id.tenant_id.id),
                                                                  ('state', 'not in', ['draft', 'close', 'cancelled'])])
         return contracts
-
-
 
     def get_tenancy_ids(self, rental_contracts=None):
         tenancy_ids = self.env['tenancy.rent.schedule'].search([('rel_tenant_id', '=', self.tenancy_id.tenant_id.id),
@@ -362,7 +359,8 @@ class TenancyRentSchedule(models.Model):
                                                             'invoice_id': acc_id.id,
                                                             'invoice_date': datetime.now().strftime(
                                                                 DEFAULT_SERVER_DATE_FORMAT) or False,
-                                                            'amount': acc_id.amount_total})
+                                                            'amount': acc_id.amount_total,
+                                                            'contract_id': contract.id})
         context = dict(self._context or {})
         wiz_form_id = self.env.ref('account.view_move_form').id
 
@@ -661,15 +659,39 @@ class InvoiceTrackingCustomer(models.Model):
     invoice_id = fields.Many2one('account.move', string='Invoice')
     invoice_date = fields.Date(string='Start Date', related='invoice_id.invoice_date')
     amount = fields.Float(string='Amount')
+    analytic_accounts = fields.One2many(
+        comodel_name='account.analytic.account',
+        inverse_name='customer_invoice_tracking',
+        string='Rental Contract')
+    rental_type = fields.Char('Rental Type')
+    contract_id = fields.Many2one('account.analytic.account', string='Invoice')
 
-    # def unlink(self):
-    #     for each in self:
-    #         if each.invoice_id.state == 'draft' and each.invoice_date.month == datetime.now().month:
-    #             return super(InvoiceTrackingCustomer, self).unlink()
+    class InvoiceTrackingCustomer(models.Model):
+        _name = 'invoice.lines.tracking.customer.based'
+
+        customer_id = fields.Many2one('res.partner', 'Customer')
+        invoice_id = fields.Many2one('account.move', string='Invoice')
+        start_date = fields.Date(string='Start Date', related='invoice_id.invoice_date')
+        end_date = fields.Date(string='Start Date', related='invoice_id.invoice_date')
+        amount = fields.Float(string='Amount')
+        analytic_accounts = fields.Many2one('account.analytic.account', 'Customer')
+        invoice_line_id = fields.Many2one('account.move.line')
 
 
 class AccountMovelineInherit(models.Model):
     _inherit = 'account.move.line'
 
     fleet_vehicle_id = fields.Many2one('fleet.vehicle', 'Fleet')
+    rental_type = fields.Char('Rental Type')
+    total_no_of_days_invoiced = fields.Integer(string="Total No.of Days Invoiced", default=0)
 
+
+class AccountAnalyticAccountInherited(models.Model):
+    _inherit = 'account.analytic.account'
+
+    total_no_of_days_invoiced = fields.Integer(string="Total No.of Days Invoiced", default=0)
+    total_days_to_invoice = fields.Integer(string="Total Days to Invoice", default=0)
+    customer_invoice_tracking = fields.Many2one(
+        comodel_name='invoice.tracking.customer.based',
+        string='Customer')
+    last_date_invoiced = fields.Date('Last Date invoiced, not the current date', default=fields.date.today())
