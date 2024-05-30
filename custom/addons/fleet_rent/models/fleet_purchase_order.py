@@ -172,7 +172,7 @@ class PickingType(models.Model):
                                         'duration_unit': 'day',
                                         'invoice_policies': 'advanced',
                                         'lock_state': 'open',
-                                        'name': vehicle.vin_sn,
+                                        'name': vehicle.name_seq,
                                         'ref': vehicle.vin_sn,
                                         'vehicle_id': vehicle.id,
                                         'product_tmpl_id': product_id.product_tmpl_id.id,
@@ -187,7 +187,7 @@ class PickingType(models.Model):
                                 msg1 = ("This is my debug message analytic_account! %s", analytic_account)
                                 _logger.error(msg1)
                             if vehicle and analytic_account:
-                                asset_data = {'name': vehicle.vin_sn, 'is_fleet': True, 'fleet_vehicle_id': vehicle.id,
+                                asset_data = {'name': vehicle.name_seq, 'is_fleet': True, 'fleet_vehicle_id': vehicle.id,
                                               'category_id': default_asset_category_id, 'date': datetime.today(),
                                               'value': vehicle.vehicle_cost_price,
                                               'analytic_account_id': analytic_account.id,

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <record id="fleet_vehicle_view_tree_inherit_fleet_id" model="ir.ui.view">
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="license_plate" position="before">
+                <field name="name_seq"/>
+            </field>
+        </field>
+    </record>
+
     <record id="fleet_vehicle_online_booking_extend" model="ir.ui.view">
         <field name="name">fleet.vehicle.form</field>
         <field name="model">fleet.vehicle</field>
@@ -80,7 +91,7 @@
                 <xpath expr="//group/filter[@name='groupby_make']" position="after">
                     <filter string="Type" name="groupby_type" context="{'group_by': 'vehicle_type_str'}"/>
                 </xpath>
-                  <xpath expr="//search" position="inside">
+                  <xpath expr="//search/field[@name='name']" position="before">
                     <field string="Fleet Id" name="name_seq"/>
                 </xpath>
             </field>
