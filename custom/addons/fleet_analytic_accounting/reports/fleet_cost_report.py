@@ -10,6 +10,7 @@ class FleetCostReport(models.Model):
     product_id = fields.Many2one('product.template', string='Vehicle Categories')
     customer_id = fields.Many2one('res.partner', string='Customer')
     fuel_type = fields.Many2one('fleet.category.vehicle.fuel', string='Fuel')
+    vehicle_type = fields.Many2one('vehicle.category', string='Type')
     cost_type = fields.Selection(string='Cost Type', selection=[
         ('depreciation', 'Depreciation'),
         ('service', 'Service'),
@@ -28,6 +29,8 @@ class FleetCostReport(models.Model):
             ve.vehicle_prodcut_template_id AS product_id,
             ve.driver_id AS driver_id,
             ve.fuel_type AS fuel_type,
+            ve.category_id AS vehicle_type,
+            ve.manager_id AS customer_id,
             date(date_trunc('month', d)) AS date_start,
             COALESCE(sum(se.amount), 0) AS
             cost,
@@ -59,6 +62,8 @@ class FleetCostReport(models.Model):
                     ve.vehicle_prodcut_template_id AS product_id,
                     ve.driver_id AS driver_id,
                     ve.fuel_type AS fuel_type,
+                    ve.category_id AS vehicle_type,
+                    ve.manager_id AS customer_id,
                     date(date_trunc('month', d)) AS date_start,
                     COALESCE(sum(vsc.unit_price), 0) AS
                     cost,
@@ -89,6 +94,8 @@ class FleetCostReport(models.Model):
                             ve.vehicle_prodcut_template_id AS product_id,
                             ve.driver_id AS driver_id,
                             ve.fuel_type AS fuel_type,
+                            ve.category_id AS vehicle_type,
+                            ve.manager_id AS customer_id,
                             date(date_trunc('month', d)) AS date_start,
                             COALESCE(sum(vfc.unit_price), 0) AS
                             cost,
@@ -119,6 +126,8 @@ class FleetCostReport(models.Model):
                                 ve.vehicle_prodcut_template_id AS product_id,
                                 ve.driver_id AS driver_id,
                                 ve.fuel_type AS fuel_type,
+                                ve.category_id AS vehicle_type,
+                                ve.manager_id AS customer_id,
                                 date(date_trunc('month', d)) AS date_start,
                                 COALESCE(sum(frvd.total_damages_cost), 0) AS
                                 cost,
@@ -149,6 +158,8 @@ class FleetCostReport(models.Model):
                                     ve.vehicle_prodcut_template_id AS product_id,
                                     ve.driver_id AS driver_id,
                                     ve.fuel_type AS fuel_type,
+                                    ve.category_id AS vehicle_type,
+                                    ve.manager_id AS customer_id,
                                     date(date_trunc('month', d)) AS date_start,
                                     COALESCE(sum(fv.net_car_value), 0) AS
                                     cost,
@@ -180,6 +191,8 @@ class FleetCostReport(models.Model):
                     ve.vehicle_prodcut_template_id AS product_id,
                     ve.driver_id AS driver_id,
                     ve.fuel_type AS fuel_type,
+                    ve.category_id AS vehicle_type,
+                    ve.manager_id AS customer_id,
                     date(date_trunc('month', d)) AS date_start,
                     COALESCE(sum(am.amount_total), 0) AS
                     cost,
@@ -253,6 +266,8 @@ class FleetCostReport(models.Model):
         product_id,
         driver_id,
         fuel_type,
+        vehicle_type,
+        customer_id,
         date_start,
         cost,
         'service' as cost_type
@@ -267,6 +282,8 @@ class FleetCostReport(models.Model):
             product_id,
             driver_id,
             fuel_type,
+            vehicle_type,
+            customer_id,
             date_start,
             cost,
             'depreciation' as cost_type
@@ -281,6 +298,8 @@ class FleetCostReport(models.Model):
             product_id,
             driver_id,
             fuel_type,
+            vehicle_type,
+            customer_id,
             date_start,
             cost,
             'tolls' as cost_type
@@ -295,6 +314,8 @@ class FleetCostReport(models.Model):
             product_id,
             driver_id,
             fuel_type,
+            vehicle_type,
+            customer_id,
             date_start,
             cost,
             'fines' as cost_type
@@ -309,6 +330,8 @@ class FleetCostReport(models.Model):
             product_id,
             driver_id,
             fuel_type,
+            vehicle_type,
+            customer_id,
             date_start,
             cost,
             'damages' as cost_type
@@ -323,6 +346,8 @@ class FleetCostReport(models.Model):
             product_id,
             driver_id,
             fuel_type,
+            vehicle_type,
+            customer_id,
             date_start,
             cost,
             'price' as cost_type
