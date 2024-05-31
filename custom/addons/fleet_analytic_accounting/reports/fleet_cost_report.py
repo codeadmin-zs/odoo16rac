@@ -12,7 +12,11 @@ class FleetCostReport(models.Model):
     fuel_type = fields.Many2one('fleet.category.vehicle.fuel', string='Fuel')
     cost_type = fields.Selection(string='Cost Type', selection=[
         ('depreciation', 'Depreciation'),
-        ('service', 'Service')
+        ('service', 'Service'),
+        ('tolls', 'Tolls'),
+        ('fines', 'Fines'),
+        ('damages', 'Damages'),
+        ('price', 'Price')
     ], readonly=True)
 
     def init(self):
@@ -47,6 +51,127 @@ class FleetCostReport(models.Model):
         ORDER BY
             ve.id,
             date_start"""
+
+        tolls = """SELECT
+                    ve.id AS vehicle_id,
+                    ve.company_id AS company_id,
+                    ve.name AS name,
+                    ve.vehicle_prodcut_template_id AS product_id,
+                    ve.driver_id AS driver_id,
+                    ve.fuel_type AS fuel_type,
+                    date(date_trunc('month', d)) AS date_start,
+                    COALESCE(sum(vsc.unit_price), 0) AS
+                    cost,
+                    'tolls' AS cost_type
+                FROM
+                    fleet_vehicle ve
+                CROSS JOIN generate_series((
+                        SELECT
+                            min(acquisition_date)
+                            FROM fleet_vehicle), CURRENT_DATE, '1 month') d
+                LEFT JOIN  vehicle_salik_charge vsc ON vsc.vehicle_id = ve.id
+                    AND date_trunc('month', vsc.create_date) = date_trunc('month', d)
+                WHERE
+                    ve.active and ve.state != 'draft'
+                GROUP BY
+                    ve.id,
+                    ve.company_id,
+                    ve.name,
+                    date_start,
+                    d
+                ORDER BY
+                    ve.id,
+                    date_start"""
+        fines = """SELECT
+                            ve.id AS vehicle_id,
+                            ve.company_id AS company_id,
+                            ve.name AS name,
+                            ve.vehicle_prodcut_template_id AS product_id,
+                            ve.driver_id AS driver_id,
+                            ve.fuel_type AS fuel_type,
+                            date(date_trunc('month', d)) AS date_start,
+                            COALESCE(sum(vfc.unit_price), 0) AS
+                            cost,
+                            'fines' AS cost_type
+                        FROM
+                            fleet_vehicle ve
+                        CROSS JOIN generate_series((
+                                SELECT
+                                    min(acquisition_date)
+                                    FROM fleet_vehicle), CURRENT_DATE, '1 month') d
+                        LEFT JOIN  vehicle_fine_charge vfc ON vfc.vehicle_id = ve.id
+                            AND date_trunc('month', vfc.create_date) = date_trunc('month', d)
+                        WHERE
+                            ve.active and ve.state != 'draft'
+                        GROUP BY
+                            ve.id,
+                            ve.company_id,
+                            ve.name,
+                            date_start,
+                            d
+                        ORDER BY
+                            ve.id,
+                            date_start"""
+        damages = """SELECT
+                                ve.id AS vehicle_id,
+                                ve.company_id AS company_id,
+                                ve.name AS name,
+                                ve.vehicle_prodcut_template_id AS product_id,
+                                ve.driver_id AS driver_id,
+                                ve.fuel_type AS fuel_type,
+                                date(date_trunc('month', d)) AS date_start,
+                                COALESCE(sum(frvd.total_damages_cost), 0) AS
+                                cost,
+                                'damages' AS cost_type
+                            FROM
+                                fleet_vehicle ve
+                            CROSS JOIN generate_series((
+                                        SELECT
+                                            min(acquisition_date)
+                                            FROM fleet_vehicle), CURRENT_DATE, '1 month') d
+                            LEFT JOIN  fleet_rental_vehicle_details frvd ON frvd.vehicle_id = ve.id
+                                    AND date_trunc('month', frvd.date) = date_trunc('month', d)
+                            WHERE
+                                ve.active and frvd.can_be_invoiced = 'true'
+                                GROUP BY
+                                    ve.id,
+                                    ve.company_id,
+                                    ve.name,
+                                    date_start,
+                                    d
+                                ORDER BY
+                                    ve.id,
+                                    date_start"""
+        price = """SELECT
+                                    ve.id AS vehicle_id,
+                                    ve.company_id AS company_id,
+                                    ve.name AS name,
+                                    ve.vehicle_prodcut_template_id AS product_id,
+                                    ve.driver_id AS driver_id,
+                                    ve.fuel_type AS fuel_type,
+                                    date(date_trunc('month', d)) AS date_start,
+                                    COALESCE(sum(fv.net_car_value), 0) AS
+                                    cost,
+                                    'purchase_price' AS cost_type
+                                FROM
+                                    fleet_vehicle ve
+                                CROSS JOIN generate_series((
+                                        SELECT
+                                            min(acquisition_date)
+                                            FROM fleet_vehicle), CURRENT_DATE, '1 month') d
+                                LEFT JOIN  fleet_vehicle fv ON fv.id = ve.id
+                                    AND date_trunc('month', fv.create_date) = date_trunc('month', d)
+                                WHERE
+                                    ve.active and ve.state != 'draft'
+                                GROUP BY
+                                    ve.id,
+                                    ve.company_id,
+                                    ve.name,
+                                    date_start,
+                                    d
+                                ORDER BY
+                                    ve.id,
+                                    date_start"""
 
         depreciation = """SELECT
                     ve.id AS vehicle_id,
@@ -114,7 +239,12 @@ class FleetCostReport(models.Model):
 
         query = """
     WITH service_costs AS (%s),
-    depreciation_costs AS (%s)
+    depreciation_costs AS (%s),
+    toll_costs AS (%s),
+    fine_costs AS (%s),
+    damages_costs AS (%s),
+    price_costs AS (%s)
+    
     SELECT
         vehicle_id AS id,
         company_id,
@@ -142,7 +272,63 @@ class FleetCostReport(models.Model):
             'depreciation' as cost_type
         FROM
             depreciation_costs cc)
-    """ % (service, depreciation)
+        UNION ALL (
+        SELECT
+            vehicle_id AS id,
+            company_id,
+            vehicle_id,
+            name,
+            product_id,
+            driver_id,
+            fuel_type,
+            date_start,
+            cost,
+            'tolls' as cost_type
+        FROM
+            toll_costs tc)
+        UNION ALL (
+        SELECT
+            vehicle_id AS id,
+            company_id,
+            vehicle_id,
+            name,
+            product_id,
+            driver_id,
+            fuel_type,
+            date_start,
+            cost,
+            'fines' as cost_type
+        FROM
+            fine_costs fc)
+        UNION ALL (
+        SELECT
+            vehicle_id AS id,
+            company_id,
+            vehicle_id,
+            name,
+            product_id,
+            driver_id,
+            fuel_type,
+            date_start,
+            cost,
+            'damages' as cost_type
+        FROM
+            damages_costs dc)
+        UNION ALL (
+        SELECT
+            vehicle_id AS id,
+            company_id,
+            vehicle_id,
+            name,
+            product_id,
+            driver_id,
+            fuel_type,
+            date_start,
+            cost,
+            'price' as cost_type
+        FROM
+            price_costs pc)
+    """ % (service, depreciation, tolls, fines, damages, price)
         tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute(
             sql.SQL("""CREATE or REPLACE VIEW {} as ({})""").format(
@@ -150,10 +336,10 @@ class FleetCostReport(models.Model):
                 sql.SQL(query)
             ))
 
-    @api.model
-    def fields_get(self, allfields=None, attributes=None):
-        res = super(FleetCostReport, self).fields_get(allfields, attributes=attributes)
-        unwanted = ['customer_id']
-        for each in unwanted:
-            del res[each]
-        return res
+    # @api.model
+    # def fields_get(self, allfields=None, attributes=None):
+    #     res = super(FleetCostReport, self).fields_get(allfields, attributes=attributes)
+    #     unwanted = ['customer_id']
+    #     for each in unwanted:
+    #         del res[each]
+    #     return res

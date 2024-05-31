@@ -516,8 +516,9 @@ class FleetVehicleLogServices(models.Model):
                                     "complete that work order first than you can Re-Open work order!"))
                 elif order.vehicle_id.state == 'draft' or \
                         order.vehicle_id.state == 'complete':
-                    raise Warning(_("Re-open work order can only be generated either "
-                                    "vehicle status is in Inspection or Released!"))
+                    # raise Warning(_("Re-open work order can only be generated either "
+                    #                 "vehicle status is in Inspection or Released!"))
+                    pass
                 order.vehicle_id.write({'work_order_close': False,
                                         'state': 'in_progress',
                                         'state_id': 5})
@@ -812,7 +813,7 @@ class FleetVehicleLogServices(models.Model):
                 'quantity': repair_line.quantity,
                 'tax_ids': repair_line.tax_ids,
                 'account_id': self.expence_acc_id.id or False,
-                # 'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
+                'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
                 'analytic_distribution': {
                     self.vehicle_id.analytic_account_id.id: 100.0
                 },
