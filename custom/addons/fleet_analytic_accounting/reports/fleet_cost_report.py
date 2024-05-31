@@ -325,7 +325,7 @@ class FleetCostReport(models.Model):
             fuel_type,
             date_start,
             cost,
-            'Vehicle Price' as cost_type
+            'price' as cost_type
         FROM
             price_costs pc)
     """ % (service, depreciation, tolls, fines, damages, price)
