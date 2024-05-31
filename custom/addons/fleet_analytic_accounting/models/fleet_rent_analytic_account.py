@@ -593,7 +593,27 @@ class AccountAnalyticAccount(models.Model):
             if not analytic.name:
                 if analytic.vehicle_id:
                     analytic.write({'name': analytic.vehicle_id.name})
-        return super(AccountAnalyticAccount, self).name_get()
+        res = super(AccountAnalyticAccount, self).name_get()
+        for analytic in self:
+            name = analytic.name
+            res[0] = (analytic.id, name)
+        return res
+
+    # def name_get(self):
+    #     for analytic in self:
+    #         if not analytic.name:
+    #             if analytic.vehicle_id:
+    #                 analytic.write({'name': analytic.vehicle_id.name})
+    #     res = []
+    #     for analytic in self:
+    #         name = analytic.name
+    #         if analytic.code:
+    #             name = f'[{analytic.code}] {name}'
+    #         if analytic.partner_id.commercial_partner_id.name:
+    #             name = f'{name}'
+    #         res.append((analytic.id, name))
+    #     return res
+    #     # return res = super(AccountAnalyticAccount, self).name_get()
 
     @api.model
     def rent_done_cron(self):
