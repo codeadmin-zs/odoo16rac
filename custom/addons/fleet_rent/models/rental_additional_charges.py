@@ -54,7 +54,10 @@ class AccountAnalyticAccount(models.Model):
     duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")],
                                      string="Unit", required=True, default="day")
     invoice_policies = fields.Selection(
-        [("advanced", "Advance Invoicing"), ("periodic", "Periodic Invoicing"), ("post_invoicing", "Post Invoicing"), ],
+        [("advanced", "Advance Invoicing"),
+         ("periodic", "Periodic Invoicing"),
+         ("post_invoicing", "Post Invoicing"),
+         ("advance_periodic", "Advance Periodic Invoicing")],
         string="Invoicing Policy", required=True, default="advanced")
     lock_state = fields.Selection(
         [('locked', 'Locked'),

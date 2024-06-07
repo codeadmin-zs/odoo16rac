@@ -1,3 +1,5 @@
+import pprint
+
 from odoo import models, fields, api, _
 import odoo.addons.decimal_precision as dp
 from datetime import datetime, timedelta, date
@@ -5,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import Warning
 import logging
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+import calendar
 
 
 _logger = logging.getLogger(__name__)
@@ -263,7 +266,7 @@ class TenancyRentSchedule(models.Model):
                                   string='Currency')
     amount = fields.Float(string='Amount', default=0.0, compute="_compute_total_invoice_line_amount",
                           currency_field='currency_id', help="Rent Amount.")
-    start_date = fields.Datetime(string='Date', help='Start Date.', default=lambda s: datetime.now())
+    start_date = fields.Date(string='Date', help='Start Date.', default=lambda s: date.now())
     end_date = fields.Date(string='End Date', help='End Date.')
     cheque_detail = fields.Char(string='Cheque Detail', size=30)
     move_check = fields.Boolean(compute='_get_move_check', method=True,
@@ -287,6 +290,10 @@ class TenancyRentSchedule(models.Model):
                            store=True)
     duration = fields.Float(string='Duration', default=0.0)
     rental_type = fields.Char(string='Rental Type')
+    total_days_invoiced = fields.Integer('Total Invoiced Date')
+    total_days_to_invoice = fields.Integer('Total Days To Invoice')
+    month_count = fields.Integer('Month of invoice', default=0)
+    # duration__unit = fields.Many2one('uom.uom', string="Unit")
 
     @api.depends('invc_id.invoice_line_ids', 'invc_id.invoice_line_ids.price_subtotal')
     def _compute_total_invoice_line_amount(self):
@@ -354,7 +361,7 @@ class TenancyRentSchedule(models.Model):
         inv_values = self.get_invoice_data(contract)
         acc_id = self.env['account.move'].create(inv_values)
         self.write({'invc_id': acc_id.id, 'inv': True, 'amount': acc_id.amount_total, 'pen_amt': acc_id.amount_total})
-        self.tenancy_id.account_move_line_ids = acc_id.line_ids
+        self.tenancy_id.account_move_line_ids += acc_id.line_ids
         self.env['invoice.tracking.customer.based'].create({'customer_id': self.tenancy_id.tenant_id.id,
                                                             'invoice_id': acc_id.id,
                                                             'invoice_date': datetime.now().strftime(
@@ -402,22 +409,36 @@ class TenancyRentSchedule(models.Model):
                             start_date = current_month.replace(day=30)
                     else:
                         unit_price = each.unit_price
-                    if not each.line_added_status:
+                    condition1 = each.duration_label and self.month_count == each.month_count and not \
+                        each.line_added_status and contract.invoice_policies in ['advance_periodic', 'periodic']
+                    condition2 = not each.line_added_status and contract.invoice_policies not in ['advance_periodic',
+                                                                                                  'periodic']
+                    if condition1 or condition2:
                         contract.vehicle_id.license_plate if contract.state == 'replacement' else ' '
-                        if contract.invoice_policies == 'periodic':
+                        if contract.invoice_policies == 'periodic' or 'advance_periodic':
                             if each.additional_charge_product_id.product_tmpl_id.reference_product:
-                                quantity = each.product_uom_qty/contract.duration
+                                quantity = self.duration
                             else:
                                 quantity = each.product_uom_qty
+                            if contract.duration_unit == 'month':
+                                invoicing_days = quantity * calendar.monthrange(self.start_date.year,
+                                                                                self.start_date.month)[1]
+                            elif contract.duration_unit == 'week':
+                                invoicing_days = quantity * 7
+                            else:
+                                invoicing_days = 1
                         else:
                             quantity = each.product_uom_qty
+                            invoicing_days = contract.date - contract.date_start
                         inv_line_main = {
                             # 'origin': 'tenancy.rent.schedule',
                             'name': each.additional_charge_product_id.name,
+                            # 'product_id': contract.vehicle_id.vehicle_prodcut_id.id,
                             'price_unit': unit_price or 0.00,
                             'fleet_vehicle_id': contract.vehicle_id.id,
                             # 'price_unit': self.tenancy_id.rent or 0.00,
-                            'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
+                            'price_subtotal': each.cost / contract.duration or 0.00
+                            if contract.invoice_policies == 'periodic' else each.cost or 0.00,
                             'product_uom_id': each.unit_measure.id,
                             'quantity': quantity,
                             'account_id': contract.vehicle_id.income_acc_id.id or False,
@@ -427,21 +448,39 @@ class TenancyRentSchedule(models.Model):
                             },
                             'tax_ids': each.additional_charge_product_id.taxes_id,
                             'description': each.description,
+                            'duration_label': each.duration_label
+                            if each.duration_label else False,
+                            'total_no_of_days_invoiced': invoicing_days
+                            if each.duration_label else False,
                         }
                         if contract.multi_prop:
                             for data in contract.prop_id:
                                 for account in data.property_ids.income_acc_id:
                                     inv_line_main.update({'account_id': account.id})
                         inv_add_prod.append((0, 0, inv_line_main))
+                        each.update({'tenancy_rec_schedule': self.id})
             if contract.additional_charges > 0:
                 for each in contract.additional_rental_charges_ids:
                     if not each.line_added_status:
-                        if contract.invoice_policies == 'periodic':
-                            quantity = each.product_uom_qty / contract.duration
+                        invoicing_days = 0
+                        if contract.invoice_policies == 'periodic' or 'advance_periodic':
+                            if each.additional_charge_product_id.product_tmpl_id.reference_product:
+                                quantity = self.duration
+                            else:
+                                quantity = each.product_uom_qty
+                            if contract.duration_unit == 'month':
+                                invoicing_days = quantity * calendar.monthrange(self.start_date.year,
+                                                                                self.start_date.month)[1]
+                            elif contract.duration_unit == 'week':
+                                invoicing_days = quantity * 7
+                            else:
+                                invoicing_days = 1
                         else:
                             quantity = each.product_uom_qty
+                            invoicing_days = contract.date - contract.date_start
                         inv_line_main = {
                             'name': each.additional_charge_product_id.name,
+                            # 'product_id': contract.vehicle_id.vehicle_prodcut_id.id,
                             # 'price_unit': each.unit_price or 0.00, changed price of invoice
                             'price_unit': contract.rent or 0.00,
                             'product_uom_id': each.unit_measure.id,
@@ -452,6 +491,10 @@ class TenancyRentSchedule(models.Model):
                             'tax_ids': each.additional_charge_product_id.taxes_id,
                             'description': each.description,
                             'fleet_vehicle_id': contract.vehicle_id.id,
+                            'duration_label': each.duration_label
+                            if each.duration_label else False,
+                            'total_no_of_days_invoiced': invoicing_days
+                            if each.duration_label else False,
                         }
                         if contract.multi_prop:
                             for data in contract.prop_id:
@@ -475,7 +518,7 @@ class TenancyRentSchedule(models.Model):
             'partner_id': self.tenancy_id and self.tenancy_id.tenant_id and self.tenancy_id.tenant_id.id or False,
             'move_type': 'out_invoice',
             # 'fleet_vehicle_id': self.tenancy_id.vehicle_id.id or False,
-            'invoice_date': start_date or False,
+            'invoice_date': self.start_date or False,
             # 'invoice_date': self.start_date or False,
             'journal_id': journal_ids and journal_ids[0].id or False,
             'state': 'draft',
@@ -592,6 +635,7 @@ class RentalWizardFleetAdditionalCharges(models.Model):
     unit_price = fields.Float('Unit Price')
     description = fields.Text(string='Description')
     line_added_status = fields.Boolean(default=False)
+    duration_label = fields.Char(string='Duration Label')
 
     @api.onchange('additional_charge_product_id')
     def accessories_product_cost(self):
@@ -631,7 +675,10 @@ class RentalWizardFleetExtraCharges(models.Model):
                                    related='additional_charge_product_id.product_tmpl_id.uom_id')
     unit_price = fields.Float('Unit Price')
     description = fields.Text(string='Description')
+    duration_label = fields.Char(string='Duration Label')
     line_added_status = fields.Boolean(default=False)
+    month_count = fields.Integer('Month of invoice', default=0)
+    tenancy_rec_schedule = fields.Many2one('tenancy.rent.schedule', 'Tenancy rent Schedule')
 
 
 class RentalWizardFleetAdditionalDrivers(models.Model):
@@ -687,12 +734,13 @@ class AccountMovelineInherit(models.Model):
     fleet_vehicle_id = fields.Many2one('fleet.vehicle', 'Fleet')
     rental_type = fields.Char('Rental Type')
     total_no_of_days_invoiced = fields.Integer(string="Total No.of Days Invoiced", default=0)
+    duration_label = fields.Char('Duration Unit')
 
 
 class AccountAnalyticAccountInherited(models.Model):
     _inherit = 'account.analytic.account'
 
-    total_no_of_days_invoiced = fields.Integer(string="Total No.of Days Invoiced", default=0)
+    total_no_of_days_invoiced = fields.Integer(string="Total No.of Days Invoiced")
     total_days_to_invoice = fields.Integer(string="Total Days to Invoice", default=0)
     customer_invoice_tracking = fields.Many2one(
         comodel_name='invoice.tracking.customer.based',

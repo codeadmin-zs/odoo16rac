@@ -22,6 +22,7 @@
                                         <field name="date" required="1"/>
                                         <field name="odometer"  required="1"/>
                                         <field name="fuel_level"  required="1"/>
+                                        <field name="all_invoice_status" invisible="1" />
                                     </group>
                                 </div>
                             </div>
@@ -316,9 +317,11 @@
                         </page>
                     </notebook>
                     <footer>
+                        <field name="all_invoice_status" invisible="1" />
                         <button name="confirm_return" type="object" string="Confirm" class="oe_highlight" />
-<!--                        <button name="create_invoice_and_return_vehicle" type="object" string="Create Invoice &amp; Return"-->
-<!--                                class="oe_highlight"  attrs="{'invisible': [('can_be_invoiced', '=', False)]}"/>-->
+                        <button name="create_all_invoices" type="object" string="Create Invoices And Return"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('all_invoice_status', '=', True)]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -376,7 +379,11 @@
                         </page>
                     </notebook>
                     <footer>
+                        <field name="all_invoice_status" invisible="1" />
                         <button name="confirm_rent_close" type="object" string="Confirm Close" class="oe_highlight"/>
+                        <button name="create_all_invoices" type="object" string="Create Invoices And Close"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('all_invoice_status', '=', True)]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
