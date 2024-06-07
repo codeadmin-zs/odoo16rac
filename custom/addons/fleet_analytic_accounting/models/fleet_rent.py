@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from datetime import datetime, timedelta
 from odoo.exceptions import ValidationError
 
+
 class AccountInvoice(models.Model):
     _inherit = "account.move"
 
@@ -55,21 +56,25 @@ class AccountpaymentExtend(models.TransientModel):
                     if rent_sched_rec.tenancy_id.extra_charges_ids or \
                             rent_sched_rec.tenancy_id.additional_rental_charges_ids:
                         for each in rent_sched_rec.tenancy_id.extra_charges_ids:
-                            each.line_added_status = True
+                            if each.tenancy_rec_schedule.id == rent_sched_rec.id and \
+                                    rent_sched_rec.invc_id.payment_state == 'paid':
+                                each.line_added_status = True
+                                rent_sched_rec.tenancy_id.total_no_of_days_invoiced += \
+                                    rent_sched_rec.total_days_invoiced
                         for each in rent_sched_rec.tenancy_id.additional_rental_charges_ids:
                             each.line_added_status = True
-            if self._context.get('return', False) and self._context.get('active_model', False) and self._context[
-                'active_model'] == 'account.move':
+            if self._context.get('return', False) and self._context.get('active_model', False) and \
+                    self._context['active_model'] == 'account.move':
                 for invoice in self.env[self._context['active_model']].browse(
                         self._context.get('active_id', False)):
                     if invoice.new_tenancy_id:
                         invoice.new_tenancy_id.write({
                             'deposit_return': True,
-                            'amount_return': invoice.amount_total})
+                            'amount_return': invoice.amount_total,
+                            })
         return res
 
 
-#filter in vehicle
 class FleetVehicleLogServicesFilter(models.Model):
     _inherit = "fleet.vehicle.log.services"
 
@@ -104,7 +109,6 @@ class SaleOrderCancel(models.Model):
         super(SaleOrderCancel, self).action_cancel()
 
 
-
 class NonEditableInheritedFleetVehicleState(models.Model):
     _inherit = 'fleet.vehicle.state'
     _description = 'Vehicle Status'
@@ -118,6 +122,7 @@ class NonEditableInheritedFleetVehicleState(models.Model):
 
     def unlink(self):
         raise ValidationError('You cannot delete records of this type.')
+
 
 class SaleOrderInherited(models.Model):
     _inherit = 'sale.order'
@@ -133,7 +138,10 @@ class SaleOrderInherited(models.Model):
         default=lambda self: (fields.Date.today() + timedelta(days=7)).strftime('%Y-%m-%d')
     )
     invoice_policies_temp = fields.Selection(
-        [("advanced", "Advance Invoicing"), ("periodic", "Periodic Invoicing"), ("post_invoicing", "Post Invoicing"), ],
+        [("advanced", "Advance Invoicing"),
+         ("post_invoicing", "Post Invoicing"),
+         ("periodic", "Periodic Invoicing"),
+         ("advance_periodic", "Advance Periodic Invoicing")],
         string="Invoicing Policy", required=True, default="advanced")
 
     @api.constrains('validity_date')

@@ -5,7 +5,7 @@ from datetime import date, datetime
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import timedelta
 from datetime import date
-from dateutil import tz
+import calendar
 import time
 import logging
 import odoo.addons.decimal_precision as dp
@@ -100,14 +100,23 @@ class AccountAnalyticAccount(models.Model):
     @api.depends('rent_schedule_ids.invc_id')
     def _compute_scheduled_invoices_status(self):
         for rec in self:
-            inv_status = False
             if not self.rent_schedule_ids:
-                rec.write({'scheduled_invoices_status': False})
+                rec.update({'scheduled_invoices_status': False})
+            total_invoiced_date = 0
             for line in rec.rent_schedule_ids:
                 if line.invc_id and line.invc_id.state in ['posted']:
-                    rec.write({'scheduled_invoices_status': True})
+                    rec.update({'scheduled_invoices_status': True})
                 else:
-                    rec.write({'scheduled_invoices_status': False})
+                    rec.update({'scheduled_invoices_status': False})
+
+    @api.depends('rent_schedule_ids.total_days_invoiced')
+    def _compute_total_days_invoiced(self):
+        for rec in self:
+            total_no_of_days_invoiced = rec.total_no_of_days_invoiced
+            for line in rec.rent_schedule_ids:
+                if line.invc_id and line.invc_id.state in ['posted']:
+                    total_no_of_days_invoiced += line.total_days_invoiced
+            rec.update({'total_no_of_days_invoiced': total_no_of_days_invoiced})
 
     @api.depends('additional_rental_charges_ids.cost', 'extra_charges_ids.cost')
     def _compute_additional_charges(self):
@@ -938,19 +947,106 @@ class AccountAnalyticAccount(models.Model):
 
             value = fields.Datetime.context_timestamp(self, self.date_start).strftime(DT)
             # raise UserError(_('Please add some items to move.'))
-            new_additional_product = {'additional_charge_product_id': new_product.id,
-                                      'unit_measure': new_product.uom_id.id,
-                                      # 'unit_price': rental_pricing.price,
-                                      'unit_price': self.rent,
-                                      'product_uom_qty': self.duration,
-                                      'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) + ' Plate No:' + self.vehicle_id.license_plate + ' | Vehicle: ' +
-                                                     self.vehicle_id.name + ' | Start Date: ' + str(value) +
-                                                     ' | Start Odo.: ' + str(self.odometer) + ' | Start Fuel Lvl: ' +
-                                                     str(self.vehicle_id.fuel_level) + ' | Return Odo.: ' + 'TBD' +
-                                                     ' | Return Fuel Lvl: ' + 'TBD',
-                                      'cost': rental_pricing.price * self.duration,
-                                      'agreement_id': self.id}
-            additional_product_obj.create(new_additional_product)
+            if self.invoice_policies == 'advance_periodic' or 'periodic':
+                start_date, end_date = self.date_start, self.date
+                days_unit = self.env['uom.uom'].search([('name', '=', 'Days')])
+                interval = int(self.duration)
+                if self.duration_unit == 'month':
+                    month_range = calendar.monthrange(start_date.year, start_date.month)[1]
+                    if month_range != start_date.day:
+                        interval += 1
+                    for i in range(0, interval):
+                        if i == 0:
+                            new_additional_product = {
+                                                      'product_uom_qty': (month_range - start_date.day) / month_range,
+                                                      'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) +
+                                                                     ' Plate No:' + self.vehicle_id.license_plate +
+                                                                     ' | Vehicle: ' + self.vehicle_id.name +
+                                                                     ' | Start Date: ' + str(value) +
+                                                                     ' | Start Odo.: ' + str(self.odometer) +
+                                                                     ' | Start Fuel Lvl: ' +
+                                                                     str(self.vehicle_id.fuel_level) +
+                                                                     ' | Return Odo.: ' +
+                                                                     'TBD' + ' | Return Fuel Lvl: ' + 'TBD' +
+                                                                     ' | First ' + self.duration_unit + ' invoice',
+                                                      'cost': ((self.rent / self.duration) / month_range) * (
+                                                              month_range - start_date.day),
+                                                    }
+                        elif i == interval - 1:
+                            start_date1 = end_date.replace(day=1)
+                            month_range = calendar.monthrange(end_date.year, end_date.month)[1]
+                            new_additional_product = {'product_uom_qty': self.date.day / month_range,
+                                                      'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) +
+                                                                     ' Plate No:' + self.vehicle_id.license_plate +
+                                                                     ' | Vehicle: ' + self.vehicle_id.name +
+                                                                     ' | Start Date: ' + str(value) + ' | Start Odo.: ' +
+                                                                     str(self.odometer) + ' | Start Fuel Lvl: ' +
+                                                                     str(self.vehicle_id.fuel_level) +
+                                                                     ' | Return Odo.: ' +
+                                                                     'TBD' + ' | Return Fuel Lvl: ' + 'TBD' +
+                                                                     ' | Last ' + self.duration_unit + ' invoice',
+                                                      'cost': ((self.rent / self.duration) / month_range) * end_date.day
+                                                      }
+                        else:
+                            start_date1 = start_date.replace(day=1) + relativedelta(months=int(i))
+                            month_range = calendar.monthrange(start_date1.year, start_date1.month)[1]
+                            new_additional_product = {'product_uom_qty': 1,
+                                                      'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) +
+                                                                     ' Plate No:' + self.vehicle_id.license_plate +
+                                                                     ' | Vehicle: ' + self.vehicle_id.name +
+                                                                     ' | Start Date: ' + str(value) + ' | Start Odo.: ' +
+                                                                     str(self.odometer) + ' | Start Fuel Lvl: ' +
+                                                                     str(self.vehicle_id.fuel_level) +
+                                                                     ' | Return Odo.: ' +
+                                                                     'TBD' + ' | Return Fuel Lvl: ' + 'TBD' + ' | ' +
+                                                                     str(i + 1) + 'th ' + self.duration_unit +
+                                                                     ' invoice',
+                                                      'cost': self.rent / self.duration
+                                                      }
+                        new_additional_product.update({'additional_charge_product_id': new_product.id,
+                                                       'unit_measure': new_product.uom_id.id,
+                                                       'unit_price': self.rent,
+                                                       'agreement_id': self.id,
+                                                       'duration_label': self.duration_unit,
+                                                       'month_count': i + 1
+                                                       })
+                        additional_product_obj.create(new_additional_product)
+                elif self.duration_unit == 'week':
+                    for i in range(0, interval):
+                        new_additional_product = {'additional_charge_product_id': new_product.id,
+                                                  'unit_measure': new_product.uom_id.id,
+                                                  'unit_price': self.rent,
+                                                  'product_uom_qty': 1,
+                                                  'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) +
+                                                                 ' Plate No:' + self.vehicle_id.license_plate +
+                                                                 ' | Vehicle: ' + self.vehicle_id.name +
+                                                                 ' | Start Date: ' + str(value) + ' | Start Odo.: ' +
+                                                                 str(self.odometer) + ' | Start Fuel Lvl: ' +
+                                                                 str(self.vehicle_id.fuel_level) + ' | Return Odo.: ' +
+                                                                 'TBD' + ' | Return Fuel Lvl: ' + 'TBD' +
+                                                                 ' | ' + str(i + 1) + 'th' + self.duration_unit +
+                                                                 ' invoice',
+                                                  'cost': self.rent,
+                                                  'agreement_id': self.id,
+                                                  'duration_label': self.duration_unit,
+                                                  'month_count': i + 1
+                                                  }
+                        additional_product_obj.create(new_additional_product)
+            else:
+                new_additional_product = {'additional_charge_product_id': new_product.id,
+                                          'unit_measure': new_product.uom_id.id,
+                                          # 'unit_price': rental_pricing.price,
+                                          'unit_price': self.rent,
+                                          'product_uom_qty': self.duration,
+                                          'description': 'Contract No: ' + (prefix + '/' + str(rental_number)) + ' Plate No:' + self.vehicle_id.license_plate + ' | Vehicle: ' +
+                                                         self.vehicle_id.name + ' | Start Date: ' + str(value) +
+                                                         ' | Start Odo.: ' + str(self.odometer) + ' | Start Fuel Lvl: ' +
+                                                         str(self.vehicle_id.fuel_level) + ' | Return Odo.: ' + 'TBD' +
+                                                         ' | Return Fuel Lvl: ' + 'TBD',
+                                          'cost': rental_pricing.price * self.duration,
+                                          'agreement_id': self.id,
+                                          }
+                additional_product_obj.create(new_additional_product)
             if self.invoice_policies == 'advanced':
                 self.create_rent_schedule()
         return self.write({'state': 'hand_over',
@@ -958,7 +1054,6 @@ class AccountAnalyticAccount(models.Model):
                            'rent_entry_chck': False,
                            'name': prefix + '/' + str(rental_number)})
 
-    # @api.multi
     def create_rent_schedule(self, allOrCurrentInvoices=None):
         """
         This button method is used to create rent schedule Lines.
@@ -979,8 +1074,8 @@ class AccountAnalyticAccount(models.Model):
                 if tenancy_rec.invoice_policies == 'advanced':
                     # d1 = d1 + relativedelta(months=int(1))
                     rent_schedule = rent_obj.create({
-                        'start_date': d1.strftime(DT),
-                        'end_date': d2.strftime(DT),
+                        'start_date': tenancy_rec.date_start,
+                        'end_date': tenancy_rec.date,
                         'amount': tenancy_rec.rent,
                         'pen_amt': tenancy_rec.rent,
                         'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
@@ -988,7 +1083,10 @@ class AccountAnalyticAccount(models.Model):
                         'single_inv': True,
                         'rental_type': tenancy_rec.rental_terms,
                         'currency_id': tenancy_rec.currency_id.id or False,
-                        'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                        'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                        'duration': tenancy_rec.duration,
+                        'total_days_invoiced': (tenancy_rec.date - tenancy_rec.date_start).days
+                        # 'duration__unit': tenancy_rec.duration_unit.id,
                     })
                     if rent_schedule:
                         rent_schedule.create_invoice()
@@ -996,8 +1094,8 @@ class AccountAnalyticAccount(models.Model):
                 if tenancy_rec.invoice_policies == 'post_invoicing':
                     d2 = d2 + relativedelta(months=int(1))
                     rent_schedule = rent_obj.create({
-                        'start_date': d1.strftime(DT),
-                        'end_date': d2.strftime(DT),
+                        'start_date': tenancy_rec.date_start,
+                        'end_date': tenancy_rec.date,
                         'amount': tenancy_rec.rent + tenancy_rec.additional_charges,
                         'pen_amt': tenancy_rec.rent + tenancy_rec.additional_charges,
                         'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
@@ -1005,11 +1103,104 @@ class AccountAnalyticAccount(models.Model):
                         'single_inv': True,
                         'rental_type': tenancy_rec.rental_terms,
                         'currency_id': tenancy_rec.currency_id.id or False,
-                        'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                        'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                        'duration': tenancy_rec.duration,
+                        'total_days_invoiced': (tenancy_rec.date - tenancy_rec.date_start).days
+                        # 'duration__unit': tenancy_rec.duration_unit.id,
                     })
                     if rent_schedule:
                         rent_schedule.create_invoice()
                         tenancy_rec.cr_rent_btn = True
+                if tenancy_rec.invoice_policies == 'advance_periodic':
+                    start_date, end_date = tenancy_rec.date_start, tenancy_rec.date
+                    if tenancy_rec.duration_unit == 'month':
+                        month_range = calendar.monthrange(start_date.year, start_date.month)[1]
+                        if month_range != start_date.day:
+                            interval += 1
+                        for i in range(0, interval):
+                            if i == 0:
+                                rent_schedule = rent_obj.create({
+                                    'start_date': start_date,
+                                    'end_date': start_date.replace(day=month_range),
+                                    'amount': ((tenancy_rec.rent / tenancy_rec.duration) / month_range) * ((
+                                            month_range - start_date.day) + 1),
+                                    'pen_amt': ((tenancy_rec.rent / tenancy_rec.duration) / month_range) * ((
+                                            month_range - start_date.day) + 1),
+                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                                    'tenancy_id': tenancy_rec.id,
+                                    'currency_id': tenancy_rec.currency_id.id or False,
+                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                                    'duration': (month_range - start_date.day) / month_range,
+                                    'month_count': i + 1,
+                                    'total_days_to_invoice': tenancy_rec.total_days_to_invoice,
+                                    'total_days_invoiced': (start_date.replace(day=month_range) -
+                                                            start_date).days + 1
+                                    # 'duration__unit': days_unit.id,
+                                })
+                            elif i == interval-1:
+                                start_date1 = end_date.replace(day=1)
+                                month_range = calendar.monthrange(end_date.year, end_date.month)[1]
+                                rent_schedule = rent_obj.create({
+                                    'start_date': start_date1,
+                                    'end_date': end_date,
+                                    'amount': ((tenancy_rec.rent / tenancy_rec.duration) / month_range) * end_date.day,
+                                    'pen_amt': ((tenancy_rec.rent / tenancy_rec.duration) / month_range) * end_date.day,
+                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                                    'tenancy_id': tenancy_rec.id,
+                                    'rental_type': tenancy_rec.rental_terms,
+                                    'currency_id': tenancy_rec.currency_id.id or False,
+                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                                    'duration': tenancy_rec.date.day / month_range,
+                                    # 'duration__unit': days_unit.id,
+                                    'month_count': i + 1,
+                                    'total_days_to_invoice': tenancy_rec.total_days_to_invoice,
+                                    'total_days_invoiced': (end_date - start_date1).days
+                                })
+                            else:
+                                start_date1 = start_date.replace(day=1) + relativedelta(months=int(i))
+                                month_range = calendar.monthrange(start_date1.year, start_date1.month)[1]
+                                rent_schedule = rent_obj.create({
+                                    'start_date': start_date1,
+                                    'end_date': start_date1.replace(day=month_range),
+                                    'amount': tenancy_rec.rent / tenancy_rec.duration,
+                                    'pen_amt': tenancy_rec.rent / tenancy_rec.duration,
+                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                                    'tenancy_id': tenancy_rec.id,
+                                    'currency_id': tenancy_rec.currency_id.id or False,
+                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                                    'duration': 1,
+                                    # 'duration__unit': tenancy_rec.duration_unit.id,
+                                    'month_count': i + 1,
+                                    'total_days_to_invoice': tenancy_rec.total_days_to_invoice,
+                                    'total_days_invoiced': month_range
+                                })
+                            if rent_schedule:
+                                rent_schedule.create_invoice()
+                    if tenancy_rec.duration_unit == 'week':
+                        start_date, end_date = tenancy_rec.date_start, tenancy_rec.date
+                        start_date1 = start_date
+                        for i in range(0, interval):
+                            end_date1 = start_date1 + relativedelta(weeks=1)
+                            rent_schedule = rent_obj.create({
+                                'start_date': start_date1,
+                                'end_date': end_date1,
+                                'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                                'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                                'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                                'tenancy_id': tenancy_rec.id,
+                                'currency_id': tenancy_rec.currency_id.id or False,
+                                'rel_tenant_id': tenancy_rec.tenant_id.id or False,
+                                'rental_type': tenancy_rec.rental_terms,
+                                'duration': 1,
+                                'month_count': i + 1,
+                                'total_days_to_invoice': tenancy_rec.total_days_to_invoice,
+                                'total_days_invoiced': (end_date1 -
+                                                        start_date1).days
+                                # 'duration__unit': days_unit.id,
+                            })
+                            start_date1 = end_date1 + relativedelta(days=1)
+                            if rent_schedule:
+                                rent_schedule.create_invoice()
                 if tenancy_rec.invoice_policies == 'periodic':
                     total_days_invoiced = tenancy_rec.total_no_of_days_invoiced
                     total_days_to_invoice = tenancy_rec.total_days_to_invoice
@@ -1372,16 +1563,20 @@ class AccountAnalyticAccount(models.Model):
         This button method is used to Change Tenancy state to close.
         @param self: The object pointer
         """
-
+        all_invoice_status = False
         fleet_rental_details_obj = self.env['fleet.rental.vehicle.details']
         fleet_rental_details = fleet_rental_details_obj.search([('rental_contract_id', '=', self.id),
                                                                 ('state', 'in', ['hand_over', 'replacement_handover'])])
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_contract_vehicle_return_details_wizard').id
+        if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
+                self.invoice_policies in ['periodic', 'advance_periodic']:
+            all_invoice_status = True
         context = {'active_model': 'fleet.rental.vehicle.details',
                    'active_id': max(fleet_rental_details.ids),
                    'default_vehicle_id': self.vehicle_id.id,
                    'default_rental_contract_id': self.id,
                    'default_state': 'return',
+                   'default_all_invoice_status': all_invoice_status
                    }
         return {
             'name': 'Rent Form New Checking',
@@ -1443,17 +1638,22 @@ class AccountAnalyticAccount(models.Model):
         fleet_vehicle_assignation_log_obj.write({
             'date_end': time.strftime(DT)
         })
-
+        all_invoice_status = False
         fleet_rental_details_obj = self.env['fleet.rental.vehicle.details']
         fleet_rental_details = fleet_rental_details_obj.search([('rental_contract_id', '=', self.id),
                                                                 ('vehicle_id', '=', self.vehicle_id.id),
                                                                 ('state', '=', 'return')])
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_contract_vehicle_close_details_wizard').id
+        for each in fleet_rental_details:
+            if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
+                    self.invoice_policies in ['periodic', 'advance_periodic']:
+                all_invoice_status = True
         context = {'active_model': 'fleet.rental.vehicle.details',
                    'active_id': max(fleet_rental_details.ids),
                    'default_vehicle_id': self.vehicle_id.id,
                    'default_rental_contract_id': self.id,
                    'default_state': 'close',
+                   'default_all_invoice_status': all_invoice_status
                    }
         return {
             'name': 'Rent Form New Checking',
@@ -1519,7 +1719,7 @@ class AccountAnalyticAccount(models.Model):
         """
         invoices = []
         for tenancy_rec in self:
-            if tenancy_rec.invoice_policies == 'periodic':
+            if tenancy_rec.invoice_policies == 'periodic' or 'advance_periodic':
                 for customer in tenancy_rec.tenant_id.invoice_tracking_ids:
                     if customer.invoice_id.state == 'draft':
                         msg1 = "This is my debug message wizard rent_line1! %s", customer
