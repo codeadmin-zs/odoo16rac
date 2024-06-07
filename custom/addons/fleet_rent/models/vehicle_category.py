@@ -422,6 +422,9 @@ class TenancyRentSchedule(models.Model):
                             'quantity': quantity,
                             'account_id': contract.vehicle_id.income_acc_id.id or False,
                             'analytic_account_id': contract.vehicle_id.analytic_account_id.id or False,
+                            'analytic_distribution': {
+                                contract.vehicle_id.analytic_account_id.id: 100.0
+                            },
                             'tax_ids': each.additional_charge_product_id.taxes_id,
                             'description': each.description,
                         }

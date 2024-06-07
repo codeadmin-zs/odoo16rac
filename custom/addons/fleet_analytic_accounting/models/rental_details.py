@@ -582,6 +582,9 @@ class RentalContractDetails(models.Model):
             'product_uom_id': additional_product.unit_measure.id,
             'account_id': self.vehicle_id.income_acc_id.id or False,
             'analytic_account_id': self.vehicle_id.analytic_account_id.id or False,
+            'analytic_distribution': {
+                    self.vehicle_id.analytic_account_id.id: 100.0
+                },
             'tax_ids': additional_product.additional_charge_product_id.taxes_id,
             'description': additional_product.description,
             'vehicle_id': self.vehicle_id.id,

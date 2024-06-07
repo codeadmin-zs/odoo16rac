@@ -154,6 +154,9 @@
 <!--                            </form>-->
 <!--                        </field>-->
 <!--                    </page>-->
+            <xpath expr="//label[@for='license_plate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
               <xpath expr="//group/group[1]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>

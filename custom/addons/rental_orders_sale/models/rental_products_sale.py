@@ -35,11 +35,15 @@ class SrMultiProduct(models.TransientModel):
     def add_rental_contract(self):
         sale_order = self.env[self._context['active_model']].browse(self._context.get('active_id', False))
         order_lines = self.env['sale.order.line'].search([('order_id', '=', sale_order.id)])
+        real_qty = 0
+        for line in order_lines:
+            real_qty += line.product_uom_qty
         self.env.context = dict(self.env.context)
         self.env.context.update({'default_rental_rank': 1, 'default_is_rental_order': True})
         del self.env.context['active_model']
         del self.env.context['active_id']
         del self.env.context['active_ids']
+
         for line in order_lines:
             wizard_data = line.rental_wizard_id
             vehicle = self.env['fleet.vehicle'].search(
@@ -49,7 +53,7 @@ class SrMultiProduct(models.TransientModel):
                 sale_order.update({'product_uom_qty_count': sale_order_qty_count})
                 if sale_order_qty_count == wizard_data.quantity:
                     sale_order.update({'rental_count_flag': True})
-                elif sale_order_qty_count > wizard_data.quantity:
+                elif sale_order_qty_count > real_qty:
                     raise ValidationError("Quantity of the Rental Contract should be equal to the Quotation Quantity.")
                 wizard_data.license_plate_no = vehicle.ids
                 line.lot_state = 'lot_added'
