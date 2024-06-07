@@ -331,6 +331,7 @@ class RentalContractDetails(models.Model):
     rental_contract_id = fields.Many2one('account.analytic.account', string='Rental Contract')
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle')
     reason = fields.Char(string='Reason')
+    invoice_policies = fields.Char(string='Invoice Policies')
     can_be_invoiced = fields.Boolean(string="Can Be Invoiced?")
     state = fields.Char(string='State', help='Internal use to know the button use')
     fuel_level = fields.Selection([('0', 'Empty'),
@@ -783,7 +784,7 @@ class RentalContractDetails(models.Model):
 
     def confirm_return(self):
         # adding rental charges to invoice
-        if self.rental_contract_id.invoice_policies == 'advance_periodic' or 'periodic':
+        if self.rental_contract_id.invoice_policies in ['advance_periodic', 'periodic']:
             if self.rental_contract_id.total_no_of_days_invoiced != self.rental_contract_id.total_days_to_invoice:
                 raise ValidationError('Pending Invoices found for this contract. '
                                       'Click On Create Invoices And Return.')
@@ -826,9 +827,6 @@ class RentalContractDetails(models.Model):
         self.return_process()
 
     def return_process(self):
-        self.compute_total_extra_day_usage()
-        raise ValidationError('Pending Invoices found for this contract. '
-                              'Click On Merge invoices to Create as a Single invoice')
         if self.total_damages_cost:
             self.get_dent_scratch_products()
         self.get_bulk_toll_fine_amount()
@@ -943,7 +941,7 @@ class RentalContractDetails(models.Model):
 
     # @api.multi
     def confirm_rent_close(self):
-        if self.rental_contract_id.invoice_policies == 'advance_periodic' or 'periodic':
+        if self.rental_contract_id.invoice_policies in ['advance_periodic', 'periodic']:
             if not self.all_invoice_status:
                 raise ValidationError('Pending Invoices found for this contract. '
                                       'Click On Create Invoices And Close.')

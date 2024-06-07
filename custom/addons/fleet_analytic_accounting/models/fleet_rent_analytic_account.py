@@ -947,7 +947,7 @@ class AccountAnalyticAccount(models.Model):
 
             value = fields.Datetime.context_timestamp(self, self.date_start).strftime(DT)
             # raise UserError(_('Please add some items to move.'))
-            if self.invoice_policies == 'advance_periodic' or 'periodic':
+            if self.invoice_policies in ['advance_periodic', 'periodic']:
                 start_date, end_date = self.date_start, self.date
                 days_unit = self.env['uom.uom'].search([('name', '=', 'Days')])
                 interval = int(self.duration)
@@ -1568,15 +1568,19 @@ class AccountAnalyticAccount(models.Model):
         fleet_rental_details = fleet_rental_details_obj.search([('rental_contract_id', '=', self.id),
                                                                 ('state', 'in', ['hand_over', 'replacement_handover'])])
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_contract_vehicle_return_details_wizard').id
-        if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
-                self.invoice_policies in ['periodic', 'advance_periodic']:
-            all_invoice_status = True
+        if self.invoice_policies in ['advance_periodic', 'periodic']:
+            if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
+                    self.invoice_policies in ['periodic', 'advance_periodic']:
+                all_invoice_status = True
+        elif self.invoice_policies not in ['advance_periodic', 'periodic']:
+                all_invoice_status = True
         context = {'active_model': 'fleet.rental.vehicle.details',
                    'active_id': max(fleet_rental_details.ids),
                    'default_vehicle_id': self.vehicle_id.id,
                    'default_rental_contract_id': self.id,
                    'default_state': 'return',
-                   'default_all_invoice_status': all_invoice_status
+                   'default_all_invoice_status': all_invoice_status,
+                   'default_invoice_policies': self.invoice_policies,
                    }
         return {
             'name': 'Rent Form New Checking',
@@ -1644,16 +1648,21 @@ class AccountAnalyticAccount(models.Model):
                                                                 ('vehicle_id', '=', self.vehicle_id.id),
                                                                 ('state', '=', 'return')])
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_contract_vehicle_close_details_wizard').id
-        for each in fleet_rental_details:
-            if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
-                    self.invoice_policies in ['periodic', 'advance_periodic']:
+
+        if self.invoice_policies in ['advance_periodic', 'periodic']:
+            for each in fleet_rental_details:
+                if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
+                        self.invoice_policies in ['periodic', 'advance_periodic']:
+                    all_invoice_status = True
+        elif self.invoice_policies not in ['advance_periodic', 'periodic']:
                 all_invoice_status = True
         context = {'active_model': 'fleet.rental.vehicle.details',
                    'active_id': max(fleet_rental_details.ids),
                    'default_vehicle_id': self.vehicle_id.id,
                    'default_rental_contract_id': self.id,
                    'default_state': 'close',
-                   'default_all_invoice_status': all_invoice_status
+                   'default_all_invoice_status': all_invoice_status,
+                   'default_invoice_policies': self.invoice_policies,
                    }
         return {
             'name': 'Rent Form New Checking',
