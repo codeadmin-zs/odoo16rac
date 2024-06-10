@@ -819,8 +819,8 @@ class RentalContractDetails(models.Model):
                                       'cost': rental_pricing.price * self.rental_contract_id.duration,
                                       'agreement_id': self.rental_contract_id.id,
                                       'duration_label': self.rental_contract_id.duration_unit,
-                                      'total_no_of_days_invoiced': (self.rental_contract_id.date -
-                                                                    self.rental_contract_id.date_start).days,
+                                      # 'total_no_of_days_invoiced': (self.rental_contract_id.date -
+                                      #                               self.rental_contract_id.date_start).days,
                                       }
             new_product = additional_product_obj.create(new_additional_product)
             self.create_move_lines(new_product)
