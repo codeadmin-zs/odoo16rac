@@ -1067,7 +1067,7 @@ class AccountAnalyticAccount(models.Model):
                                           'agreement_id': self.id,
                                           }
                 additional_product_obj.create(new_additional_product)
-            if self.invoice_policies == 'advanced':
+            if self.invoice_policies in ['advance_periodic', 'advanced']:
                 self.create_rent_schedule()
         return self.write({'state': 'hand_over',
                            'total_days_to_invoice': (self.date - self.date_start).days,
@@ -1131,7 +1131,7 @@ class AccountAnalyticAccount(models.Model):
                     if rent_schedule:
                         rent_schedule.create_invoice()
                         tenancy_rec.cr_rent_btn = True
-                if tenancy_rec.invoice_policies == 'advance_periodic':
+                if tenancy_rec.invoice_policies in ['advance_periodic', 'periodic']:
                     start_date, end_date = tenancy_rec.date_start, tenancy_rec.date
                     if tenancy_rec.duration_unit == 'month':
                         month_range = calendar.monthrange(start_date.year, start_date.month)[1]
@@ -1221,159 +1221,159 @@ class AccountAnalyticAccount(models.Model):
                             start_date1 = end_date1 + relativedelta(days=1)
                             if rent_schedule:
                                 rent_schedule.create_invoice()
-                if tenancy_rec.invoice_policies == 'periodic':
-                    total_days_invoiced = tenancy_rec.total_no_of_days_invoiced
-                    total_days_to_invoice = tenancy_rec.total_days_to_invoice
-                    last_date_invoiced = tenancy_rec.last_date_invoiced
-                    current_date = datetime.today().date()
-                    start_date = tenancy_rec.date_start
-                    balance_days_to_invoice = current_date - last_date_invoiced
-                    if tenancy_rec.duration_unit == 'month':
-                        last_date_of_invoice = datetime.today().date()
-                        total_months = (current_date.year - start_date.year) * 12 + current_date.month - start_date.month
-                        last_day_of_this_month = current_date.replace(day=1, month=current_date.month+1) - timedelta(days=1)
-
-                        if current_date >= last_day_of_this_month:
-                            last_date_of_invoice = last_day_of_this_month
-                        else:
-                            last_date_of_invoice = current_date.replace(day=1) - timedelta(days=1)
-                        next_month_start = last_date_invoiced + timedelta(days=1)
-                        for i in range(0, total_months):
-                            if i == 0:
-                                rent_schedule = rent_obj.create({
-                                    # 'start_date': d1.strftime(DT),
-                                    'start_date': tenancy_rec.last_date_invoiced + timedelta(days=1),
-                                    # 'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    # 'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                    'tenancy_id': tenancy_rec.id,
-                                    'rental_type': tenancy_rec.rental_terms,
-                                    'currency_id': tenancy_rec.currency_id.id or False,
-                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                                })
-                            elif i == interval-1:
-                                rent_schedule = rent_obj.create({
-                                    'start_date': last_date_of_invoice + timedelta(days=1),
-                                    'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                    'tenancy_id': tenancy_rec.id,
-                                    'rental_type': tenancy_rec.rental_terms,
-                                    'currency_id': tenancy_rec.currency_id.id or False,
-                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                                })
-
-                            else:
-                                rent_schedule = rent_obj.create({
-                                    'start_date': next_month_start,
-                                    'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                    'tenancy_id': tenancy_rec.id,
-                                    'rental_type': tenancy_rec.rental_terms,
-                                    'currency_id': tenancy_rec.currency_id.id or False,
-                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                                })
-                            d1 = d1 + relativedelta(months=int(1))
-                            next_month_start = d1.replace(day=1)
-                            #     HIDING FOR CUSTOMER BASED INVOICING
-                        if rent_schedule:
-                            if allOrCurrentInvoices == 'current_invoice':
-                                rent_schedule.create_invoice()
-                            elif allOrCurrentInvoices == 'all_invoices':
-                                rent_schedule.create_all_invoices()
-                    if tenancy_rec.duration_unit == 'week':
-                        for i in range(0, interval):
-                            d1 = d1 + relativedelta(weeks=int(1))
-                            if i == 0:
-                                rent_schedule = rent_obj.create({
-                                    'single_inv': True,
-                                    'start_date': d1.strftime(DT),
-                                    'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                    'tenancy_id': tenancy_rec.id,
-                                    'rental_type': tenancy_rec.rental_terms,
-                                    'currency_id': tenancy_rec.currency_id.id or False,
-                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                                })
-                            else:
-                                rent_schedule = rent_obj.create({
-                                    'start_date': d1.strftime(DT),
-                                    'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                    'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                    'tenancy_id': tenancy_rec.id,
-                                    'rental_type': tenancy_rec.rental_terms,
-                                    'currency_id': tenancy_rec.currency_id.id or False,
-                                    'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                                })
-                            if rent_schedule:
-                                rent_schedule.create_invoice()
-                    if tenancy_rec.duration_unit == 'day':
-                        rent_schedule = rent_obj.create({
-                            'start_date': d1.strftime(DT),
-                            'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                            'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                            'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                            'tenancy_id': tenancy_rec.id,
-                            'rental_type': tenancy_rec.rental_terms,
-                            'currency_id': tenancy_rec.currency_id.id or False,
-                            'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                        })
-                        if rent_schedule:
-                            rent_schedule.create_invoice()
-                        # if i == 0:
-                        #     rent_obj.create({
-                        #         'single_inv': True,
-                        #         'start_date': d1.strftime(DT),
-                        #         'amount': (tenancy_rec.rent * interval)+tenancy_rec.additional_charges,
-                        #         'vehicle_id': tenancy_rec.vehicle_id and
-                        #         tenancy_rec.vehicle_id.id or False,
-                        #         'tenancy_id': tenancy_rec.id,
-                        #         'currency_id': tenancy_rec.currency_id.id or False,
-                        #         'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                        #     })
-                        # else:
-                        #     rent_obj.create({
-                        #         'start_date': d1.strftime(DT),
-                        #         'amount': (tenancy_rec.rent * interval)+tenancy_rec.additional_charges,
-                        #         'vehicle_id': tenancy_rec.vehicle_id and
-                        #         tenancy_rec.vehicle_id.id or False,
-                        #         'tenancy_id': tenancy_rec.id,
-                        #         'currency_id': tenancy_rec.currency_id.id or False,
-                        #         'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                        #     })
-                    if tenancy_rec.duration_unit == 'hour':
-                        if i == 0:
-                            rent_schedule = rent_obj.create({
-                                'single_inv': True,
-                                'start_date': d1.strftime(DT),
-                                'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                'tenancy_id': tenancy_rec.id,
-                                'rental_type': tenancy_rec.rental_terms,
-                                'currency_id': tenancy_rec.currency_id.id or False,
-                                'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                            })
-                        else:
-                            rent_schedule = rent_obj.create({
-                                'start_date': d1.strftime(DT),
-                                'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
-                                'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
-                                'tenancy_id': tenancy_rec.id,
-                                'rental_type': tenancy_rec.rental_terms,
-                                'currency_id': tenancy_rec.currency_id.id or False,
-                                'rel_tenant_id': tenancy_rec.tenant_id.id or False
-                            })
-
-                    tenancy_rec.cr_rent_btn = False
-                        # if rent_schedule:
-                        #     rent_schedule.create_invoice()
+                # if tenancy_rec.invoice_policies == 'periodic':
+                #     total_days_invoiced = tenancy_rec.total_no_of_days_invoiced
+                #     total_days_to_invoice = tenancy_rec.total_days_to_invoice
+                #     last_date_invoiced = tenancy_rec.last_date_invoiced
+                #     current_date = datetime.today().date()
+                #     start_date = tenancy_rec.date_start
+                #     balance_days_to_invoice = current_date - last_date_invoiced
+                #     if tenancy_rec.duration_unit == 'month':
+                #         last_date_of_invoice = datetime.today().date()
+                #         total_months = (current_date.year - start_date.year) * 12 + current_date.month - start_date.month
+                #         last_day_of_this_month = current_date.replace(day=1, month=current_date.month+1) - timedelta(days=1)
+                #
+                #         if current_date >= last_day_of_this_month:
+                #             last_date_of_invoice = last_day_of_this_month
+                #         else:
+                #             last_date_of_invoice = current_date.replace(day=1) - timedelta(days=1)
+                #         next_month_start = last_date_invoiced + timedelta(days=1)
+                #         for i in range(0, total_months):
+                #             if i == 0:
+                #                 rent_schedule = rent_obj.create({
+                #                     # 'start_date': d1.strftime(DT),
+                #                     'start_date': tenancy_rec.last_date_invoiced + timedelta(days=1),
+                #                     # 'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     # 'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                     'tenancy_id': tenancy_rec.id,
+                #                     'rental_type': tenancy_rec.rental_terms,
+                #                     'currency_id': tenancy_rec.currency_id.id or False,
+                #                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #                 })
+                #             elif i == interval-1:
+                #                 rent_schedule = rent_obj.create({
+                #                     'start_date': last_date_of_invoice + timedelta(days=1),
+                #                     'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                     'tenancy_id': tenancy_rec.id,
+                #                     'rental_type': tenancy_rec.rental_terms,
+                #                     'currency_id': tenancy_rec.currency_id.id or False,
+                #                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #                 })
+                #
+                #             else:
+                #                 rent_schedule = rent_obj.create({
+                #                     'start_date': next_month_start,
+                #                     'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                     'tenancy_id': tenancy_rec.id,
+                #                     'rental_type': tenancy_rec.rental_terms,
+                #                     'currency_id': tenancy_rec.currency_id.id or False,
+                #                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #                 })
+                #             d1 = d1 + relativedelta(months=int(1))
+                #             next_month_start = d1.replace(day=1)
+                #             #     HIDING FOR CUSTOMER BASED INVOICING
+                #         if rent_schedule:
+                #             if allOrCurrentInvoices == 'current_invoice':
+                #                 rent_schedule.create_invoice()
+                #             elif allOrCurrentInvoices == 'all_invoices':
+                #                 rent_schedule.create_all_invoices()
+                #     if tenancy_rec.duration_unit == 'week':
+                #         for i in range(0, interval):
+                #             d1 = d1 + relativedelta(weeks=int(1))
+                #             if i == 0:
+                #                 rent_schedule = rent_obj.create({
+                #                     'single_inv': True,
+                #                     'start_date': d1.strftime(DT),
+                #                     'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                     'tenancy_id': tenancy_rec.id,
+                #                     'rental_type': tenancy_rec.rental_terms,
+                #                     'currency_id': tenancy_rec.currency_id.id or False,
+                #                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #                 })
+                #             else:
+                #                 rent_schedule = rent_obj.create({
+                #                     'start_date': d1.strftime(DT),
+                #                     'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                     'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                     'tenancy_id': tenancy_rec.id,
+                #                     'rental_type': tenancy_rec.rental_terms,
+                #                     'currency_id': tenancy_rec.currency_id.id or False,
+                #                     'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #                 })
+                #             if rent_schedule:
+                #                 rent_schedule.create_invoice()
+                #     if tenancy_rec.duration_unit == 'day':
+                #         rent_schedule = rent_obj.create({
+                #             'start_date': d1.strftime(DT),
+                #             'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #             'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #             'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #             'tenancy_id': tenancy_rec.id,
+                #             'rental_type': tenancy_rec.rental_terms,
+                #             'currency_id': tenancy_rec.currency_id.id or False,
+                #             'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #         })
+                #         if rent_schedule:
+                #             rent_schedule.create_invoice()
+                #         # if i == 0:
+                #         #     rent_obj.create({
+                #         #         'single_inv': True,
+                #         #         'start_date': d1.strftime(DT),
+                #         #         'amount': (tenancy_rec.rent * interval)+tenancy_rec.additional_charges,
+                #         #         'vehicle_id': tenancy_rec.vehicle_id and
+                #         #         tenancy_rec.vehicle_id.id or False,
+                #         #         'tenancy_id': tenancy_rec.id,
+                #         #         'currency_id': tenancy_rec.currency_id.id or False,
+                #         #         'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #         #     })
+                #         # else:
+                #         #     rent_obj.create({
+                #         #         'start_date': d1.strftime(DT),
+                #         #         'amount': (tenancy_rec.rent * interval)+tenancy_rec.additional_charges,
+                #         #         'vehicle_id': tenancy_rec.vehicle_id and
+                #         #         tenancy_rec.vehicle_id.id or False,
+                #         #         'tenancy_id': tenancy_rec.id,
+                #         #         'currency_id': tenancy_rec.currency_id.id or False,
+                #         #         'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #         #     })
+                #     if tenancy_rec.duration_unit == 'hour':
+                #         if i == 0:
+                #             rent_schedule = rent_obj.create({
+                #                 'single_inv': True,
+                #                 'start_date': d1.strftime(DT),
+                #                 'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                 'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                 'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                 'tenancy_id': tenancy_rec.id,
+                #                 'rental_type': tenancy_rec.rental_terms,
+                #                 'currency_id': tenancy_rec.currency_id.id or False,
+                #                 'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #             })
+                #         else:
+                #             rent_schedule = rent_obj.create({
+                #                 'start_date': d1.strftime(DT),
+                #                 'amount': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                 'pen_amt': (tenancy_rec.rent + tenancy_rec.additional_charges) / interval,
+                #                 'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
+                #                 'tenancy_id': tenancy_rec.id,
+                #                 'rental_type': tenancy_rec.rental_terms,
+                #                 'currency_id': tenancy_rec.currency_id.id or False,
+                #                 'rel_tenant_id': tenancy_rec.tenant_id.id or False
+                #             })
+                #
+                #     tenancy_rec.cr_rent_btn = False
+                #         # if rent_schedule:
+                #         #     rent_schedule.create_invoice()
         return True
 
     # @api.multi

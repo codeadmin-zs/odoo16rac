@@ -716,6 +716,21 @@ class InvoiceTrackingCustomer(models.Model):
     rental_type = fields.Char('Rental Type')
     contract_id = fields.Many2one('account.analytic.account', string='Invoice')
 
+    def open_invoice(self):
+        context = dict(self._context or {})
+        wiz_form_id = self.env.ref('account.view_move_form').id
+
+        return {
+            'view_type': 'form',
+            'view_id': wiz_form_id,
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id': self.invoice_id.id,
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'context': context,
+        }
+
     class InvoiceTrackingCustomer(models.Model):
         _name = 'invoice.lines.tracking.customer.based'
 

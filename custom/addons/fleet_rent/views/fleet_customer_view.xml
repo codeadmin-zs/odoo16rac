@@ -41,10 +41,12 @@
                           attrs="{'invisible': [('on_rental_contract','=',0)]}">
                         <separator string="Invoice Details" colspan="4"/>
                         <field name="invoice_tracking_ids" nolabel="1" context="{'active_id': active_id}" >
-                            <tree string="Invoicing Schedule" editable="bottom" create="true" delete="true">
+                            <tree string="Invoicing Schedule" editable="bottom" create="true" delete="true"
+                                  default_order="id desc">
                                 <field name="invoice_date"/>
                                 <field name="invoice_id" widget="many2one_barcode"/>
                                 <field name="amount" sum="Total Amount"/>
+                                <button name="open_invoice" string="Open Invoice" type="object" icon="fa-cogs"/>
                             </tree>
                         </field>
                     </page>

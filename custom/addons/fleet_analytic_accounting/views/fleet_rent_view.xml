@@ -212,9 +212,19 @@
                         <field name="additional_charges" invisible="1"/>
                         <field name="cr_rent_btn" invisible="1"/>
                         <notebook>
-                            <page string="Invoicing">
+                            <page string="Invoices">
+                                <field name="rent_schedule_ids" readonly="1">
+                                    <tree string="Invoices" create="false" default_order="id desc">
+                                        <field name="start_date"/>
+                                        <field name="invc_id"/>
+                                        <field name="amount"/>
+                                        <button name="open_invoice" string="Open Invoice" type="object" icon="fa-cogs"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Invoice Lines">
                                 <field name="account_move_line_ids" readonly="1">
-                                    <tree string="Journal Items" create="false">
+                                    <tree string="Journal Items" create="false" default_order="id desc">
                                         <field name="date"/>
                                         <field name="move_id" required="0" invisible="0"/>
                                         <field name="name"/>
