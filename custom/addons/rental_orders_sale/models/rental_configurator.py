@@ -471,6 +471,7 @@ class RentalWizard(models.Model):
     #         "Please choose a return date that is after the pickup date."),
     # ]
 
+
 class RentalWizardAdditionalCharges(models.Model):
     _name = 'rental.wizard.additional.charges'
 

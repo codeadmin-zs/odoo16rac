@@ -58,7 +58,9 @@
                                     icon="fa-cog" colspan="2" class="oe_inline oe_stat_button" invisible="1"/>
                             <button name="button_rent_schedules" string=" Schedule Invoices" type="object"
                                     icon="fa-plus" colspan="2" class="oe_inline oe_stat_button"
-                                    attrs="{'invisible': ['|', ('state','not in',['open','return','closed']),('scheduled_invoices_status','!=',False)]}"/>
+                                    attrs="{'invisible': ['|','|', ('state','not in',['open','return','closed']),
+                                    ('scheduled_invoices_status','!=',False),
+                                    ('invoice_policies','not in',['advanced','periodic','advance_periodic'])]}"/>
                             <button name="button_receive" string="Pay Security" type="object" icon="fa-money"
                                     attrs="{'invisible':['|',('deposit_received','=',True),('lock_state','=','locked')]}"
                                     class="oe_inline oe_stat_button"/>
