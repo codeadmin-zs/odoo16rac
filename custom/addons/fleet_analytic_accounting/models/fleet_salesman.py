@@ -79,7 +79,7 @@ class FleetSalesMan(models.Model):
     account_receivable_id = fields.Many2one("account.account",string="Account Receivable")
     account_payable_id = fields.Many2one("account.account",string="Account Payable")
     expence_acc_id = fields.Many2one("account.account",string="Expense Account")
-    first_name = fields.Char(string="First Name")
+    name = fields.Char(string="First Name")
     last_name = fields.Char(string="Last Name")
     # commission_percentage = fields.Float(string="Commission %",digits=dp.get_precision('Product Price'))
     commission_percentage = fields.Float(string='Commission %', digits=dp.get_precision('Product Price'))
@@ -105,17 +105,23 @@ class FleetSalesManCustomers(models.Model):
 
 class AccountInvoice(models.Model):
     _inherit = 'account.move'
+    print('account.move')
 
-    # @api.one
-    def _compute_commission(self):
-        # get recordset of related object, for example with search (or whatever you like):
-        salesman_obj = self.env['fleet.salesman']
-        for record in self:
-            sales_man_id = record.user_id.id
-            commission_percentage = salesman_obj.search([('related_user_id', '=', sales_man_id)]).commission_percentage
-            if commission_percentage:
-                commission = record.amount_total_signed*(commission_percentage/100)
-                self.commission_amount = commission
+
+    # @api.depends('amount_untaxed', 'user_id')
+    # def _compute_commission(self):
+    #     print('hi')
+    #     # get recordset of related object, for example with search (or whatever you like):
+    #     salesman_obj = self.env['fleet.salesman']
+    #     print('salesman_obj', salesman_obj)
+    #     print('ayooo')
+    #     for record in self:
+    #         sales_man_id = record.user_id.id
+    #         commission_percentage = salesman_obj.search([('related_user_id', '=', sales_man_id)]).commission_percentage
+    #         if commission_percentage:
+    #             commission = record.amount_untaxed*(commission_percentage/100)
+    #             print('commission', commission)
+    #             self.commission_amount = commission
 
     # @api.one
     def _compute_fleet_salesman(self):
@@ -132,6 +138,12 @@ class AccountInvoice(models.Model):
     commission_amount = fields.Float(string='Commission', compute="_compute_commission")
     fleet_sales_man_id = fields.Many2one("fleet.salesman", string="Fleet Salesman",compute="_compute_fleet_salesman")
     invc_id = fields.Many2one(comodel_name='account.move', string='Vendor Bill')
+
+    @api.depends()
+    def _compute_commission(self):
+        for record in self:
+            print('record.amount_untaxed * 0.10', record.amount_untaxed * 0.10)
+            record.commission_amount = 100
 
     # @api.multi
     # def return_action_to_generate_commission(self):
