@@ -323,7 +323,7 @@
                         <button name="create_all_invoices" type="object" string="Create Invoices And Return"
                                 class="oe_highlight"
                                 attrs="{'invisible': ['|', ('all_invoice_status', '=', True),
-                                ('invoice_policies', 'in', ['advance_periodic', 'periodic'])]}"/>
+                                ('invoice_policies', 'not in', ['advance_periodic', 'periodic'])]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -384,10 +384,10 @@
                         <field name="all_invoice_status" invisible="1" />
                         <field name="invoice_policies" invisible="1" />
                         <button name="confirm_rent_close" type="object" string="Confirm Close" class="oe_highlight"/>
-                        <button name="create_all_invoices" type="object" string="Create Invoices And Close"
+                        <button name="create_all_invoices" type="object" string="Create Invoices And Return"
                                 class="oe_highlight"
                                 attrs="{'invisible': ['|', ('all_invoice_status', '=', True),
-                                ('invoice_policies', 'in', ['advance_periodic', 'periodic'])]}"/>
+                                ('invoice_policies', 'not in', ['advance_periodic', 'periodic'])]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>

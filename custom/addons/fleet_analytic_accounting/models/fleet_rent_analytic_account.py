@@ -1589,11 +1589,10 @@ class AccountAnalyticAccount(models.Model):
                                                                 ('state', 'in', ['hand_over', 'replacement_handover'])])
         wiz_form_id = self.env.ref('fleet_analytic_accounting.fleet_rental_contract_vehicle_return_details_wizard').id
         if self.invoice_policies in ['advance_periodic', 'periodic']:
-            if self.total_days_to_invoice == self.total_no_of_days_invoiced and \
-                    self.invoice_policies in ['periodic', 'advance_periodic']:
+            if self.total_days_to_invoice == self.total_no_of_days_invoiced:
                 all_invoice_status = True
         elif self.invoice_policies not in ['advance_periodic', 'periodic']:
-                all_invoice_status = True
+            all_invoice_status = True
         context = {'active_model': 'fleet.rental.vehicle.details',
                    'active_id': max(fleet_rental_details.ids),
                    'default_vehicle_id': self.vehicle_id.id,

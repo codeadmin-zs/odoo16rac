@@ -56,11 +56,14 @@ class AccountpaymentExtend(models.TransientModel):
                     if rent_sched_rec.tenancy_id.extra_charges_ids or \
                             rent_sched_rec.tenancy_id.additional_rental_charges_ids:
                         for each in rent_sched_rec.tenancy_id.extra_charges_ids:
-                            if each.tenancy_rec_schedule.id == rent_sched_rec.id and \
-                                    rent_sched_rec.invc_id.payment_state == 'paid':
+                            if rent_sched_rec.tenancy_id.invoice_policies in ['advance_periodic', 'periodic']:
+                                if each.tenancy_rec_schedule.id == rent_sched_rec.id and \
+                                        rent_sched_rec.invc_id.payment_state == 'paid':
+                                    each.line_added_status = True
+                                    rent_sched_rec.tenancy_id.total_no_of_days_invoiced += \
+                                        rent_sched_rec.total_days_invoiced
+                            else:
                                 each.line_added_status = True
-                                rent_sched_rec.tenancy_id.total_no_of_days_invoiced += \
-                                    rent_sched_rec.total_days_invoiced
                         for each in rent_sched_rec.tenancy_id.additional_rental_charges_ids:
                             each.line_added_status = True
             if self._context.get('return', False) and self._context.get('active_model', False) and \
