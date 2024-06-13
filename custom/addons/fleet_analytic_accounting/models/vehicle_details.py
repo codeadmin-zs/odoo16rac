@@ -26,11 +26,19 @@ class NewVehicleDetails(models.Model):
         if self.model_name and self.brand_id_zt:
             self.name = self.brand_id_zt.name + ' ' + self.model_name
 
-
-    def write(self, vals):
-        res = super(NewVehicleDetails, self).write(vals)
+    #
+    # def write(self, vals):
+    #     res = super(NewVehicleDetails, self).write(vals)
+    #     if self.fleet_ok:
+    #         if self.qty_available > 0:
+    #             raise ValidationError('This product has been used in at least one inventory movement. '
+    #                 'It is not advised to change the Product Type since it can lead to inconsistencies. '
+    #                 'A better solution could be to archive the product and create a new one instead.')
+    #     return res
+    @api.onchange('fleet_ok')
+    def change_to_accessories(self):
         if self.qty_available > 0:
+            if self.accessories_ok:
                 raise ValidationError('This product has been used in at least one inventory movement. '
                     'It is not advised to change the Product Type since it can lead to inconsistencies. '
                     'A better solution could be to archive the product and create a new one instead.')
-        return res
