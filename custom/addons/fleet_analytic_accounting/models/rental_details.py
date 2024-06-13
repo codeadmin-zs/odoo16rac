@@ -127,10 +127,6 @@ class RentalContractDetails(models.Model):
             contract_duration_in_days = (tenancy_expiry_date - tenancy_start_date).days
             delta = relativedelta(tenancy_expiry_date, tenancy_start_date)
             contract_duration_in_months = delta.years * 12 + delta.months
-            if self.rental_contract_id.rental_terms == 'long_term':
-                total_allowed_mileage_for_contract = contract_duration_in_months * allowed_mileage_per_month
-            else:
-                total_allowed_mileage_for_contract = contract_duration_in_days * allowed_mileage_per_day
             additional_mileage_in_km = 0
             additional_mileage_cost = 0
             replace_log = self.env['replace.vehicle.log'].search([('replace_id', '=', self.rental_contract_id.id)])
@@ -143,9 +139,7 @@ class RentalContractDetails(models.Model):
                 allowed_daily_km = self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
                 allowed_km = self.rental_contract_id.duration * allowed_daily_km
             elif self.rental_contract_id.duration_unit == 'week':
-                allowed_weekly_km = (
-                                                self.rental_contract_id.duration * 7) * self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
-                allowed_km = self.rental_contract_id.duration * allowed_weekly_km
+                allowed_km = (self.rental_contract_id.duration * 7) * self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
             else:
                 raise ValidationError('debug_error allowed km not set..!')
             for obj in replace_log:
