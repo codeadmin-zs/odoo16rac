@@ -133,10 +133,27 @@ class RentalContractDetails(models.Model):
                 total_allowed_mileage_for_contract = contract_duration_in_days * allowed_mileage_per_day
             additional_mileage_in_km = 0
             additional_mileage_cost = 0
-            total_mileages = self.odometer - tenancy_starting_odometer
+            replace_log = self.env['replace.vehicle.log'].search([('replace_id', '=', self.rental_contract_id.id)])
+            odo_list = []
+            allowed_km = 0
+            if self.rental_contract_id.duration_unit == 'month':
+                allowed_monthly_km = self.vehicle_id.vehicle_prodcut_template_id.allowd_monthly_mileage
+                allowed_km = self.rental_contract_id.duration * allowed_monthly_km
+            elif self.rental_contract_id.duration_unit == 'day':
+                allowed_daily_km = self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
+                allowed_km = self.rental_contract_id.duration * allowed_daily_km
+            elif self.rental_contract_id.duration_unit == 'week':
+                allowed_weekly_km = (
+                                                self.rental_contract_id.duration * 7) * self.vehicle_id.vehicle_prodcut_template_id.allowd_daily_mileage
+                allowed_km = self.rental_contract_id.duration * allowed_weekly_km
+            else:
+                raise ValidationError('debug_error allowed km not set..!')
+            for obj in replace_log:
+                odo_list.append(obj.closing_odometer - obj.current_odometer)
+            total_mileages = sum(odo_list)
             additional_product_obj = self.env['rental.wizard.extra.charges']
-            if total_mileages > total_allowed_mileage_for_contract:
-                additional_mileage_in_km = total_mileages - total_allowed_mileage_for_contract
+            if total_mileages > allowed_km:
+                additional_mileage_in_km = total_mileages - allowed_km
                 uom_obj = self.env['uom.uom'].search([('name', '=', 'km')])
                 if self.vehicle_id.name != self.rental_contract_id.vehicle_id_temp.name:
                     rental_pricing = self.env['rental.pricing'].search([('parent_product_template_id', '=',
@@ -834,7 +851,7 @@ class RentalContractDetails(models.Model):
             self.get_dent_scratch_products()
         self.get_bulk_toll_fine_amount()
         self.compute_total_extra_day_usage()
-        self.compute_total_extra_mileage_usage()
+        # self.compute_total_extra_mileage_usage()
         self.computing_extra_fuel_cost()
         total_other_charges_cost = 0
         if self.additional_fine_ids or self.additional_toll_ids:
@@ -940,6 +957,7 @@ class RentalContractDetails(models.Model):
                 if not v_log_obj[i].closing_odometer:
                     v_log_obj[i].update({
                         'closing_odometer': self.rental_contract_id.closing_odometer})
+            self.compute_total_extra_mileage_usage()
         return True
 
     # @api.multi
