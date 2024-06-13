@@ -270,7 +270,7 @@
                                         <field name="unit_price"/>
                                         <field name="taxes_id"/>
                                         <field name="cost"/>
-                                        <field name="line_added_status"/>
+                                        <field name="line_added_status" invisible="1"/>
                                     </tree>
                                 </field>
                             </page>
