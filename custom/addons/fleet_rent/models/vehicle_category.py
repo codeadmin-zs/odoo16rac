@@ -487,7 +487,7 @@ class TenancyRentSchedule(models.Model):
                             'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
                             'quantity': quantity,
                             'account_id': contract.vehicle_id.income_acc_id.id or False,
-                            'analytic_account_id': contract.analytic_account_id.id or False,
+                            'analytic_account_id': contract.vehicle_id.analytic_account_id.id or False,
                             'tax_ids': each.additional_charge_product_id.taxes_id,
                             'description': each.description,
                             'fleet_vehicle_id': contract.vehicle_id.id,

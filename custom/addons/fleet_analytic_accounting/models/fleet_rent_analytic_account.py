@@ -1096,8 +1096,8 @@ class AccountAnalyticAccount(models.Model):
                     rent_schedule = rent_obj.create({
                         'start_date': tenancy_rec.date_start,
                         'end_date': tenancy_rec.date,
-                        'amount': tenancy_rec.rent,
-                        'pen_amt': tenancy_rec.rent,
+                        'amount': tenancy_rec.rent + tenancy_rec.additional_charges,
+                        'pen_amt': tenancy_rec.rent + tenancy_rec.additional_charges,
                         'vehicle_id': tenancy_rec.vehicle_id and tenancy_rec.vehicle_id.id or False,
                         'tenancy_id': tenancy_rec.id,
                         'single_inv': True,
