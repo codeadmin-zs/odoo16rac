@@ -459,48 +459,48 @@ class TenancyRentSchedule(models.Model):
                                     inv_line_main.update({'account_id': account.id})
                         inv_add_prod.append((0, 0, inv_line_main))
                         each.update({'tenancy_rec_schedule': self.id})
-            if contract.additional_charges > 0:
-                for each in contract.additional_rental_charges_ids:
-                    if not each.line_added_status:
-                        invoicing_days = 0
-                        if contract.invoice_policies == 'periodic' or 'advance_periodic':
-                            if each.additional_charge_product_id.product_tmpl_id.reference_product:
-                                quantity = self.duration
-                            else:
-                                quantity = each.product_uom_qty
-                            if contract.duration_unit == 'month':
-                                invoicing_days = quantity * calendar.monthrange(self.start_date.year,
-                                                                                self.start_date.month)[1]
-                            elif contract.duration_unit == 'week':
-                                invoicing_days = quantity * 7
-                            else:
-                                invoicing_days = 1
-                        else:
-                            quantity = each.product_uom_qty
-                            invoicing_days = contract.date - contract.date_start
-                        inv_line_main = {
-                            'name': each.additional_charge_product_id.name,
-                            # 'product_id': contract.vehicle_id.vehicle_prodcut_id.id,
-                            # 'price_unit': each.unit_price or 0.00, changed price of invoice
-                            'price_unit': contract.rent or 0.00,
-                            'product_uom_id': each.unit_measure.id,
-                            'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
-                            'quantity': quantity,
-                            'account_id': contract.vehicle_id.income_acc_id.id or False,
-                            'analytic_account_id': contract.analytic_account_id.id or False,
-                            'tax_ids': each.additional_charge_product_id.taxes_id,
-                            'description': each.description,
-                            'fleet_vehicle_id': contract.vehicle_id.id,
-                            'duration_label': each.duration_label
-                            if each.duration_label else False,
-                            'total_no_of_days_invoiced': invoicing_days
-                            if each.duration_label else False,
-                        }
-                        if contract.multi_prop:
-                            for data in contract.prop_id:
-                                for account in data.property_ids.income_acc_id:
-                                    inv_line_main.update({'account_id': account.id})
-                        inv_add_prod.append((0, 0, inv_line_main))
+            # if contract.additional_charges > 0:
+            #     for each in contract.additional_rental_charges_ids:
+            #         if not each.line_added_status:
+            #             invoicing_days = 0
+            #             if contract.invoice_policies == 'periodic' or 'advance_periodic':
+            #                 if each.additional_charge_product_id.product_tmpl_id.reference_product:
+            #                     quantity = self.duration
+            #                 else:
+            #                     quantity = each.product_uom_qty
+            #                 if contract.duration_unit == 'month':
+            #                     invoicing_days = quantity * calendar.monthrange(self.start_date.year,
+            #                                                                     self.start_date.month)[1]
+            #                 elif contract.duration_unit == 'week':
+            #                     invoicing_days = quantity * 7
+            #                 else:
+            #                     invoicing_days = 1
+            #             else:
+            #                 quantity = each.product_uom_qty
+            #                 invoicing_days = contract.date - contract.date_start
+            #             inv_line_main = {
+            #                 'name': each.additional_charge_product_id.name,
+            #                 # 'product_id': contract.vehicle_id.vehicle_prodcut_id.id,
+            #                 # 'price_unit': each.unit_price or 0.00, changed price of invoice
+            #                 'price_unit': contract.rent or 0.00,
+            #                 'product_uom_id': each.unit_measure.id,
+            #                 'price_subtotal': each.cost / contract.duration or 0.00 if contract.invoice_policies == 'periodic' else each.cost or 0.00,
+            #                 'quantity': quantity,
+            #                 'account_id': contract.vehicle_id.income_acc_id.id or False,
+            #                 'analytic_account_id': contract.vehicle_id.analytic_account_id.id or False,
+            #                 'tax_ids': each.additional_charge_product_id.taxes_id,
+            #                 'description': each.description,
+            #                 'fleet_vehicle_id': contract.vehicle_id.id,
+            #                 'duration_label': each.duration_label
+            #                 if each.duration_label else False,
+            #                 'total_no_of_days_invoiced': invoicing_days
+            #                 if each.duration_label else False,
+            #             }
+            #             if contract.multi_prop:
+            #                 for data in contract.prop_id:
+            #                     for account in data.property_ids.income_acc_id:
+            #                         inv_line_main.update({'account_id': account.id})
+            #             inv_add_prod.append((0, 0, inv_line_main))
             inv_line_values = {
                 'name': 'Vehicle Rental Charge',
                 'price_unit': contract.rent or 0.00,

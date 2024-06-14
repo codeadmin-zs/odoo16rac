@@ -49,10 +49,6 @@ class RentalOrderLine(models.Model):
         lines = self.filtered(lambda line: line.is_rental)
         for line in lines:
             line.reservation_begin = line.pickup_date
-            # test_var = self - lines
-            # msg1 = ("This is my debug message line.test_var! %s",test_var)
-            # _logger.error(msg1)
-        #(self - lines).reservation_begin = None
 
     @api.depends('state', 'qty_invoiced', 'qty_delivered')
     def _compute_rental_updatable(self):
@@ -61,58 +57,6 @@ class RentalOrderLine(models.Model):
         for line in sale_lines:
             line.rental_updatable = line.product_updatable
         rental_lines.write({'rental_updatable': True})
-        # for line in rental_lines:
-        #     if line.state == 'cancel' or (line.state in ['sale', 'done'] and (line.qty_invoiced > 0 or line.qty_delivered > 0)):
-        #         line.rental_updatable = False
-        #     else:
-        #         line.rental_updatable = True
-
-    # @api.onchange('product_id')
-    # def product_id_change(self):
-    #     """Clean rental related data if new product cannot be rented."""
-    #     print(self)
-    #     # if (not self.is_product_rentable) and self.is_rental:
-    #     #     self.update({
-    #     #         'is_rental': False,
-    #     #         'pickup_date': False,
-    #     #         'return_date': False,
-    #     #     })
-    #     warning = {}
-    #     if self.product_id.rent_ok and self.product_id.fleet_ok:
-    #         # for line in self:
-    #         #   line_id = line.id
-    #         so_id = self.env.context.get('so_id')
-    #         msg1 = ("This is my debug message self._origin.order_id.id! %s",so_id)
-    #         _logger.error(msg1)
-    #         # msg1 = ("This is my debug message is_product_rentable! %s",self.is_product_rentable)
-    #         # _logger.error(msg1)
-    #         # msg1 = ("This is my debug message is_rental! %s",self.is_rental)
-    #         # _logger.error(msg1)
-    #         # msg1 = ("This is my debug message pickup_date! %s",self.pickup_date)
-    #         # _logger.error(msg1)
-    #         # msg1 = ("This is my debug message return_date! %s",self.return_date)
-    #         # _logger.error(msg1)
-    #         context = {'default_product_id': self.product_id.id,
-    #                    'default_rental_order_line_id': self.id,
-    #                    'default_so_id': self.order_id.id}
-    #         # return {
-    #         #     'warning':
-    #         #     {
-    #         #         'title': _('Info'),
-    #         #         'message': _('Rental Rates'),
-    #         #         'action': {
-    #         #                    "type": "ir.actions.act_window",
-    #         #                    "res_model": "rental.wizard",
-    #         #                    "views": [[False, "form"]],
-    #         #                    "view_id": self.env.ref('rental_orders_sale.rental_configurator_view_form').id,
-    #         #                    'context': context,
-    #         #                    "target": "new",
-    #         #                 },
-    #         #     },
-    #         # }
-    #         s = self.return_action_to_generate_rental()
-    #         print(s)
-    #         return s
 
     # TODO use is_product_rentable in rental_configurator_widget instead of rpc call?
 
@@ -126,12 +70,6 @@ class RentalOrderLine(models.Model):
         msg1 = "This is my debug message check"
         _logger.error(msg1)
         form = "rental_orders_sale.rental_configurator_view_form"
-        # context = {'default_product_id': self.product_id.id,
-        #            'default_rental_order_line_id': self.id,
-        #            'default_so_id': self.order_id.id}
-        # return {"type": "ir.actions.act_window","res_model": "rental.wizard",
-        # "views": [[False, "form"]],"view_id": self.env.ref('rental_configurator_view_form').id,
-        # 'context': ,"target": "new",}
         return {
           'name': "Rental Form",
           'view_type': 'form',
@@ -183,7 +121,7 @@ class RentalOrderLine(models.Model):
         return name + self.get_rental_order_line_description()
 
     def get_rental_order_line_description(self):
-        if (self.is_rental):
+        if self.is_rental:
             if self.pickup_date.date() == self.return_date.date():
                 # If return day is the same as pickup day, don't display return_date Y/M/D in description.
                 return_date_part = tools.format_datetime(self.with_context(use_babel=True).env, self.return_date,
