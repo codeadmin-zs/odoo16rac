@@ -122,9 +122,9 @@ class AccountAnalyticAccount(models.Model):
     def _compute_additional_charges(self):
         for rec in self:
             charge_total = 0.0
-            if rec.additional_rental_charges_ids:
-                for line in rec.additional_rental_charges_ids:
-                    charge_total += line.cost
+            # if rec.additional_rental_charges_ids:
+            #     for line in rec.additional_rental_charges_ids:
+            #         charge_total += line.cost
             if rec.extra_charges_ids:
                 for line in rec.extra_charges_ids:
                     charge_total += line.cost
@@ -1044,7 +1044,7 @@ class AccountAnalyticAccount(models.Model):
                                                                  str(self.odometer) + ' | Start Fuel Lvl: ' +
                                                                  str(self.vehicle_id.fuel_level) + ' | Return Odo.: ' +
                                                                  'TBD' + ' | Return Fuel Lvl: ' + 'TBD' +
-                                                                 ' | ' + str(i + 1) + 'th' + self.duration_unit +
+                                                                 ' | ' + str(i + 1) + 'th ' + self.duration_unit +
                                                                  ' invoice',
                                                   'cost': self.rent,
                                                   'agreement_id': self.id,
@@ -1052,6 +1052,7 @@ class AccountAnalyticAccount(models.Model):
                                                   'month_count': i + 1
                                                   }
                         additional_product_obj.create(new_additional_product)
+
             else:
                 new_additional_product = {'additional_charge_product_id': new_product.id,
                                           'unit_measure': new_product.uom_id.id,
@@ -1067,12 +1068,100 @@ class AccountAnalyticAccount(models.Model):
                                           'agreement_id': self.id,
                                           }
                 additional_product_obj.create(new_additional_product)
+            if self.additional_rental_charges_ids:
+                self.check_additional_product()
             if self.invoice_policies in ['advance_periodic', 'advanced']:
                 self.create_rent_schedule()
         return self.write({'state': 'hand_over',
                            'total_days_to_invoice': (self.date - self.date_start).days,
                            'rent_entry_chck': False,
                            'name': prefix + '/' + str(rental_number)})
+
+    def check_additional_product(self):
+        for products in self.additional_rental_charges_ids:
+            if self.duration and self.duration_unit:
+                unit = self.duration_unit.capitalize() + 's'
+                additional_product_obj = self.env['rental.wizard.extra.charges']
+                uom_obj = self.env['uom.uom'].search([('name', '=', unit)])
+                product_name = products.additional_charge_product_id.product_tmpl_id.name + ': ' + (
+                    'Daily' if unit == 'Days' else self.duration_unit.capitalize()) + ' Rate'
+                product_tmpl = self.env['product.template'].search([('name', '=', product_name)])
+                rental_pricing = self.env['rental.pricing'].search(
+                    [('parent_product_template_id', '=', products.additional_charge_product_id.product_tmpl_id.id),
+                     ('unit', '=', uom_obj.id), ('product_template_id', '=', product_tmpl.id)])
+                new_product = self.env['product.product'].search(
+                    [('product_tmpl_id', '=', rental_pricing.product_template_id.id)])
+
+                value = fields.Datetime.context_timestamp(self, self.date_start).strftime(DT)
+                # raise UserError(_('Please add some items to move.'))
+                if self.invoice_policies in ['advance_periodic', 'periodic']:
+                    start_date, end_date = self.date_start, self.date
+                    days_unit = self.env['uom.uom'].search([('name', '=', 'Days')])
+                    interval = int(self.duration)
+                    if self.duration_unit == 'month':
+                        month_range = calendar.monthrange(start_date.year, start_date.month)[1]
+                        if month_range != start_date.day:
+                            interval += 1
+                        for i in range(0, interval):
+                            if i == 0:
+                                new_additional_product = {
+                                    'product_uom_qty': (month_range - start_date.day) / month_range,
+                                    'description': products.additional_charge_product_id.name + ' | First ' +
+                                    self.duration_unit + ' invoice',
+                                    'cost': (new_product.list_price / month_range) * (
+                                            month_range - start_date.day),
+                                }
+                            elif i == interval - 1:
+                                start_date1 = end_date.replace(day=1)
+                                month_range = calendar.monthrange(end_date.year, end_date.month)[1]
+                                new_additional_product = {'product_uom_qty': self.date.day / month_range,
+                                                          'description': products.additional_charge_product_id.name +
+                                                          ' | Last ' + self.duration_unit + ' invoice',
+                                                          'cost': (new_product.list_price / month_range) * end_date.day
+                                                          }
+                            else:
+                                start_date1 = start_date.replace(day=1) + relativedelta(months=int(i))
+                                month_range = calendar.monthrange(start_date1.year, start_date1.month)[1]
+                                new_additional_product = {'product_uom_qty': 1,
+                                                          'description': products.additional_charge_product_id.name +
+                                                          str(i + 1) + 'th ' + self.duration_unit + ' invoice',
+                                                          'cost': new_product.list_price
+                                                          }
+                            new_additional_product.update({'additional_charge_product_id': new_product.id,
+                                                           'unit_measure': new_product.uom_id.id,
+                                                           'unit_price': self.rent,
+                                                           'agreement_id': self.id,
+                                                           'duration_label': self.duration_unit,
+                                                           'month_count': i + 1
+                                                           })
+                            additional_product_obj.create(new_additional_product)
+                    elif self.duration_unit == 'week':
+                        for i in range(0, interval):
+                            new_additional_product = {'additional_charge_product_id': new_product.id,
+                                                      'unit_measure': new_product.uom_id.id,
+                                                      'unit_price': new_product.list_price,
+                                                      'product_uom_qty': 1,
+                                                      'description': products.additional_charge_product_id.name +
+                                                      ' | ' + str(i + 1) + 'th ' + self.duration_unit + ' invoice',
+                                                      'cost': new_product.list_price,
+                                                      'agreement_id': self.id,
+                                                      'duration_label': self.duration_unit,
+                                                      'month_count': i + 1
+                                                      }
+                            additional_product_obj.create(new_additional_product)
+
+                else:
+                    new_additional_product = {'additional_charge_product_id': new_product.id,
+                                              'unit_measure': new_product.uom_id.id,
+                                              # 'unit_price': rental_pricing.price,
+                                              'unit_price': new_product.list_price,
+                                              'product_uom_qty': self.duration,
+                                              'description': products.additional_charge_product_id.name,
+                                              'cost': new_product.list_price * self.duration,
+                                              'agreement_id': self.id,
+                                              }
+                    additional_product_obj.create(new_additional_product)
+        return True
 
     def create_rent_schedule(self, allOrCurrentInvoices=None):
         """

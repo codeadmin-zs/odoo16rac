@@ -12,4 +12,3 @@ access_res_partner_fleet_salesman,access.res.partner.fleet.salesman,base.model_r
 access_vehicle_contract_change,vehicle.contract.change,model_vehicle_contract_change,,1,1,1,1
 access_vehicle_contract_log,vehicle.contract.log,model_vehicle_contract_log,,1,1,1,1
 
-

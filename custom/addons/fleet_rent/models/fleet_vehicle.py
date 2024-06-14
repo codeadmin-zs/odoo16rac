@@ -55,24 +55,21 @@ class FleetVehicle(models.Model):
             'target': 'new',
         }
 
-    # # @api.constrains('start_date_insurance', 'end_date_insurance')
-    ## def check_insurance_end_date(self):
-    ##     for vehicle in self:
-    # #        if vehicle.start_date_insurance and vehicle.end_date_insurance:
-    #  #           if vehicle.end_date_insurance < vehicle.start_date_insurance:
-    # #                 raise ValidationError('Insurance End Date Should Be \
-    # #                     Greater Than Start Date.')
-    # #
-    # # @api.constrains('start_date_insurance', 'acquisition_date')
-    # # def check_insurance_start_date(self):
-    # #     for vehicle in self:
-    # #         if vehicle.start_date_insurance and vehicle.acquisition_date:
-    # #             if vehicle.start_date_insurance < vehicle.acquisition_date:
-    # #                 raise ValidationError('Insurance Start Date Should Be \
-    # #                     Greater Than Registration Date.')
-
-
-
+    # @api.constrains('start_date_insurance', 'end_date_insurance')
+    # def check_insurance_end_date(self):
+    #     for vehicle in self:
+    #        if vehicle.start_date_insurance and vehicle.end_date_insurance:
+     #           if vehicle.end_date_insurance < vehicle.start_date_insurance:
+    #                 raise ValidationError('Insurance End Date Should Be \
+    #                     Greater Than Start Date.')
+    #
+    # @api.constrains('start_date_insurance', 'acquisition_date')
+    # def check_insurance_start_date(self):
+    #     for vehicle in self:
+    #         if vehicle.start_date_insurance and vehicle.acquisition_date:
+    #             if vehicle.start_date_insurance < vehicle.acquisition_date:
+    #                 raise ValidationError('Insurance Start Date Should Be \
+    #                     Greater Than Registration Date.')
 
     @api.depends('vehicle_lot_id')
     def _get_vehicle_down_payment(self):
@@ -99,8 +96,6 @@ class FleetVehicle(models.Model):
                 else:
                     record.vehicle_cost_price = 0
                     record.net_car_value = 0
-
-
 
     @api.depends('name')
     def _compute_admin_is_user(self):
@@ -137,9 +132,8 @@ class FleetVehicle(models.Model):
     #     result = super(FleetVehicle, self).create(vals)
     #     return result
 
-
-    @api.depends('f_brand_id', 'model_id', 'license_plate', 'vin_sn', 'finished_registration',
-                 'submitted_registration')
+    @api.depends('f_brand_id', 'model_id', 'license_plate', 'vin_sn',
+                 'finished_registration', 'submitted_registration')
     def _compute_approval_ready_status(self):
         for record in self:
             # msg1 = ("This is my debug message 1!")
@@ -152,15 +146,6 @@ class FleetVehicle(models.Model):
     @api.onchange('payment')
     def _compute_total_payment(self):
         total_insurance_payment = (self.vehicle_cost_price * self.payment) / 100
-
-    # # @api.onchange('odo_meter_increment_ids')
-    # # def checking(self):
-    # #     print('herererererererererer')
-    # #     pprint.pprint(self.env.context)
-    #
-    #   # @api.depends('finished_registration')
-    #  # def change_location(self):
-    #  #
 
     vehicle_lot_id = fields.Many2one('stock.lot', string='Lot ID', required=True)
     vehicle_prodcut_template_id = fields.Many2one('product.template', string='Product Template', required=True)
@@ -233,16 +218,16 @@ class FleetVehicle(models.Model):
     main_type = fields.Selection([('vehicle', 'Vehicle'),
                                   ('non-vehicle', 'Non-Vehicle')],
                                  default='vehicle', string='Main Type')
-    ## next_service_date_ids = fields.One2many('next.service.days', 'vehicle_id', string='Next Date For Service')
-    ## due_odometer = fields.Float(string='Next Service Odometer', readonly=True)
-    ## due_odometer_unit = fields.Selection([('kilometers', 'Kilometers'),
-    ##                                       ('miles', 'Miles')],
-    ##                                      string='Odometer Unit',
-    ##                                      help='Unit of the odometer ')
-    ## pending_repair_type_ids = fields.One2many('pending.repair.type',
-    ##                                           'vehicle_rep_type_id',
-    ##                                           string='Pending Repair Types',
-    ##                                           readonly=True)
+    # next_service_date_ids = fields.One2many('next.service.days', 'vehicle_id', string='Next Date For Service')
+    # due_odometer = fields.Float(string='Next Service Odometer', readonly=True)
+    # due_odometer_unit = fields.Selection([('kilometers', 'Kilometers'),
+    #                                       ('miles', 'Miles')],
+    #                                      string='Odometer Unit',
+    #                                      help='Unit of the odometer ')
+    # pending_repair_type_ids = fields.One2many('pending.repair.type',
+    #                                           'vehicle_rep_type_id',
+    #                                           string='Pending Repair Types',
+    #                                           readonly=True)
 
     insurance_company_id = fields.Many2one('res.partner',
                                            string='Insurance Company',
@@ -250,13 +235,13 @@ class FleetVehicle(models.Model):
     insurance_type_id = fields.Many2one('insurance.type',
                                         string='Insurance Type')
 
-    ## start_date_insurance = fields.Date(string='Start Date')
-    ## end_date_insurance = fields.Date(string='End Date')
+    # start_date_insurance = fields.Date(string='Start Date')
+    # end_date_insurance = fields.Date(string='End Date')
     policy_number = fields.Char(string='Policy Number', size=32)
     payment = fields.Float(string='Amount', compute='pay_to_percent')
     payment_in_percent = fields.Integer(string='Payment in %')
     service_interval = fields.Char(string='Service Due')
-    ## payment_deduction = fields.Float(string='Deduction')
+    # payment_deduction = fields.Float(string='Deduction')
 
     fleet_attach_ids = fields.One2many('ir.attachment', 'attachment_id',
                                        string='Attachments')
@@ -284,8 +269,8 @@ class FleetVehicle(models.Model):
     active_contract = fields.Many2one('account.analytic.account', 'Active Rental Contract')
     description = fields.Text(string='About Vehicle', translate=True)
 
-    ## odo_meter_increment_ids = fields.One2many('next.increment.number', 'vehicle_id',
-    ##                                           string='Odo Meter Increment For Service')
+    # odo_meter_increment_ids = fields.One2many('next.increment.number', 'vehicle_id',
+    #                                           string='Odo Meter Increment For Service')
 
     # dents
     hood_dent = fields.Boolean(string="Hood Dent", default=True)
@@ -364,6 +349,7 @@ class FleetVehicle(models.Model):
                 #     raise exceptions.ValidationError("Invalid year. Please enter a 4-digit year.")
             except:
                 raise exceptions.ValidationError("Invalid digit. Please enter a valid Km in digit.")
+
     @api.onchange('payment_in_percent')
     def pay_to_percent(self):
         comp_val = (self.payment_in_percent / 100) * self.vehicle_cost_price
@@ -418,11 +404,11 @@ class FleetVehicle(models.Model):
                            'state_id': state.id
                            })
 
-    ## def add_service_days(self):
-    ##     return self.write({'next_service_date_ids': [(0, 0, self.next_service_date_ids.id)],
-    ##                        'odo_meter_increment_ids': [(0, 0, self.odo_meter_increment_ids.id)]})
+    # def add_service_days(self):
+    #     return self.write({'next_service_date_ids': [(0, 0, self.next_service_date_ids.id)],
+    #                        'odo_meter_increment_ids': [(0, 0, self.odo_meter_increment_ids.id)]})
 
-    ## @api.multi
+    # @api.multi
     def button_approve_vehicle(self):
         state = self.env['fleet.vehicle.state'].search([('name', '=', 'Available')])
         # raise ValidationError('Debug_Error')
