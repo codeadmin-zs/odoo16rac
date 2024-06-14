@@ -53,8 +53,7 @@ class AccountpaymentExtend(models.TransientModel):
                 if rent_sched_rec.invc_id.state == 'posted':
                     rent_sched_rec.paid = True
                     rent_sched_rec.move_check = True
-                    if rent_sched_rec.tenancy_id.extra_charges_ids or \
-                            rent_sched_rec.tenancy_id.additional_rental_charges_ids:
+                    if rent_sched_rec.tenancy_id.extra_charges_ids:
                         for each in rent_sched_rec.tenancy_id.extra_charges_ids:
                             if rent_sched_rec.tenancy_id.invoice_policies in ['advance_periodic', 'periodic']:
                                 if each.tenancy_rec_schedule.id == rent_sched_rec.id and \
