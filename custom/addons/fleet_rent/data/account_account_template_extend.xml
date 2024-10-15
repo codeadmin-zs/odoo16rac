@@ -26,7 +26,7 @@
         <record id="zt_rac_cri_4005" model="account.account">
             <field name="name">Car Rental Income</field>
             <field name="code">411110</field>
-            <field name="account_type">expense_direct_cost</field>
+            <field name="account_type">income</field>
             <field name="internal_group">income</field>
             <field name="reconcile">False</field>
         </record>

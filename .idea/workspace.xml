@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="537c8587-1cb8-4868-acf5-b53b14103769" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/README.rst" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/README.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/__manifest__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/doc/RELEASE_NOTES.md" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/doc/RELEASE_NOTES.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/i18n/zh_CN.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/i18n/zh_CN.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/models/account_analytic_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/models/account_analytic_account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/models/account_budget.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/models/account_budget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/security/account_budget_security.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/security/account_budget_security.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/assets/icons/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/banner.png" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/banner.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/static/description/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/views/account_analytic_account_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/views/account_analytic_account_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_account_budget/views/account_budget_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_account_budget/views/account_budget_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/README.rst" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/README.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/__manifest__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/account_financial_report_data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/account_financial_report_data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/cash_flow_data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/cash_flow_data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/followup_levels.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/followup_levels.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/multiple_invoice_data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/multiple_invoice_data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/recurring_entry_cron.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/data/recurring_entry_cron.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/doc/RELEASE_NOTES.md" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/doc/RELEASE_NOTES.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/ar_001.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/ar_001.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/de_CH.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/de_CH.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/es_AR.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/es_AR.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/fr_BE.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/fr_BE.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/uk_UA.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/uk_UA.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/zh_CN.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/zh_CN.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/zh_HK.po" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/i18n/zh_HK.po" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_asset.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_asset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_followup.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_followup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_move.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/account_move.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/credit_limit.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/credit_limit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/multiple_invoice.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/multiple_invoice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/multiple_invoice_layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/multiple_invoice_layout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/product_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/product_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/recurring_payments.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/recurring_payments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_company.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_company.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_config_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_config_settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_partner.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/models/res_partner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_asset_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_asset_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_asset_report_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_asset_report_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_bank_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_bank_book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_bank_book_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_bank_book_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_cash_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_cash_book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_cash_book_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_cash_book_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_day_book.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_day_book.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_day_book_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_day_book_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_report_common_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/account_report_common_account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/cash_flow_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/cash_flow_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/cash_flow_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/cash_flow_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/general_ledger_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/general_ledger_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/general_ledger_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/general_ledger_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_layouts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_layouts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/multiple_invoice_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_aged_partner.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_aged_partner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_aged_partner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_aged_partner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_financial.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_financial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_financial.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_financial.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_journal_audit.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_journal_audit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_journal_audit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_journal_audit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_partner_ledger.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_partner_ledger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_partner_ledger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_partner_ledger.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_tax.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_tax.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_tax.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_tax.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_trial_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_trial_balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_trial_balance.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/report/report_trial_balance.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/security/ir.model.access.csv" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/security/ir.model.access.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/security/security.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/security/security.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.bundle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.bundle.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/Chart.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/Gruntfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/Gruntfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/_gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/_gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/bower.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap-toggle.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap-toggle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap-toggle.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap-toggle.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap2-toggle.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap2-toggle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap2-toggle.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/css/bootstrap2-toggle.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/doc/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/doc/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/doc/stylesheet.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/doc/stylesheet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap-toggle.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap-toggle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap-toggle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap-toggle.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap2-toggle.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap2-toggle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap2-toggle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/js/bootstrap2-toggle.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/bootstrap-toggle-master/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/chartist.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/chartist.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/chartist.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/chartist.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/font-awesome.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/font-awesome.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.theme.fusion.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/fusioncharts.theme.fusion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/jquery-3.3.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/lib/jquery-3.3.1.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/js/account_asset.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/js/account_asset.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/js/account_dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/js/account_dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/scss/account_asset.scss" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/scss/account_asset.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/scss/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/xml/template.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/static/src/xml/template.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_asset_templates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_asset_templates.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_asset_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_asset_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_configuration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_configuration.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_followup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_followup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_group.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_group.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_move_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/account_move_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/accounting_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/accounting_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/assets.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/assets.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/credit_limit_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/credit_limit_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/dashboard_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/dashboard_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/followup_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/followup_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/multiple_invoice_form.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/multiple_invoice_form.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/multiple_invoice_layout_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/multiple_invoice_layout_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/product_template_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/product_template_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/product_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/product_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/recurring_payments_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/recurring_payments_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/report_payment_receipt_document_inherit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/report_payment_receipt_document_inherit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/reports_config_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/reports_config_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/res_config_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/views/res_config_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_bank_book_wizard.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_bank_book_wizard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_bank_book_wizard_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_bank_book_wizard_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_cash_book_wizard.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_cash_book_wizard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_cash_book_wizard_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_cash_book_wizard_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_day_book_wizard.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_day_book_wizard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_day_book_wizard_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_day_book_wizard_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_lock_date.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_lock_date.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_lock_date.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_lock_date.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_report_common_partner.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/account_report_common_partner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/aged_partner.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/aged_partner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/aged_partner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/aged_partner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_depreciation_confirmation_wizard.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_depreciation_confirmation_wizard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_depreciation_confirmation_wizard_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_depreciation_confirmation_wizard_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_modify.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_modify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_modify_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/asset_modify_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/cash_flow_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/cash_flow_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/cash_flow_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/cash_flow_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/financial_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/financial_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/financial_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/financial_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/general_ledger.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/general_ledger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/general_ledger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/general_ledger.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/journal_audit.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/journal_audit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/journal_audit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/journal_audit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/partner_ledger.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/partner_ledger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/partner_ledger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/partner_ledger.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/tax_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/tax_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/tax_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/tax_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/trial_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/trial_balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/trial_balance.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/base_accounting_kit/wizard/trial_balance.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/addons/fleet_rent/data/account_account_template_extend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/custom/addons/fleet_rent/data/account_account_template_extend.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2gUJ3Spo1aosKKi8srfUlTbpbUa" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/rac_16_git/odoo16rac",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="odoo-bin" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="odoo16rac" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\odoo16\odoo-16.0\venv\Scripts\python.exe" />
+      <option name="SDK_NAME" value="Python 3.8 (venv) (13)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/odoo-bin" />
+      <option name="PARAMETERS" value="-c D:\rac_16_git\odoo16rac\odoo.conf" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="537c8587-1cb8-4868-acf5-b53b14103769" name="Changes" comment="" />
+      <created>1715746024116</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715746024116</updated>
+    </task>
+    <servers />
+  </component>
+</project>

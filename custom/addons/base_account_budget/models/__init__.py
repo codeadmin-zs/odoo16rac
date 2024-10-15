@@ -19,5 +19,6 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
+
 from . import account_budget
 from . import account_analytic_account
